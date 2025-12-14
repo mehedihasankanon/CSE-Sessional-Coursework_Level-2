@@ -3,7 +3,6 @@
 using namespace std;
 
 using ll = long long;
-// using ll = int;
 using pll = pair<ll, ll>;
 
 int main()
