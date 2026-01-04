@@ -2,17 +2,12 @@
 -- the output in ascending order of country_id. Discard those countries which have no 
 -- provinces and less than two cities.
 
--- this is totally wrong lol wth even is this
-SELECT 
-    c.country_id,
-    COUNT(DISTINCT ci.city_id) AS num_cities,
-    COUNT(DISTINCT sp.state_province_id) AS num_provinces
-FROM countries c
-LEFT JOIN city ci ON c.country_id = ci.country_id
-LEFT JOIN state_province sp ON c.country_id = sp.country_id
-GROUP BY c.country_id
-HAVING COUNT(DISTINCT sp.state_province_id) > 0 AND COUNT(DISTINCT ci.city_id) >= 2
-ORDER BY c.country_id ASC;
+SELECT COUNTRY_ID, COUNT(UNIQUE CITY) AS CITIES, COUNT(UNIQUE STATE_PROVINCE) AS PROVINCES
+FROM LOCATIONS
+WHERE CITY IS NOT NULL AND STATE_PROVINCE IS NOT NULL
+GROUP BY COUNTRY_ID
+HAVING COUNT(UNIQUE CITY) >= 2 AND COUNT(UNIQUE STATE_PROVINCE) > 0;
+
 
 
 -- 2. Display department IDs in which at most 1 employee had worked for at most 600 days.
