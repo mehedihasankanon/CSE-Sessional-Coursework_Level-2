@@ -1,0 +1,85 @@
+-----PL/SQL Online-----------
+-----B1----------------------
+-----@skhakim----------------
+
+-----Question 1--------------
+
+-- Write a PL/SQL function that takes student ID as input
+-- and returns (+13) if the student has enrolled in strictly more courses
+-- in the fall semesters than in the spring semesters
+-- (-7) if the student has enrolled in strictly less courses
+-- in the fall semesters than in the spring semesters
+-- and 0 otherwise
+
+CREATE OR REPLACE FUNCTION MORE_COURSES_IN_FALL (S_ID IN NUMBER) RETURN NUMBER IS
+    FC NUMBER;
+    SC NUMBER;
+BEGIN
+    SELECT COUNT(*) INTO FC FROM TAKES WHERE SEMESTER LIKE 'F%' AND ID = S_ID;
+    SELECT COUNT(*) INTO SC FROM TAKES WHERE SEMESTER LIKE 'S%' AND ID = S_ID;
+    IF FC > SC THEN
+        RETURN 13;
+    ELSIF FC < SC THEN
+        RETURN -7;
+    ELSE
+        RETURN 0;
+    end if;
+end;
+
+-- Write a PL/SQL anonymous block that loops over, in ascending order of the student ID,
+-- all students who are advised by the instructor with ID 90643.
+-- For each student, print whether they have more courses in spring semesters or otherwise.
+-- **You cannot use the INTO keyword in the anonymous block.
+-- In addition, in each iteration of the loop, you have to call your function exactly once. **
+
+DECLARE
+    MC NUMBER;
+BEGIN
+    FOR R IN (SELECT s_ID as id FROM ADVISOR WHERE I_ID = 90643 ORDER BY to_number(ID))
+        LOOP
+            MC := MORE_COURSES_IN_FALL(R.ID);
+            IF MC = 13 THEN
+                DBMS_OUTPUT.PUT_LINE('Student ID: ' || R.ID || ' has more courses in fall semesters.');
+            ELSIF MC = -7 THEN
+                DBMS_OUTPUT.PUT_LINE('Student ID: ' || R.ID || ' has more courses in spring semesters.');
+            ELSE
+                DBMS_OUTPUT.PUT_LINE('Student ID: ' || R.ID || ' has the same number of courses in spring and fall semesters.');
+            end if;
+        end loop;
+end;
+
+
+-----Question 2--------------
+
+-- Let ``SC`` be the average number of credits that an instructor teaches per year.
+-- Write a PL/SQL procedure that increases the salary of each instructor by ``SC%``
+-- and prints that information in the following order.
+-- However, if the previous salary is greater than $125000, there will be no increment.
+-- **You cannot join three or more tables together.
+-- You cannot write more than two SELECT statements.
+-- You can declare only one variable.**
+
+
+CREATE OR REPLACE PROCEDURE SALARY_INC_2 IS
+    NEW_SALARY NUMBER;
+BEGIN
+    FOR R IN (SELECT ID AS ID, 1 + 0.01 * SUM(CREDITS) / COUNT(YEAR) AS SC
+              FROM TEACHES INNER JOIN COURSE C2 on TEACHES.COURSE_ID = C2.COURSE_ID
+              GROUP BY Id order by to_number(id))
+        LOOP
+            FOR R2 IN (SELECT SALARY, NAME FROM INSTRUCTOR WHERE ID = R.ID)
+                LOOP
+                    NEW_SALARY := R2.SALARY;
+                    IF R2.SALARY <= 125000 THEN
+                        NEW_SALARY := NEW_SALARY * R.SC;
+                        UPDATE INSTRUCTOR
+                        SET SALARY = NEW_SALARY
+                        WHERE ID = R.ID;
+                    END IF;
+                    DBMS_OUTPUT.PUT_LINE('Salary of ' || R2.NAME || ' has increased from ' || round(R2.SALARY, 2) || ' to ' || round(NEW_SALARY, 2));
+            end loop;
+    end loop;
+end; 
+                end loop;
+        END LOOP;
+end;

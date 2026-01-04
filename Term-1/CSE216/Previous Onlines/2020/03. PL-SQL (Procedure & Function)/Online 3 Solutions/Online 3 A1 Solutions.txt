@@ -1,0 +1,129 @@
+-----PL/SQL Online-----------
+-----A1----------------------
+-----@skhakim----------------
+
+-----Question 1--------------
+
+-- a. Write a PL/SQL function that takes two course IDs as arguments
+-- and returns TRUE if the first course is a prerequisite of strictly more courses than the second one and FALSE otherwise.
+
+create FUNCTION A_IS_MORE_ADV (A IN NUMBER, B IN NUMBER) RETURN BOOLEAN IS
+    FC NUMBER;
+    SC NUMBER;
+BEGIN
+    SELECT COUNT(COURSE_ID) INTO FC FROM PREREQ WHERE PREREQ_ID = A;
+    SELECT COUNT(COURSE_ID) INTO SC FROM PREREQ WHERE PREREQ_ID = B;
+    IF FC > SC THEN
+        RETURN TRUE;
+    ELSE
+        RETURN FALSE;
+    end if;
+end;
+
+-- b. For all courses offered by departments in the ``Lambeau`` building,
+-- find whether they have more prerequisites than any course offered by the departments in the ``Bronfman`` building
+-- and print the information using a PL/SQL anonymous block.
+-- Order your output by the course titles as shown below.
+-- **You cannot use the INTO or WHILE keywords.**
+
+BEGIN
+    FOR R1 IN (SELECT COURSE_ID, TITLE FROM COURSE WHERE DEPT_NAME IN (SELECT DEPT_NAME FROM DEPARTMENT WHERE BUILDING = 'Lambeau') ORDER BY title)
+    loop
+        FOR R2 IN (SELECT COURSE_ID, TITLE FROM COURSE WHERE DEPT_NAME IN (SELECT DEPT_NAME FROM DEPARTMENT WHERE BUILDING = 'Bronfman') ORDER BY TITLE)
+        loop
+            IF A_IS_MORE_ADV(R1.COURSE_ID, R2.COURSE_ID) THEN
+                DBMS_OUTPUT.PUT_LINE(R1.TITLE || ' is a prerequisite of more courses than ' || R2.TITLE);
+            end if;
+        end loop;
+    end loop;
+end;
+
+
+-----Question 2--------------
+
+-- Write a PL/SQL procedure that takes the Student ID and input
+-- and calculates the CGPA per every semester (e.g., Fall 2003).
+-- If the CGPA chronologically increases (let staying the same be considered an increase)
+-- in every semester, print ``CGPA is always increasing``.
+-- If the CGPA chronologically decreases in every semester, print ``CGPA is always decreasing``.
+-- Otherwise print ``CGPA is following a zig-zag pattern``.
+-- You can assume the input student ID will be correct.
+
+
+-- For letter grade to point grade conversion, you can use the following function:
+
+create FUNCTION GRADE_TO_POINT(GRADE IN VARCHAR2) RETURN FLOAT IS
+    INVALID_LETTER_GRADE EXCEPTION;
+BEGIN
+    -- DBMS_OUTPUT.PUT_LINE(GRADE);
+    IF GRADE = 'A+' THEN
+        RETURN 4.00;
+    ELSIF GRADE = 'A ' THEN
+        RETURN 3.75;
+    ELSIF GRADE = 'A-' THEN
+        RETURN 3.50;
+    ELSIF GRADE = 'B+' THEN
+        RETURN 3.25;
+    ELSIF GRADE = 'B ' THEN
+        RETURN 3.00;
+    ELSIF GRADE = 'B-' THEN
+        RETURN 2.75;
+    ELSIF GRADE = 'C+' THEN
+        RETURN 2.50;
+    ELSIF GRADE = 'C ' THEN
+        RETURN 2.25;
+    ELSIF GRADE = 'C-' THEN
+        RETURN 2.15;
+    end if;
+    RAISE INVALID_LETTER_GRADE;
+end;
+
+create FUNCTION FIND_CGPA(S_ID IN NUMBER) RETURN FLOAT IS
+    CGPA FLOAT;
+BEGIN
+    SELECT ROUND(SUM(GP) / SUM(CREDITS), 4) INTO CGPA
+    FROM
+        (SELECT MAX(GRADE_TO_POINT(GRADE) * CREDITS) AS GP, CREDITS
+         FROM TAKES INNER JOIN COURSE C2 on TAKES.COURSE_ID = C2.COURSE_ID WHERE ID = S_ID
+         GROUP BY ID, C2.COURSE_ID, CREDITS);
+    -- DBMS_OUTPUT.PUT_LINE('CGPA OF ID ' || S_ID || ' IS ' || CGPA);
+    RETURN CGPA;
+end;
+
+create procedure cg_pattern (s_id in number) is
+    old_cg float;
+    new_cg float;
+    inc boolean;
+    dec boolean;
+begin
+    for r in (SELECT ID, SEMESTER || YEAR, round(SUM(GRADE_TO_POINT(GRADE) * CREDITS) / SUM(CREDITS), 4) as CGPA
+              FROM TAKES INNER JOIN COURSE C2 on TAKES.COURSE_ID = C2.COURSE_ID where id = s_id
+              GROUP BY ID, SEMESTER, YEAR
+              order by year asc, SEMESTER desc)
+        loop
+            old_cg := r.CGPA;
+            exit;
+        end loop;
+    dec := true;
+    inc := true;
+    for r in (SELECT ID, SEMESTER || YEAR, round(SUM(GRADE_TO_POINT(GRADE) * CREDITS) / SUM(CREDITS), 4) as CGPA
+              FROM TAKES INNER JOIN COURSE C2 on TAKES.COURSE_ID = C2.COURSE_ID where id = s_id
+              GROUP BY ID, SEMESTER, YEAR
+              order by year asc, SEMESTER desc)
+        loop
+            new_cg:=r.CGPA;
+            if new_cg >= old_cg then
+                dec := false;
+            else
+                inc := false;
+            end if;
+            old_cg := new_cg;
+        end loop;
+    if dec then
+        DBMS_OUTPUT.PUT_LINE('dec');
+    elsif inc then
+        DBMS_OUTPUT.PUT_LINE('inc');
+    else
+        DBMS_OUTPUT.PUT_LINE('zigzag');
+    end if;
+end;
