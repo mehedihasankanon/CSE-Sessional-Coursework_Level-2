@@ -1,6 +1,6 @@
 #include <iostream>
 #include <fstream>
-#include "AVLTree.h"
+#include "RBTree.h"
 
 using namespace std;
 
@@ -15,7 +15,7 @@ int main()
         return 1;
     }
 
-    AVLTree<int> tree;
+    RBTree<int> tree;
     int n;
     inFile >> n;
 
@@ -38,8 +38,13 @@ int main()
         }
         else if (e == 2)
         {
-            tree.traverse(x, outFile);
-            outFile << endl;
+            bool found = tree.search(x);
+            outFile << e << " " << x << " " << (found ? 1 : 0) << endl;
+        }
+        else if (e == 3)
+        {
+            int count = tree.countLessThan(x);
+            outFile << e << " " << x << " " << count << endl;
         }
     }
 
