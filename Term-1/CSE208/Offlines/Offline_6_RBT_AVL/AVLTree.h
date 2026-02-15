@@ -265,13 +265,13 @@ public:
             preOrder(root, out);
             break;
         case 2:
-            inOrder(root, out);
+            levelOrder(root, out);
             break;
         case 3:
             postOrder(root, out);
             break;
         case 4:
-            levelOrder(root, out);
+            inOrder(root, out);
             break;
         }
     }
