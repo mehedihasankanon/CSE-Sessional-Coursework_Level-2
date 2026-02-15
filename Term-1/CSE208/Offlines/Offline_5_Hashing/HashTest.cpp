@@ -40,7 +40,7 @@ pair<ll, double> run_experiment(
     for (int i = 0; i < (int)words.size(); i++)
         ht.insert(words[i], i + 1);
 
-    ll col = ht.compute_collisions();
+    ll col = ht.get_collisions();
 
     ht.reset_stats();
     for (const string &w : search_words)

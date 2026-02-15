@@ -32,6 +32,7 @@ private:
     HASH_FUNCTION hf;
 
     ll total_probes;
+    ll collisions;
 
     double max_lf;
     double min_lf;
@@ -249,6 +250,10 @@ private:
         if (cm == CHAINING)
         {
             ll idx = primary_hash(key);
+
+            if (chain_table[idx] != nullptr)
+                collisions++;
+
             Node *nd = new Node(key, value);
             nd->next = chain_table[idx];
             chain_table[idx] = nd;
@@ -262,6 +267,9 @@ private:
                 ll idx = probe_index(key, i);
                 if (!probe_table[idx].active || probe_table[idx].deleted)
                 {
+                    if (i > 0)
+                        collisions++;
+
                     probe_table[idx].key = key;
                     probe_table[idx].value = value;
                     probe_table[idx].active = true;
@@ -317,7 +325,7 @@ public:
     HashTable(ll size, COLLISION_METHOD cm, HASH_FUNCTION hf = HASH_1,
               double max_load = 0.5, double min_load = 0.25,
               ll c1 = 1, ll c2 = 3)
-        : cm(cm), hf(hf), count(0), total_probes(0),
+        : cm(cm), hf(hf), count(0), total_probes(0), collisions(0),
           max_lf(max_load), min_lf(min_load), C1(c1), C2(c2),
           insertions_since_expansion(0), deletions_since_compaction(0),
           count_at_last_expansion(0), count_at_last_compaction(0),
@@ -374,6 +382,9 @@ public:
                 cur = cur->next;
             }
 
+            if (chain_table[idx] != nullptr)
+                collisions++;
+
             Node *nd = new Node(key, value);
             nd->next = chain_table[idx];
             chain_table[idx] = nd;
@@ -388,6 +399,9 @@ public:
 
                 if (!probe_table[idx].active || probe_table[idx].deleted)
                 {
+                    if (i > 0)
+                        collisions++;
+
                     probe_table[idx].key = key;
                     probe_table[idx].value = value;
                     probe_table[idx].active = true;
@@ -531,6 +545,7 @@ public:
         }
     }
 
+    ll get_collisions() const { return collisions; }
     double get_load_factor() const { return (double)count / table_size; }
     ll get_count() const { return count; }
     ll get_table_size() const { return table_size; }
@@ -543,6 +558,7 @@ public:
 
     void reset_stats()
     {
+        collisions = 0;
         total_probes = 0;
     }
 
