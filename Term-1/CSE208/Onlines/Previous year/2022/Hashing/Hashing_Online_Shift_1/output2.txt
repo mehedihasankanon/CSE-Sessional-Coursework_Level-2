@@ -1,0 +1,63 @@
+ALLOCATE 10: Inserted at index 10 (probes: 1)
+ALLOCATE 21: Inserted at index 0 (probes: 2)
+ALLOCATE 32: Inserted at index 3 (probes: 3)
+--- Rehash Triggered: BEFORE ---
+Table Size: 11
+Active Processes: 3
+Load Factor: 0.27
+Max Probe Sequence: 3
+--- Rehash Triggered: AFTER ---
+Table Size: 23
+Active Processes: 3
+Load Factor: 0.13
+Max Probe Sequence: 1
+ALLOCATE 43: Inserted at index 20 (probes: 1)
+ALLOCATE 54: Inserted at index 8 (probes: 1)
+ALLOCATE 100: Inserted at index 12 (probes: 3)
+ALLOCATE 101: Inserted at index 13 (probes: 3)
+ALLOCATE 505: Inserted at index 22 (probes: 1)
+FREE 10: Freed from index 10
+FREE 21: Freed from index 21
+FREE 32: Freed from index 9
+FREE 43: Freed from index 20
+FREE 54: Freed from index 8
+--- Rehash Triggered: BEFORE ---
+Table Size: 23
+Active Processes: 3
+Load Factor: 0.13
+Max Probe Sequence: 3
+--- Rehash Triggered: AFTER ---
+Table Size: 11
+Active Processes: 3
+Load Factor: 0.27
+Max Probe Sequence: 1
+ALLOCATE 65: Inserted at index 0 (probes: 2)
+ALLOCATE 77: Inserted at index 4 (probes: 3)
+ALLOCATE 89: Inserted at index 5 (probes: 3)
+ALLOCATE 98: Inserted at index 3 (probes: 3)
+--- Rehash Triggered: BEFORE ---
+Table Size: 11
+Active Processes: 7
+Load Factor: 0.64
+Max Probe Sequence: 3
+--- Rehash Triggered: AFTER ---
+Table Size: 23
+Active Processes: 7
+Load Factor: 0.30
+Max Probe Sequence: 3
+ALLOCATE 109: Inserted at index 17 (probes: 1)
+FREE 65: Freed from index 19
+FREE 77: Freed from index 12
+FREE 89: Freed from index 20
+FREE 98: Freed from index 6
+FREE 109: Freed from index 17
+--- Rehash Triggered: BEFORE ---
+Table Size: 23
+Active Processes: 3
+Load Factor: 0.13
+Max Probe Sequence: 1
+--- Rehash Triggered: AFTER ---
+Table Size: 11
+Active Processes: 3
+Load Factor: 0.27
+Max Probe Sequence: 1

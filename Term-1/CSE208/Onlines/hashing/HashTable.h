@@ -46,6 +46,8 @@ private:
     ll count_at_last_expansion;
     ll count_at_last_compaction;
 
+    vector<Key> elements;
+
     struct Node
     {
         Key key;
@@ -331,7 +333,7 @@ public:
           max_lf(max_load), min_lf(min_load), C1(c1), C2(c2),
           insertions_since_expansion(0), deletions_since_compaction(0),
           count_at_last_expansion(0), count_at_last_compaction(0),
-          chain_table(nullptr), probe_table(nullptr)
+          chain_table(nullptr), probe_table(nullptr), elements(0)
     {
         table_size = next_prime_ge(size);
         initial_size = table_size;
@@ -423,8 +425,11 @@ public:
 
         insertions_since_expansion++;
         check_expand();
+        elements.push_back(key);
         return true;
     }
+
+    vector<Key> &getElements() { sort(elements.begin(), elements.end());  return elements; }
 
     void printProbeSequence(const Key &key)
     {

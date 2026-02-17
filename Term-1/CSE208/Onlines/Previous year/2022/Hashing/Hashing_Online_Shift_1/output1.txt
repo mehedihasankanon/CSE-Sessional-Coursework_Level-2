@@ -1,0 +1,5 @@
+ALLOCATE 10: Inserted at index 3 (probes: 1)
+ALLOCATE 17: Inserted at index 4 (probes: 2)
+ALLOCATE 24: Inserted at index 0 (probes: 3)
+FREE 10: Freed from index 3
+ALLOCATE 31: Inserted at index 3 (probes: 1)
