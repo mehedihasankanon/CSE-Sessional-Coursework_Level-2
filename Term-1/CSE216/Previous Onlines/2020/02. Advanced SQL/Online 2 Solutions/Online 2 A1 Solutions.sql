@@ -1,4 +1,7 @@
--- 1. For each instructor, print their ID, name, department name, and the number of other instructors who have at least one building in common where they teach, along with the number of such building(s). You cannot use JOIN or GROUP_BY.
+-- 1. For each instructor, print their ID, name, department name, 
+-- and the number of other instructors who have at least one building 
+-- in common where they teach, along with the number of such building(s). 
+-- You cannot use JOIN or GROUP_BY.
 
 SELECT i1.ID, i1.name, i1.dept_name,
   (SELECT COUNT(DISTINCT i2.ID)
@@ -26,7 +29,9 @@ SELECT i1.ID, i1.name, i1.dept_name,
 FROM instructor i1
 ORDER BY num_instructors DESC;
 
--- 2. Find the advisors who advise the highest number of students along with the total credits they offer. You must write at least one subquery in the SELECT clause to do this.
+-- 2. Find the advisors who advise the highest number of students 
+-- along with the total credits they offer. You must write at least 
+-- one subquery in the SELECT clause to do this.
 
 SELECT i.dept_name, i.name AS instructor_name, COUNT(a.s_id) AS num_students , 
           (select sum(c.credits) from teaches t, course c 
@@ -41,9 +46,10 @@ having COUNT(a.s_id) = (
   from advisor a1
   group by a1.i_id)
   
-)
+);
 
--- 3. Retrieve the students who have taken more departmental courses than non-departmental ones.  You cannot use JOIN or GROUP_BY in the main query.
+-- 3. Retrieve the students who have taken more departmental 
+-- courses than non-departmental ones.  You cannot use JOIN or GROUP_BY in the main query.
 
 
 SELECT s.ID, s.name, s.dept_name
