@@ -150,5 +150,58 @@ ORDER BY E.SALARY DESC, E.EMPLOYEE_ID ASC;
 --  company  average  salary.  Use  a  CASE  statement  to  categorize  salary  as  'High'  (if  above  10,000), 
 --  'Medium' (if between 5,000 and 10,000), or 'Low' (if below 5,000).
 
+-- EXPLANATION:
+-- Step 1: Calculate company average salary
+-- Step 2: Calculate department average salary and identify qualifying departments
+--         (departments with employees both above AND below company average)
+-- Step 3: Find employees in qualifying departments who earn more than their dept average
+-- Step 4: Categorize salaries using CASE statement based on ranges
+
+WITH COMPANY_AVG AS (
+    -- CTE 1: Calculate the company-wide average salary
+    SELECT AVG(SALARY) AS COMPANY_AVG_SALARY 
+    FROM EMPLOYEES
+),
+DEPT_ANALYSIS AS (
+    -- CTE 2: For each department, calculate:
+    -- - Department average salary
+    -- - Count of employees below company average
+    -- - Count of employees above company average
+    SELECT 
+        D.DEPARTMENT_ID,
+        D.DEPARTMENT_NAME,
+        AVG(E.SALARY) AS DEPT_AVG_SALARY,
+        -- Count employees earning less than company average
+        COUNT(CASE WHEN E.SALARY < (SELECT COMPANY_AVG_SALARY FROM COMPANY_AVG) THEN 1 END) AS BELOW_COMPANY_AVG,
+        -- Count employees earning more than company average
+        COUNT(CASE WHEN E.SALARY > (SELECT COMPANY_AVG_SALARY FROM COMPANY_AVG) THEN 1 END) AS ABOVE_COMPANY_AVG
+    FROM DEPARTMENTS D
+    LEFT JOIN EMPLOYEES E ON D.DEPARTMENT_ID = E.DEPARTMENT_ID
+    GROUP BY D.DEPARTMENT_ID, D.DEPARTMENT_NAME
+)
+-- Main Query: Select employees from qualifying departments who earn above their dept avg
+SELECT 
+    E.FIRST_NAME,
+    E.LAST_NAME,
+    DA.DEPARTMENT_NAME,
+    E.SALARY,
+    -- Categorize salary into ranges using CASE statement
+    CASE 
+        WHEN E.SALARY > 10000 THEN 'High'
+        WHEN E.SALARY BETWEEN 5000 AND 10000 THEN 'Medium'
+        ELSE 'Low'
+    END AS SALARY_CATEGORY
+FROM EMPLOYEES E
+JOIN DEPARTMENTS D ON E.DEPARTMENT_ID = D.DEPARTMENT_ID
+JOIN DEPT_ANALYSIS DA ON D.DEPARTMENT_ID = DA.DEPARTMENT_ID
+WHERE 
+    -- Filter: Only departments with BOTH below-avg AND above-avg employees
+    DA.BELOW_COMPANY_AVG > 0 
+    AND DA.ABOVE_COMPANY_AVG > 0
+    -- Filter: Employee must earn more than their department's average
+    AND E.SALARY > DA.DEPT_AVG_SALARY
+-- Sort by salary in descending order
+ORDER BY E.SALARY DESC;
+
 
 
