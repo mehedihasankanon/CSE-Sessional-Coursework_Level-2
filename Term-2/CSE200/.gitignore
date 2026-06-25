@@ -1,0 +1,39 @@
+% LaTeX / TeX Live build artifacts
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+*.run.xml
+*.synctex.gz
+*.synctex(busy)
+*.nav
+*.snm
+*.vrb
+
+% Generated PDF/DVI/PS files if you do not want them tracked
+*.dvi
+*.ps
+
+% Temporary editor/TeX tools files
+*~
+.*.swp
+*.tmp
+
+% TeX Live / latexmk cache directories
+latexmkrc
+_minted-*/
+minted-*/
+out/
+build/
+temp/
+
+% OS-specific files
+.DS_Store
+Thumbs.db
