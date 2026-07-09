@@ -36,19 +36,19 @@ public class Order {
     private final String specialInstructions;
 
     public Order(String orderId,
-                 String customerName,
-                 String phone,
-                 DeliveryType deliveryType,
-                 String deliveryAddress,
-                 PaymentMethod paymentMethod,
-                 LocalDateTime scheduledTime,
-                 String couponCode,
-                 boolean giftWrap,
-                 boolean cutleryRequired,
-                 int loyaltyPointsToRedeem,
-                 boolean rushOrder,
-                 List<OrderItem> items,
-                 String specialInstructions) {
+            String customerName,
+            String phone,
+            DeliveryType deliveryType,
+            String deliveryAddress,
+            PaymentMethod paymentMethod,
+            LocalDateTime scheduledTime,
+            String couponCode,
+            boolean giftWrap,
+            boolean cutleryRequired,
+            int loyaltyPointsToRedeem,
+            boolean rushOrder,
+            List<OrderItem> items,
+            String specialInstructions) {
         this.orderId = requireNonBlank(orderId, "Order id");
         this.customerName = requireNonBlank(customerName, "Customer name");
         this.phone = requireNonBlank(phone, "Phone");
@@ -73,6 +73,37 @@ public class Order {
             throw new IllegalArgumentException("Order must contain at least one item");
         }
         this.items = Collections.unmodifiableList(new ArrayList<>(items));
+    }
+
+    // refactored order constructor that takes a StandardOrderBuilder object
+    // the builder object has all teh featuers specified in itself
+    Order(StandardOrderBuilder builder) {
+        this.orderId = requireNonBlank(builder.getOrderId(), "Order id");
+        this.customerName = requireNonBlank(builder.getCustomerName(), "Customer name");
+        this.phone = requireNonBlank(builder.getPhone(), "Phone");
+
+        this.deliveryType = builder.getDeliveryType() != null ? builder.getDeliveryType() : DeliveryType.PICKUP;
+        this.paymentMethod = builder.getPaymentMethod() != null ? builder.getPaymentMethod() : PaymentMethod.CASH;
+        this.scheduledTime = builder.getScheduledTime();
+        this.couponCode = builder.getCouponCode() != null ? builder.getCouponCode().trim().toUpperCase() : "";
+        this.giftWrap = builder.isGiftWrap();
+        this.cutleryRequired = builder.isCutleryRequired();
+        this.loyaltyPointsToRedeem = Math.max(0, builder.getLoyaltyPointsToRedeem());
+        this.rushOrder = builder.isRushOrder();
+        this.specialInstructions = builder.getSpecialInstructions() != null ? builder.getSpecialInstructions().trim() : "";
+
+    
+        if (this.deliveryType == DeliveryType.DELIVERY) {
+            this.deliveryAddress = requireNonBlank(builder.getDeliveryAddress(), "Delivery address");
+        } else {
+            this.deliveryAddress = builder.getDeliveryAddress() != null ? builder.getDeliveryAddress().trim() : "";
+        }
+
+        Objects.requireNonNull(builder.getItems(), "Items cannot be null");
+        if (builder.getItems().isEmpty()) {
+            throw new IllegalArgumentException("Order must contain at least one item");
+        }
+        this.items = Collections.unmodifiableList(new ArrayList<>(builder.getItems()));
     }
 
     public Order(String orderId, String customerName, String phone, List<OrderItem> items) {
