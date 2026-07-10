@@ -31,14 +31,21 @@ def time_reverse(x: np.ndarray) -> np.ndarray:
     """
     Given samples x(t), return samples of x(-t)
     """
-    raise NotImplementedError
+    return x[::-1]
 
 
 def even_odd_decompose(x: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
     """
     Must call time_reverse(...) inside this function.
     """
-    raise NotImplementedError
+
+    x_f = x
+    x_r = time_reverse(x)
+    
+    x_e = 0.5 * (x_f + x_r)
+    x_o = 0.5 * (x_f - x_r)
+    
+    return x_e, x_o
 
 
 # ----------------------------
@@ -72,13 +79,19 @@ def plot_pair(t: np.ndarray, x: np.ndarray, xr: np.ndarray):
 # ----------------------------
 def main():
     t = np.linspace(T_MIN, T_MAX, N)
-    x = None
+    x = x_of_t(t)
 
     # Compute time reverse and even odd components
-    xr = None
-    xe, xo = None
+    xr = time_reverse(x)
+    xe, xo = even_odd_decompose(x)
 
     # Plot x(t), x(-t), xe(t) and xo(t) using the previously defined functions
+    
+    plot_pair(t=t, x=x, xr=time_reverse(x))
+    plt.show()
+    
+    plot_three(t=t, x=x, xe=xe, xo=xo)
+    plt.show()
 
 
 if __name__ == "__main__":

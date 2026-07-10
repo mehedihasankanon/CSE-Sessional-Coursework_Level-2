@@ -3,15 +3,24 @@ import matplotlib.pyplot as plt
 
 
 def sinusoid(n: np.ndarray, A: float, Omega0: float, phi: float) -> np.ndarray:
-    raise NotImplementedError
+    
+    x = A * np.cos(Omega0 * n + phi)
+    
+    return x
 
 
 def time_shift_sinusoid(n: np.ndarray, A: float, Omega0: float, phi: float, n0: int) -> np.ndarray:
-    raise NotImplementedError
+    
+    x = A * np.cos(Omega0 * (n - n0) + phi)
+    
+    return x
 
 
 def phase_change_sinusoid(n: np.ndarray, A: float, Omega0: float, phi: float, phi0: float) -> np.ndarray:
-    raise NotImplementedError
+
+    x = A * np.cos(Omega0 * (n) + phi - phi0)
+    
+    return x
 
 
 # -----------------------------
@@ -44,15 +53,15 @@ def main():
     n = np.arange(-20, 21)  # -20, -19, ..., 20
 
     # Original signal
-    x = None
+    x = sinusoid(n, A, Omega0, phi)
 
-    n0 = None  # integer time shift
-    x_time = None
+    n0 = 2  # integer time shift -> positive for right shift, negative for left shift
+    x_time = time_shift_sinusoid(n, A, Omega0, phi, n0)
 
     # TODO: Compute the phase shift phi0_equiv that makes x_phase match x_time
-    phi0_equiv = None  # TODO
+    phi0_equiv = Omega0 * n0
 
-    x_phase_equiv = None
+    x_phase_equiv = phase_change_sinusoid(n, A, Omega0, phi, phi0_equiv)
 
     err_A = mse(x_time, x_phase_equiv)
     print("[Part A] MSE between time-shifted and equivalent phase-changed:", err_A)
@@ -63,10 +72,14 @@ def main():
     stem_plot(ax1, n, x_phase_equiv, f"phase change by phi0={phi0_equiv:.3f}")
     ax1.legend()
     fig1.tight_layout()
+    
+    # plt.show()
+    
+    # return
 
     
-    phi0 = None  # an arbitrary phase change
-    x_phase = None
+    phi0 = np.pi * 3  # an arbitrary phase change
+    x_phase = phase_change_sinusoid(n, A, Omega0, phi, phi0)
 
     # Search over integer shifts to see if any time shift matches this phase change
     k_min, k_max = -12, 12
