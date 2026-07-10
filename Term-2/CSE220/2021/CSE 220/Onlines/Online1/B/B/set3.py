@@ -33,13 +33,57 @@ def init_signal():
 
 
 def time_scale_signal(x : np.ndarray, k : int) -> np.ndarray:
-    # implement this function
-    None
+    """
+    What we wanna do is stretch the time scale and put zeros in between
+    """
+    
+    output = np.zeros_like(x) # output signal
+    
+    t_out = np.arange(-INF, INF + 1)
+    
+    mask = (t_out % k == 0)
+    
+    t_in = t_out//k 
+    
+    print(f't_out: {t_out}')
+    print(f't_in: {t_in}')
+    print(f't_in[mask]: {t_in[mask]}')
+    
+    output[t_out[mask] + INF] = x[t_in[mask] + INF]
+    
+    return output
+    
 
 def time_scale_signal_interpolate(x : np.ndarray, k : int) -> np.ndarray:
-    # implement this function
-    None
 
+    """
+    Stretches the signal by factor k, filling intermediate gaps 
+    with the flat average of the surrounding anchor points.
+    """
+    output = np.zeros_like(x)
+    t_out = np.arange(-INF, INF + 1)
+    
+    # Step 1: Place the original anchor points
+    mask = (t_out % k == 0)
+    t_in = t_out // k
+    output[t_out[mask] + INF] = x[t_in[mask] + INF]
+    
+    # Step 2: Find the physical array indices where these anchors landed
+    # For k=3 and INF=8, this returns slots like [2, 5, 8, 11, 14]
+    anchor_indices = np.where(mask)[0]
+    
+    # Step 3: Loop through adjacent pairs of anchors and fill the gaps
+    for i in range(len(anchor_indices) - 1):
+        idx1 = anchor_indices[i]   # Left anchor index
+        idx2 = anchor_indices[i+1] # Right anchor index
+        
+        # Calculate the flat average of the two anchor values
+        avg_val = (output[idx1] + output[idx2]) / 2.0
+        
+        # Fill all the empty slots strictly BETWEEN these two indices
+        output[idx1 + 1 : idx2] = avg_val
+        
+    return output
 
 def main():
     img_root = '.'
