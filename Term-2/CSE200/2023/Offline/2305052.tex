@@ -1,9 +1,11 @@
-\documentclass[manuscript,review]{acmart}
+\documentclass[manuscript]{acmart}
 
 % --- Required Package Configurations ---
 \usepackage{booktabs} % For professional tables
 \usepackage{graphicx} % For enclosing screenshots if necessary
+\usepackage{subcaption}
 \usepackage{enumitem}
+\usepackage{tabularx}
 
 % --- ACM Citation & Bibliography Styles ---
 \citestyle{acmauthoryear} % Sets up ACM citation format
@@ -36,37 +38,40 @@
 \begin{document}
 
 \begin{abstract}
-Automated program repair has emerged as a powerful technique to mitigate the impact of software bugs on system reliability and user experience. This paper introduces RepairAgent, the first work to address the program repair challenge through an autonomous agent based on a large language model (LLM). Unlike existing deep learning-based approaches, which prompt a model with a fixed prompt or in a fixed feedback loop, our work treats the LLM as an agent capable of autonomously planning and executing actions to fix bugs by invoking suitable tools. Repair Agent freely interleaves gathering information about the bug, gathering repair ingredients, and validating fixes, while deciding which tools to invoke based on the gathered information and feedback from previous fix attempts. Key contributions that enable RepairAgent include a set of tools that are useful for program repair, a dynamically updated prompt format that allows the LLM to interact with these tools, and a finite state machine that guides the agent in invoking the tools. Our evaluation on the popular Defects4J dataset demonstrates RepairAgent's effectiveness in autonomously repairing 164 bugs, including 39 bugs not fixed by prior techniques. Interacting with the LLM imposes an average cost of 270k tokens per bug, which, under the current pricing of OpenAl's GPT-3.5 model, translates to 14 cents per bug. To the best of our knowledge, this work is the first to present an autonomous, LLM-based agent for program repair, paving the way for future agent-based techniques in software engineering.
+Automated program repair has emerged as a powerful technique to mitigate the impact of software bugs on system reliability and user experience. This paper introduces RepairAgent, the first work to address the program repair challenge through an autonomous agent based on a large language model (LLM). Unlike existing deep learning-based approaches, which prompt a model with a fixed prompt or in a fixed feedback loop, our work treats the LLM as an agent capable of autonomously planning and executing actions to fix bugs by invoking suitable tools. Repair Agent freely interleaves gathering information about the bug, gathering repair ingredients, and validating fixes, while deciding which tools to invoke based on the gathered information and feedback from previous fix attempts. Key contributions that enable RepairAgent include a set of tools that are useful for program repair, a dynamically updated prompt format that allows the LLM to interact with these tools, and a finite state machine that guides the agent in invoking the tools. Our evaluation on the popular Defects4J dataset demonstrates RepairAgent's effectiveness in autonomously repairing 164 bugs, including 39 bugs not fixed by prior techniques. Interacting with the LLM imposes an average cost of 270k tokens per bug, which, under the current pricing of OpenAI's GPT-3.5 model, translates to 14 cents per bug. To the best of our knowledge, this work is the first to present an autonomous, LLM-based agent for program repair, paving the way for future agent-based techniques in software engineering.
 \end{abstract}
 
 \maketitle
 
 \section{Introduction}
-% TODO: Summarize the introduction in your own words.
-% Mention the shift from traditional APR to 1st/2nd-generation LLM loops, 
-% and contrast it with RepairAgent's human-like interleaving actions.
-Software bugs can lead to system failures, security vulnerabilities, and compromised user experience. Manually fixing bugs demands significant time and user effort, but \textbf{A}utomated \textbf{P}rogram \textbf{R}epair (APR) can significantly reduce the effort via automatic bug resolution. Various approaches have been explored in this regard \cite{legoues2019automated}, incl. techniques based on manually designed \cite{legoues2012genprog}, \cite{liu2019tbar} and (semi-)automatically extracted \cite{kim2013automatic}, \cite{bader2019getafix} fix patterns, based on symbolic constraints \cite{nguyen2013semfix}, \cite{xuan2016nopol}, and various machine learning based approaches \cite{long2016automatic}, \cite{gupta2017deepfix}, \cite{tufano2019learning}. \newline
-The current state-of-the-art in APR is predominated by LLMs. In the first generation of LLM based APR, the model expects a prompt with the buggy code and produces the fixed version \cite{xia2023automated}, \cite{jiang2023impact}, but further development introduces an iterative aproach: the LLM is queried repeatedly based on feedback obtained from previous fix attempts \cite{xia2023keep}, \cite{kang2023explainable}, \cite{ye2024iter}.\newline
-But this approach has a few limitations since the hard-coded feedback loops in the LLMs do not allow them to gather information about existing bugs or existing code that may provide them with debugging ingredients, unlike manual human debugging which typically incorporates a temporal interleaving of gathering information to gain understanding of the bug, searching code that might help in debugging and then attempting various versions of fixes \cite{ko2006exploratory}, \cite{bohme2017where}.\newline
-This paper represents \textbf{RepairAgent}, the first autonomous, LLM based agent for automated program repair. The LLM is treated as an autonomous agent capable of planning and executing actions to fix a bug. The LLM is equipped with a set of repair-specific tools. How and when to use these tools aren't hard coded, rather the LLM gets to autonomously decide. \newline
-The approach is enabled via three key components: a general purpose LLM e.g. GPT-3.5, a set of tools for the LLM to use (in this approach, 14 tools in total have been used), and a middleware to establish communication between the tools and the LLM.\newline
-The novelty of the approach was tested using all 835 bugs of the Defects4J \cite{just2014defects4j} dataset. 164 bugs were successfully fixed, including 39 bugs that were not fixed by prior state-of-the-art work \cite{xia2023keep} \cite{ye2024iter}. \newline
-The interaction with the LLM imposes a cost of ~270K tokens per bug on average, which translates to about \textbf{14 cents} per bug. \newline
+Software bugs can lead to system failures, security vulnerabilities, and compromised user experience. Manually fixing bugs demands significant time and user effort, but \textbf{A}utomated \textbf{P}rogram \textbf{R}epair (APR) can significantly reduce the effort via automatic bug resolution. Various approaches have been explored in this regard \cite{legoues2019automated}, incl. techniques based on manually designed \cite{legoues2012genprog}, \cite{liu2019tbar} and (semi-)automatically extracted \cite{kim2013automatic}, \cite{bader2019getafix} fix patterns, based on symbolic constraints \cite{nguyen2013semfix}, \cite{xuan2016nopol}, and various machine learning based approaches \cite{long2016automatic}, \cite{gupta2017deepfix}, \cite{tufano2019learning}.
+
+The current state-of-the-art in APR is predominated by LLMs. In the first generation of LLM based APR, the model expects a prompt with the buggy code and produces the fixed version \cite{xia2023automated}, \cite{jiang2023impact}, but further development introduces an iterative approach: the LLM is queried repeatedly based on feedback obtained from previous fix attempts \cite{xia2023keep}, \cite{kang2023explainable}, \cite{ye2024iter}.
+
+But this approach has a few limitations since the hard-coded feedback loops in the LLMs do not allow them to gather information about existing bugs or existing code that may provide them with debugging ingredients, unlike manual human debugging which typically incorporates a temporal interleaving of gathering information to gain understanding of the bug, searching code that might help in debugging and then attempting various versions of fixes \cite{ko2006exploratory}, \cite{bohme2017where}.
+
+This paper represents \textbf{RepairAgent}, the first autonomous, LLM based agent for automated program repair. The LLM is treated as an autonomous agent capable of planning and executing actions to fix a bug. The LLM is equipped with a set of repair-specific tools. How and when to use these tools aren't hard coded, rather the LLM gets to autonomously decide. 
+
+The approach is enabled via three key components: a general purpose LLM e.g. GPT-3.5, a set of tools for the LLM to use (in this approach, 14 tools in total have been used), and a middleware to establish communication between the tools and the LLM.
+
+The novelty of the approach was tested using all 835 bugs of the Defects4J \cite{just2014defects4j} dataset. 164 bugs were successfully fixed, including 39 bugs that were not fixed by prior state-of-the-art work \cite{xia2023keep} \cite{ye2024iter}. 
+
+The interaction with the LLM imposes a cost of $\sim$270K tokens per bug on average, which translates to about \textbf{14 cents} per bug. 
+
 In summary, this paper contributes the following:
 \begin{itemize}
   \item An autonomous, LLM-based agent for program repair.
   \item A dynamically updated prompt format that guides the LLM through the bug repair process.
-  \item A set of tools that enable a LLM to to perform steps a human developer would take when fixing a bug.
+  \item A set of tools that enable a LLM to perform steps a human developer would take when fixing a bug.
   \item A middleware that guides via a finite state machine how the LLM interacts with the tools.
   \item Empirical evidence that RepairAgent establishes a new state of the art in program repair.
   \item We release our implementation as open-source: \url{https://github.com/sola-st/RepairAgent}.
 \end{itemize}
+
 \noindent To the best of our knowledge, this is the first work to present an autonomous, LLM-based agent for program repair, paving the way for future agent-based techniques in software engineering.
 
-
-
 \section{Background (LLM-Based Autonomous Agents)}
-Because of extensive training, LLMs have demonstrated remarkable abiliteies in in achieving human-level performance in a variety of tasks \cite{bubeck2023sparks}. A promising way to use these LLMs are LLM-based agents, which mean LLM-based techniques with two properties: (1) The LLM can autonomously plan for and execute a set of actions to acheive a particular goal, unlike hard-coded algorithmic processes, and (2) The actions by the LLM can invoke external tools, enabling it to interact with its environment \cite{schick2023toolformer} \cite{patil2023gorilla}. In the context of Software Engineering, the tools could be tools usually used by developers, e.g., as part of an integrated development environment (IDE). Basically, we query the LLM with the current state of the world, the goal and a set of actions to perform. The feedback is integrated into the next prompt. 
+Because of extensive training, LLMs have demonstrated remarkable abilities in achieving human-level performance in a variety of tasks \cite{bubeck2023sparks}. A promising way to use these LLMs are LLM-based agents, which mean LLM-based techniques with two properties: (1) The LLM can autonomously plan for and execute a set of actions to achieve a particular goal, unlike hard-coded algorithmic processes, and (2) The actions by the LLM can invoke external tools, enabling it to interact with its environment \cite{schick2023toolformer} \cite{patil2023gorilla}. In the context of Software Engineering, the tools could be tools usually used by developers, e.g., as part of an integrated development environment (IDE). Basically, we query the LLM with the current state of the world, the goal and a set of actions to perform. The feedback is integrated into the next prompt. 
 
 \section{Method}
 
@@ -91,7 +96,8 @@ RepairAgent proceeds in multiple cycles:
     \item Update the dynamic prompt based on the command's output
 \end{enumerate}
 
-\noindent In each cycle, the approach queries the LLM once. The input to the model is updated based on commands invoked by the LLM, and their results, in previous cycles. We call the model input a dynamic prompt: \newline
+\noindent In each cycle, the approach queries the LLM once. The input to the model is updated based on commands invoked by the LLM, and their results, in previous cycles. We call the model input a dynamic prompt: 
+
 \noindent \textbf{Definition 2} (Dynamic prompt). The \textit{dynamic prompt} is a sequence of text sections $P = [s_0, s_1, \dots, s_n]$, where each section $s_i$ is one of the following (where $s_i(c)$ refers to a section during a cycle $c$):
 \begin{itemize}
     \item A \textit{static section}, which remains the same across all cycles, i.e., $s_i(c) = s_i(c')$ for all $c, c'$.
@@ -121,8 +127,9 @@ Last executed command and result & Dynamic \\
 \end{tabular}
 \end{table}
 
-\noindent \textbf{(1) Role}: provides the agent's area of expertise and outlines the agent's primary objective: finding and fixing bugs \newline
-\textbf{(2) Goals}: There are \textbf{5 goals} for the agent to pursue:
+\noindent \textbf{(1) Role}: provides the agent's area of expertise and outlines the agent's primary objective: finding and fixing bugs 
+
+\noindent \textbf{(2) Goals}: There are \textbf{5 goals} for the agent to pursue:
 \begin{enumerate}[label=\alph*)]
   \item \textit{Locate the bug} using testing and fault localization techniques
   \item \textit{Gather information about the bug} by analyzing the relevant portion(s) of the codebase
@@ -130,33 +137,271 @@ Last executed command and result & Dynamic \\
   \item \textit{Suggest complex fixes} 
   \item \textit{Iterate over the previous goals}
 \end{enumerate}
-\noindent \textbf{(3) Guidelines}: The LLM is provideed with a set of guidelines. It is told that there are various kinds of bugs ranging from one-line-fix bugs to multi-line bugs. A list of recurring fix patterns is also provided that help solve many common bugs \cite{karampatsis2020how} which is based on single-statement bugs in \textbf{Java}. The model is also instructed to add comments along with edited code which helps the model explain its reasoning and improve itself \cite{wei2022chain}. The model is also instructed to define a next step that can be converted into a call to a tool. \newline 
+
+\noindent \textbf{(3) Guidelines}: The LLM is provided with a set of guidelines. It is told that there are various kinds of bugs ranging from one-line-fix bugs to multi-line bugs. A list of recurring fix patterns is also provided that help solve many common bugs \cite{karampatsis2020how} which is based on single-statement bugs in \textbf{Java}. The model is also instructed to add comments along with edited code which helps the model explain its reasoning and improve itself \cite{wei2022chain}. The model is also instructed to define a next step that can be converted into a call to a tool. 
+
 \noindent \textbf{(4) State description}: To guide the LLM toward using the tools effectively, a state machine is defined that constrains which tool(s) can be used at any given time. This is to stop the LLM to get lost in aimless exploration, which has happened very frequently as per the results of earlier tests. Fig. 2 shows the finite state machine. The set of tools are described in Section 3.4. The agent is free to move between any state via tools.
+
 \begin{figure}[h]
+\centering
 \includegraphics[width=0.5\textwidth]{fig_2.png}
 \caption{State machine to guide selection of tools.}
 \label{fig_2}
-\end{figure}  \newline
+\end{figure} 
+
 \begin{itemize}
   \item \textit{Understand the bugs}: The agent can collect information and bug location from testing results. It can then formulate a hypothesis based on its knowledge.
-  \item \textit{Collect information to fix the bug}: The agent can search for specific repair methods or read relevant code. After gathering enough informaton, it moves on to the next state.
-  \item \textit{Try to fix the bug}: The agent can try to fix the bug based on the hypothesis and information gathereed. If necessary, the agent can go back and establish a new hypothesis or gather additional information. 
+  \item \textit{Collect information to fix the bug}: The agent can search for specific repair methods or read relevant code. After gathering enough information, it moves on to the next state.
+  \item \textit{Try to fix the bug}: The agent can try to fix the bug based on the hypothesis and information gathered. If necessary, the agent can go back and establish a new hypothesis or gather additional information. 
 \end{itemize}
-\noindent \textbf{(5) Available tools}:  \newline
-\noindent \textbf{(6) Gathered information}:  \newline
-\noindent \textbf{(7) Specification of output format}:  \newline 
-\noindent \textbf{(8) Last executed command and result}:  \newline
 
+\noindent \textbf{(5) Available tools}: This section describes the currently available tools at any state. 
+
+\noindent \textbf{(6) Gathered information}: This serves as a memory for the agent, enabling it to recall information from previous cycles. This section is divided into various subsections that contain outputs from different tools. 
+
+\noindent \textbf{(7) Specification of output format}: The agent gives one response per cycle in the format specified by Fig. 3. The "thoughts" section is the agent's reasoning when deciding what to do for the next command.
+
+\begin{figure}[h]
+  \centering
+  \begin{subfigure}[b]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{fig_3.png}
+    \captionsetup{labelformat=empty}
+    \caption{Fig. 3. Output format specification.}
+    \label{fig_3}
+  \end{subfigure}\hfill
+  \begin{subfigure}[b]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{fig_4.png}
+    \captionsetup{labelformat=empty}
+    \caption{Fig. 4. Example agent response layout.}
+    \label{fig_4}
+  \end{subfigure}
+\end{figure}
+
+\noindent \textbf{(8) Last executed command and result}: This section helps the agent remind the last steps taken in case anything went wrong during execution. It also helps the agent remember how many cycles have been executed and how many are left. 
+
+\subsection{Tools for the Agent to Use}
+A key novelty of the approach is letting the LLM agent autonomously decide which tools to invoke to fix a bug. The tools provided to the agent (Table 2) are inspired by the tools developers typically use in their IDEs.
+
+\begin{table}[htbp]
+\caption{Repair-related tools invoked by RepairAgent.}
+\centering
+\small 
+\def\arraystretch{1.1} 
+\begin{tabularx}{\textwidth}{l X}
+\toprule
+Tool & Description \\
+\midrule
+\textbf{Read and extract code:} & \\
+\texttt{read\_range} & Read a range of lines in a file. \\
+\texttt{get\_classes\_and\_methods} & Get the names of all classes and methods in a file. \\
+\texttt{extract\_method} & Given a method name, extract method implementations from a file. \\
+\texttt{extract\_tests} & Given the failure report from JUnit or ANT, extract the code of failing test cases. \\
+\midrule
+\textbf{Search and generate code:} & \\
+\textit{search\_code\_base} & Scans all Java files within a project for a list of keywords. \\
+\textit{find\_similar\_api\_calls} & Given a code snippet that calls an API, search for similar API calls in the project. \\
+\textit{generate\_method\_body} & Ask an LLM (GPT-3.5 by default) to generate the body of a method based on code proceeding the method. \\
+\midrule
+\textbf{Testing and patching:} & \\
+\textit{run\_tests} & Run the test suite of a project. \\
+\textit{run\_fault\_localization} & Retrieve pre-existing localization information or run a fault localization tool. \\
+\textit{write\_fix} & Apply a patch to the code base and execute the test suite of the project. Changes are reverted automatically if tests fail. Moves the agent into the ``Try to fix the bug'' state. \\
+\midrule
+\textbf{Control:} & \\
+\textit{express\_hypothesis} & Express a hypothesis about the bug. Moves the agent into the ``Collect information to fix the bug'' state. \\
+\textit{collect\_more\_information} & Move the agent back to the ``Collect information to fix the bug'' state. \\
+\textit{discard\_hypothesis} & Discard the current hypothesis about the bug and move back to the ``Understand the bug'' state. \\
+\textit{goal\_accomplished} & Declare that the goal has been accomplished and exiting the repair process. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\begin{enumerate}[label=\alph*)]
+  \item \textit{Reading and Extracting Code}: Instead of hard-coding the context provided to the LLM \cite{xia2023keep}, \cite{kang2023explainable}, \cite{ye2024iter}, the agent gets to decide which parts of the code to read. It uses tools like \texttt{read\_range} to extract specific lines for a focused view, \texttt{get\_classes\_and\_methods} for a code structure overview, \texttt{extract\_method} to retrieve method implementations, and \texttt{extract\_tests} to get the code of failing test cases to understand expected outputs.
+  \item \textit{Search and Generate Code}: Because human developers commonly search for code \cite{grazia2023code}, the agent is equipped with tools to search for specific code snippets to gather repair ingredients. The \texttt{search\_code\_base} tool locates keyword instances across the entire codebase using approximate matching (splitting keywords into subtokens). The \texttt{find\_similar\_api\_calls} tool extracts method usages to prevent the LLM from hallucinating non-existent method calls \cite{eghbali2024de}. Additionally, a \texttt{generate\_method\_body} tool can generate new code by invoking another LLM, inspired by the success of code completion tools like Copilot \cite{chen2021evaluating}.
+  \item \textit{Testing and Patching}: \texttt{run\_tests} executes the project's test suite and cleans the output to avoid confusing the model with irrelevant stack-trace information. \texttt{run\_fault\_localization} retrieves fault-localization data, either assuming perfect localization or using tools like GZoltar \cite{campos2012gzoltar}. \texttt{write\_fix} applies a JSON patch and runs the test suite; if tests fail, it reverts the changes to give the agent a clean slate. The tool also samples multiple variants (30 by default) of a suggested fix to account for almost-correct attempts.
+  \item \textit{Control}: These tools don't directly correspond to human developer tools, rather they allow the agent to navigate the finite state machine. \texttt{express\_hypothesis} and \texttt{discard\_hypothesis} enforce a structured approach to hypothesis formulation, aligning with scientific debugging \cite{zeller2009why}, \cite{kang2023explainable}. \texttt{collect\_more\_information} reverts the agent to gathering mode if fixes fail, and \texttt{goal\_accomplished} terminates the process once a passing fix is found.
+\end{enumerate}
+
+\subsection{middleware}
+The middleware component orchestrates the communication between the LLM agent and the tools, seamlessly executing the steps of each cycle. It handles three primary responsibilities:
+
+\begin{enumerate}
+  \item \textbf{Parsing and Refining LLM Output}: At the start of a cycle, the middleware queries the LLM. Because LLMs can produce responses with syntactic errors or hallucinations (e.g., using "path" instead of "file\_path"), the middleware heuristically rectifies these deviations in three steps:
+  \begin{itemize}
+    \item Maps the predicted tool name to an actual tool using substring matching or a Levenshtein distance threshold (0.1 by default).
+    \item Maps the provided argument names using the same matching logic.
+    \item Heuristically corrects invalid argument values, such as replacing a broken file path with a valid one.
+  \end{itemize}
+  If these heuristics fail, or if the agent suggests the exact same command as a previous cycle, the middleware informs the LLM about the error via the "Last executed command and result" prompt section and initiates a new cycle.
+  \item \textbf{Calling the Tool}: Once a valid command is parsed, the middleware executes the corresponding tool in an isolated environment to prevent any interference with the host system or RepairAgent itself.
+  \item \textbf{Updating the Prompt}: Using the tool's output, the middleware updates all dynamic sections of the prompt for the next cycle. This includes refreshing the state description and available tools, appending the new output to the gathered information, and updating the last executed command section.
+
+\end{enumerate}
+
+\section{Implementation}
+We use Python 3.10 as our primary programming language. Docker is used to containerize and isolate command executions for enhanced reliability and reproducibility. RepairAgent is built on top of the AutoGPT framework and GPT-3.5-0125 from OpenAI. To parse and interact with Java code, we use ANTLR.
 
 \section{Findings/Results}
-% TODO: Summarize findings on Defects4J, GitBug-Java, costs, and the ablation study.
-Evaluations performed across the Defects4J benchmark indicate that RepairAgent effectively resolved 164 functional bugs, establishing capabilities beyond baseline tools like ChatRepair and ITER \cite{defects4j, chatrepair, iter}. This performance is especially visible in multi-line fixes due to the contextual integration of search features \cite{repairagent}. Financial evaluations tracking token tracking usage configurations show an average financial overhead of approximately 14 cents per bug resolution attempt under standard model frameworks \cite{repairagent}. Further cross-validation against the GitBug-Java set shows functional adaptation across varied setups \cite{gitbugjava}.
+To evaluate the approach, RepairAgent was tested to answer four main research questions regarding its effectiveness, costs, component importance, and tool usage. 
+
+\subsection{Experimental Setup}
+\begin{itemize}
+    \item \textbf{Datasets:} Evaluated on all 835 bugs from the Defects4J \cite{just2014defects4j} dataset (v1.2 and v2.0). To assess generalization and mitigate data leakage risks, a random sample of 100 bugs from the newer GitBug-Java \cite{silva2024gitbug} dataset was also used.
+    \item \textbf{Baselines:} Compared against three state-of-the-art iterative repair techniques: ChatRepair \cite{xia2023keep}, ITER \cite{ye2024iter}, and SelfAPR \cite{ye2022selfapr}.
+    \item \textbf{Metrics:} Evaluated based on \textit{plausible} patches (passes all tests) and \textit{correct} patches (syntactically matches or is semantically consistent with the developer's fix).
+\end{itemize}
+
+\subsection{Effectiveness (RQ1)}
+Evaluations performed across the Defects4J benchmark indicate that RepairAgent effectively resolved \textbf{164 functional bugs} (186 plausible), establishing capabilities beyond baseline tools like ChatRepair and ITER. 
+
+As shown in Table \ref{tab:defects4j_results}, RepairAgent particularly excels in Defects4Jv2, fixing 90 bugs compared to ChatRepair's 48. Furthermore, it successfully fixed \textbf{39 unique bugs} that were not fixed by any of the prior state-of-the-art baselines (see Fig. \ref{fig_6}). 
+
+\begin{table}[htbp]
+\caption{Results on Defects4J.}
+\label{tab:defects4j_results}
+\centering
+\small
+\begin{tabular}{lrrrrr}
+\toprule
+\textbf{Project} & \textbf{Bugs} & \textbf{Plausible} & \textbf{Correct} & \textbf{ChatRepair} & \textbf{ITER} \\
+\midrule
+Chart & 26 & 14 & 11 & 15 & 10 \\
+Closure & 174 & 27 & 27 & 37 & 18 \\
+Math & 106 & 29 & 29 & 32 & 0 \\
+Defects4Jv1.2 & 395 & 96 & 74 & 114 & 57 \\
+Defects4Jv2 & 440 & 90 & 90 & 48 & --- \\
+\midrule
+\textbf{Total} & \textbf{835} & \textbf{186} & \textbf{164} & \textbf{162} & \textbf{57} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+This performance is especially visible in multi-line fixes due to the contextual integration of search features. Table \ref{tab:location_type} shows RepairAgent outperforming baselines on complex, multi-line bugs. Further cross-validation against the GitBug-Java set shows functional adaptation across varied setups, successfully finding 13 correct fixes \cite{silva2024gitbug}.
+
+\begin{table}[htbp]
+\caption{Distribution of fixes by location type}
+\label{tab:location_type}
+\centering
+\small
+\begin{tabular}{lrrrr}
+\toprule
+\textbf{Bug type} & \textbf{RepairAgent} & \textbf{ChatRepair} & \textbf{ITER} & \textbf{SelfAPR} \\
+\midrule
+Single-line & 115 & 133 & 36 & 83 \\
+Multi-line* & 46 & 29 & 14 & 24 \\
+Multi-file & 3 & 0 & 4 & 3 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.6\linewidth]{fig_6.png}
+\caption{Intersection of the fixes set with related work.}
+\label{fig_6}
+\end{figure}
+
+\subsection{Costs of the Approach (RQ2)}
+Financial and temporal evaluations tracking token usage show an average financial overhead of approximately \textbf{14 cents per bug} resolution attempt (around 270k tokens) under standard GPT-3.5 pricing. 
+
+The median time taken to address a bug is 920 seconds (Fig. \ref{fig_9a}). This is highly efficient compared to prior work; for instance, ITER reports a median bug fixing time of 4.57 hours per bug \cite{ye2024iter}.
+
+\begin{figure}[h]
+  \centering
+  \begin{subfigure}[b]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{fig_9a.png}
+    \caption{Time.}
+    \label{fig_9a}
+  \end{subfigure}\hfill
+  \begin{subfigure}[b]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{fig_9b.png}
+    \caption{Tokens/money consumption.}
+    \label{fig_9b}
+  \end{subfigure}
+  \caption{Distribution of cost metrics per bug.}
+  \label{fig_9}
+\end{figure}
+
+\subsection{Ablation Study (RQ3)}
+To understand the impact of different configurations, an ablation study was performed on a random set of 100 Defects4J bugs (Table \ref{tab:ablation}). 
+\begin{itemize}
+    \item \textbf{No search tools:} Fixes drop by half, and costs double due to the agent reading long sequences of code instead of searching.
+    \item \textbf{No state machine:} The agent loses structure, fixing fewer bugs and increasing costs.
+    \item \textbf{Single-cycle memory:} Removing long-term memory causes a massive drop in effectiveness (only 6 correct fixes) as the agent repeats commands and forgets file names.
+    \item \textbf{Realistic localization:} Using GZoltar \cite{campos2012gzoltar} instead of perfect fault localization drops fixing capability by 25\% and increases costs, as the agent spends extra time localizing the bug.
+\end{itemize}
+
+\begin{table}[htbp]
+\caption{Different configurations of RepairAgent.}
+\label{tab:ablation}
+\centering
+\small
+\begin{tabular}{lrrr}
+\toprule
+\textbf{Configuration} & \textbf{Plausible} & \textbf{Correct} & \textbf{Cost(\$)} \\
+\midrule
+No search tools & 14 & 11 & 0.28 \\
+No state machine & 18 & 14 & 0.31 \\
+Single-cycle memory & 9 & 6 & 0.08 \\
+Realistic localization & 16 & 16 & 0.29 \\
+RepairAgent (default) & 23 & 21 & 0.16 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Usage of Tools (RQ4)}
+On average, RepairAgent makes 35 tool invocations per bug. Fig. \ref{fig_10} shows that \textit{write\_fix} is the most frequently called tool. Interestingly, \textit{run\_tests} is used infrequently because the \textit{write\_fix} tool automatically invokes the test suite upon applying a patch.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.7\linewidth]{fig_10.png}
+\caption{Frequency of tool invocations (average per bug).}
+\label{fig_10}
+\end{figure}
 
 \section{Discussion}
-% TODO: Summarize qualitative insights and threats to validity (data leakage, etc.)
-Qualitative tracing indicates that access to structural tools yields better insights into functional anomalies \cite{repairagent}. However, complex modifications sometimes introduce unintended changes to straightforward single-line defects. Threats to internal and external validity include data leakage concerns during foundational model pre-training steps and reliance on highly precise localized metrics generated via secondary spectrum coverage frameworks like GZoltar \cite{gzoltar}.
 
-% --- References Section ---
+\subsection{Qualitative Insights}
+Qualitative tracing indicates that access to structural tools yields better insights into functional anomalies. The agent's ability to actively retrieve information—such as the code of failing tests, snippets retrieved via \textit{find\_similar\_api\_calls}, and feedback from applied fixes—allowed it to fix a new set of complex bugs without higher costs. 
+
+However, complex modifications sometimes introduce unintended changes to straightforward single-line defects. While RepairAgent clearly outperforms prior work on multi-line bugs, it occasionally fails to fix simpler, single-line bugs because the agent overcomplicates the solution. A potential remedy for future work is to initially limit the complexity of candidate fixes to nudge the agent toward simple solutions first.
+
+\subsection{Threats to Validity and Limitations}
+\begin{itemize}
+    \item \textbf{Data Leakage:} Foundational models like GPT-3.5 may have seen parts of the Defects4J Java projects during pre-training. This risk is shared with competitors like ChatRepair \cite{xia2023keep}, but is mitigated by our evaluation on the newer GitBug-Java dataset \cite{silva2024gitbug}.
+    \item \textbf{Missing Test Cases:} Defects4J guarantees at least one failing test case per bug, which may not reflect real-world scenarios where error-revealing tests are unavailable.
+    \item \textbf{Fault Localization:} The default setup relies on perfect fault localization. As shown in the ablation study, relying on secondary spectrum coverage frameworks like GZoltar \cite{campos2012gzoltar} introduces imprecision that can lead to suboptimal repair suggestions.
+    \item \textbf{Non-deterministic Outputs:} The inherently non-deterministic nature of LLMs means outcomes may vary between consecutive runs.
+\end{itemize}
+
+
+\section{Related Work}
+
+\begin{itemize}
+    \item \textbf{Non-learning-based program repair:} Automated program repair (APR) \cite{legoues2019automated} has a rich history. Traditional approaches treat it as a search problem using manually designed mutation rules and fix patterns \cite{legoues2012genprog, le2016history, liu2019tbar}. Others derive rules from human-written patches \cite{kim2013automatic, bader2019getafix, bavishi2019phoenix}, utilize symbolic constraints \cite{nguyen2013semfix, ke2015repairing, xuan2016nopol, mechtaev2016angelix}, or integrate repair into static analysis \cite{tonder2018static, liu2023program, jain2023staticfixer} and code transplantation \cite{yang2022transplantfix}. APR has even seen industrial deployment \cite{bader2019getafix, marginean2019sapfix}. Beyond functional bugs, techniques exist for syntax errors \cite{wang2018search, gupta2019deep, sakkas2022seq2parse}, performance bottlenecks \cite{yu2017pinpointing}, vulnerabilities \cite{harer2018learning}, type errors \cite{chow2024pyty}, deep learning issues \cite{zhang2021autotrainer}, and build errors \cite{tarlow2020learning}.
+    
+    \item \textbf{Learning-based program repair:} Early ML approaches focused on ranking candidate fixes \cite{long2016automatic}. Recent work shifted to generation, using Neural Machine Translation (NMT) to map buggy code to fixed code \cite{gupta2017deepfix, tufano2019learning, lutellier2020coconut, chen2021sequencer}, predicting tree transformations \cite{li2020dlfix, zhu2021syntax}, and employing repair-specific neural architectures and training regimes \cite{vasic2019neural, ye2022neural, ye2022selfapr}. For a comprehensive overview, see \cite{zhang2023survey}. Unlike these, RepairAgent uses a general-purpose LLM rather than a task-specific model.
+    
+    \item \textbf{LLMs for APR and SE:} LLMs are increasingly applied to APR via one-time prompt interactions \cite{jiang2023impact, xia2023automated, joshi2023repair}. The current state-of-the-art relies on iterative feedback loops \cite{xia2023keep, kang2023explainable, ye2024iter, hidvegi2024cigar}. Beyond repair, LLMs are used for code completion \cite{chen2021evaluating, shrivastava2023repository}, fuzzing \cite{xia2024fuzz4all}, unit testing \cite{lemieux2023codamosa, schafer2024empirical, ryan2024code, alshahwan2024automated, kang2023large, feng2024prompting}, and multi-step editing \cite{bairi2023codeplan}. However, \textbf{none of these approaches are agent-based}. RepairAgent fundamentally differs by letting the model autonomously plan and execute actions.
+    
+    \item \textbf{LLM-based agents:} The concept of LLMs autonomously planning and performing complex tasks is relatively new \cite{wang2023survey}. RepairAgent is inspired by prior work on augmenting LLMs with API tools \cite{mialon2023augmented, schick2023toolformer, patil2023gorilla} and code execution capabilities \cite{gao2022pal}. To the best of our knowledge, \textbf{RepairAgent is the first LLM-based agent applied to program repair}. Following the initial public release of this work, other SE agents have emerged, such as Copra for theorem proving \cite{thakur2024incontext}, AutoCodeRover \cite{zhang2024autocoderover}, and SWE-agent \cite{yang2024sweagent}, highlighting the massive potential of this paradigm.
+\end{itemize}
+
+\section{Conclusion}
+
+This paper presents a pioneering technique for bug repair based on an autonomous agent powered by Large Language Models (LLMs). By equipping the LLM with IDE-like tools and a dynamic prompt structure, we treat the model not as a simple text generator, but as an active participant in the debugging process. Through extensive experimentation on the Defects4J benchmark, we validate the effectiveness and financial viability of our approach. Further exploration and refinement of autonomous agent-based techniques—specifically by equipping them with the right tools—will help generalize automated repair to even more difficult and diverse types of software bugs.
+
+\section*{Data Availability}
+Our code and data are available at: \url{https://github.com/sola-st/RepairAgent} \newline Alternatively: \url{https://doi.org/10.5281/zenodo.14470521}
+
+\section*{Acknowledgments}
+This work was supported by the European Research Council (ERC, grant agreements 851895 and 101155832), and by the German Research Foundation within the ConcSys, DeMoCo, and QPTest projects.
+
 \bibliographystyle{ACM-Reference-Format}
 \bibliography{references}
 
