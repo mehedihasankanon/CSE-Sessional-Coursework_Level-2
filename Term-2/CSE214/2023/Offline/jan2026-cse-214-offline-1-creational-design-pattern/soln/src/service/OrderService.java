@@ -8,6 +8,7 @@ import model.PaymentMethod;
 import model.Size;
 
 import model.StandardOrderBuilder;
+import model.OrderItemBuilder;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -23,7 +24,14 @@ public class OrderService {
     private int nextNumber = 1001;
 
     public OrderItem createOrderItem(MenuItem item, int quantity, Size size, boolean extraCheese, boolean spicy, String note) {
-        return new OrderItem(item, quantity, size, extraCheese, spicy, note);
+        OrderItemBuilder builder = new OrderItemBuilder(item, quantity);
+
+        return builder.withSize(size)
+                      .withExtraCheese(extraCheese)
+                      .withSpicy(spicy)
+                      .withNote(note)
+                      .build();
+
     }
 
     public Order createDeliveryOrder(String customerName,
