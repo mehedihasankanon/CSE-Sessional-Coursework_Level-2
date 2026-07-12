@@ -106,20 +106,26 @@ public class OrderService {
         items.add(new OrderItem(catalog.findByCode("D02"), 4, Size.MEDIUM, false, false, "less sugar"));
         items.add(new OrderItem(catalog.findByCode("S02"), 2, Size.LARGE, false, true, ""));
 
-        return new Order(nextOrderId(),
-                "Sample Family",
-                "01711111111",
-                DeliveryType.DELIVERY,
-                "House 25, Road 4, Dhanmondi",
-                PaymentMethod.MOBILE_BANKING,
-                null,
-                "FAMILY15",
-                false,
-                true,
-                50,
-                true,
-                items,
-                "Deliver together");
+        // return new Order(nextOrderId(),
+        //         "Sample Family",
+        //         "01711111111",
+        //         DeliveryType.DELIVERY,
+        //         "House 25, Road 4, Dhanmondi",
+        //         PaymentMethod.MOBILE_BANKING,
+        //         null,
+        //         "FAMILY15",
+        //         false,
+        //         true,
+        //         50,
+        //         true,
+        //         items,
+        //         "Deliver together");
+
+        StandardOrderBuilder builder = new StandardOrderBuilder();
+        OrderDirector director = new OrderDirector(builder);
+
+        director.makeSampleFamilyOrder(nextOrderId(), items);
+        return builder.getResult();
     }
 
     private String nextOrderId() {
