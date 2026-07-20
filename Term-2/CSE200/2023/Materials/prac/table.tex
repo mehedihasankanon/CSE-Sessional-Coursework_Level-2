@@ -1,0 +1,202 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage[T1]{fontenc}\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb,amsthm} % maths + theorems
+\usepackage{graphicx} % images
+\usepackage[table,dvipsnames]{xcolor} % colour + coloured tables
+\usepackage{multirow,array,booktabs} % strong tables
+\usepackage{subcaption,wrapfig} % subfigures, wrapped figures
+\usepackage{enumitem} % custom list labels
+\usepackage{listings} % code
+\usepackage{authblk} % numbered author affiliations
+\usepackage{hyperref} % LOAD LAST: links + clickable TOC
+\usepackage{lipsum}
+\usepackage{float}
+\usepackage{makecell}
+\usepackage{cases}
+\usepackage{tabularx}
+\usepackage{diagbox}
+
+\begin{document}
+
+\begin{table}[htbp]
+    \centering
+    \caption{Sorting-algorithm complexity.}
+    \begin{tabular}{l|c|c|c}
+    \hline
+    \textbf{Algorithm} & \textbf{Best} & \textbf{Average} & \textbf{Worst} \\
+    \hline
+    \end{tabular}
+\end{table}
+
+% \begin{table}[H]
+%     \centering
+%     \caption{Sorting-algorithm complexity.}
+%     \begin{tabular}{|l|c|c|c|}
+%     \hline
+%     \textbf{Algorithm} & \textbf{Best} & \textbf{Average} & \textbf{Worst} \\
+%     \hline
+%     Bubble sort & $\mathcal{O}(n)$ & $\mathcal{O}(n^2)$ & $\mathcal{O}(n^2)$ \\
+%     \hline
+%     Merge sort & $\mathcal{O}(n\log n)$ & $\mathcal{O}(n\log n)$ & $\mathcal{O}(n\log n)$ \\
+%     \hline
+%     Quick sort & $\mathcal{O}(n\log n)$ & $\mathcal{O}(n\log n)$ & $\mathcal{O}(n^2)$ \\
+%     \hline
+%     Binary search & $\mathcal{O}(1)$ & $\mathcal{O}(\log n)$ & $\mathcal{O}(\log n)$ \\
+%     \hline
+%     \end{tabular}
+% \end{table}
+
+\begin{table}[H]
+    \centering
+    \caption{Numerical Integration Methods}
+    \begin{tabular}{|l|c|c|c|}
+        \hline
+        \multirow{2}{*}{\textbf{Method}} & \multicolumn{2}{c|}{\textbf{Error}} & \multirow{2}{*}{\textbf{Order}} \\ 
+        \cline{2-3}
+        & \textbf{Local} & \textbf{Global} & \\
+        \hline
+        \multicolumn{4}{|c|}{\textbf{BAKIGULA PARBOOOOO}} \\
+        \hline
+    \end{tabular}
+\end{table}
+
+
+\begin{table}[H]
+\centering
+\caption{Standard derivatives and integrals by family.}
+\renewcommand{\arraystretch}{1.7}
+\begin{tabular}{|c|c|c|c|}
+\hline
+\multirow{2}{*}{\textbf{Family}} &
+\multicolumn{2}{c|}{\textbf{Operation}} &
+\multirow{2}{*}{\textbf{Domain}} \\
+\cline{2-3}
+& \textbf{Function} & \textbf{Derivative} & \\
+\hline
+\multirow{3}{*}{Power}
+& $x^n$ & $n x^{n-1}$ & $n \in \mathbb{R}$ \\ \cline{2-4}
+& $\dfrac{1}{x}$ & $-\dfrac{1}{x^2}$ & $x \neq 0$ \\ \cline{2-4}
+& $\sqrt{x}$ & $\dfrac{1}{2\sqrt{x}}$ & $x > 0$ \\
+\hline
+\multirow{2}{*}{Trigonometric}
+& $\sin x$ & $\cos x$ & $x \in \mathbb{R}$ \\ \cline{2-4}
+& $\tan x$ & $\sec^2 x$ & $x \neq \dfrac{\pi}{2}$ \\
+\hline
+\multirow{2}{*}{Exponential}
+& $e^{ax}$ & $a e^{ax}$ & $a \in \mathbb{R}$ \\ \cline{2-4}
+& $\ln x$ & $\dfrac{1}{x}$ & $x > 0$ \\
+\hline
+\multicolumn{2}{|c|}{\textbf{Chain rule } $f(g(x))$}
+& $f'(g(x))\,g’(x)$ & differentiable \\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+    
+    \centering
+    \caption{Semconductor Material Parameters}
+    \renewcommand{\arraystretch}{1.7}
+    \begin{tabular}{|l|c c|c c|}
+        \hline
+        \multirow{2}{*}{\textbf{Material}} & \multicolumn{2}{c|}{\textbf{Electrical}} & \multicolumn{2}{c|}{\textbf{Derived}} \\
+        \cline{2-5}
+        & $E_g$ (eV) & $\mu_n$ & $ \sigma = \dfrac{1}{\rho} $ & $ \beta = \sqrt{\mu_n} $ \\ \hline
+        \rowcolor{Orange!40} Silicon & 1.12 & $1.35 \times 10^3$ & $4.35 \times 10^{-4}$ & 36.7 \\ \hline
+        \multicolumn{3}{|r|}{\textbf{Mean Gap}} & \multicolumn{2}{c|}{1.14 eV} \\ \hline
+    \end{tabular}
+
+\end{table}
+
+
+\begin{table}[H]
+\centering
+\caption{Comparison of transform methods.}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{lcc}
+\toprule
+\textbf{Transform} & \makecell{\textbf{Kernel}\\\textbf{function}} &
+\makecell{\textbf{Typical}\\\textbf{application}} \\
+\midrule
+Laplace & $e^{-st}$ & \makecell{transient circuits,\\control systems} \\
+Fourier & $e^{-j\omega t}$ & \makecell{spectra,\\signal filtering,\\madness} \\
+Z & $z^{-n}$ & \makecell{discrete systems,\\digital filters} \\
+\midrule
+\multicolumn{3}{c}{\textit{All three convert differential relations into algebraic ones.}} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+\begin{table}[H]
+\centering
+\caption{Boundary conditions and their meaning.}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{0.92\textwidth}{|l|c|X|}
+\hline
+\textbf{Name} & \textbf{Form} & \textbf{Physical interpretation} \\
+\hline
+Dirichlet & $u = g$ on $\partial\Omega$ &
+The value of the solution is prescribed on the boundary, for example a
+surface held at a fixed temperature. \\
+\hline
+Neumann & $\dfrac{\partial u}{\partial n} = g$ &
+The flux across the boundary is prescribed; a zero value models a
+perfectly insulated wall. \\
+\hline
+Robin & $\alpha u + \beta \dfrac{\partial u}{\partial n} = g$ &
+A weighted combination of the two above, used for convective heat
+exchange with a surrounding medium. \\
+\hline
+\end{tabularx}
+\end{table}
+
+
+\begin{table}[H]
+\centering
+\caption{Objects that must survive inside a cell.}
+\renewcommand{\arraystretch}{2.0}
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{Object} & \textbf{Expression} & \textbf{Note} \\
+\hline
+Matrix & $\begin{bmatrix} a_{11} & a_{12} \\ a_{21} & a_{22} \end{bmatrix}$ & $2 \times 2$ real \\
+\hline
+Determinant & $\begin{vmatrix} 1 & 0 \\ 0 & 1 \end{vmatrix} = 1$ & identity \\
+\hline
+Piecewise & $f(x) = \begin{cases} x^2 & x \geq 0 \\ -x & x < 0 \end{cases}$ & continuous at $0$ \\
+\hline
+Integral & $\displaystyle\int_{0}^{\infty} e^{-st} \, dt = \dfrac{1}{s}$ & $s > 0$ \\
+\hline
+Limit & $\displaystyle\lim_{n \to \infty} \left(1 + \dfrac{1}{n}\right)^{n} = e$ & classical \\
+\hline
+Nested index & $\displaystyle\sum_{\substack{i=1 \\ i \neq j}}^{n} a_{i_{j}}$ & double subscript \\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Network layer performance matrix.}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+\multirow{3}{*}{\diagbox[width=6em]{\textbf{Layer}}{\textbf{Metric}}} & \multicolumn{2}{c|}{\textbf{Training}} & \multicolumn{2}{c|}{\textbf{Inference}} \\
+\cline{2-5}
+& \multicolumn{2}{c|}{(per epoch)} & \multicolumn{2}{c|}{(per sample)} \\
+\cline{2-5}
+& \textbf{Time} & \textbf{Memory} & \textbf{Time} & \textbf{Memory} \\
+\hline
+Convolution & $12.4$ s & $1.8$ GB & $3.1$ ms & $0.4$ GB \\
+\hline
+Pooling & $0.8$ s & $0.2$ GB & $0.2$ ms & $0.1$ GB \\
+\hline
+Dense & $4.6$ s & $3.4$ GB & $1.0$ ms & $0.9$ GB \\
+\hline
+\multicolumn{1}{|r|}{\textbf{Total}} & $17.8$ s & $5.4$ GB & $4.3$ ms & $1.4$ GB \\
+\hline
+\end{tabular}
+\end{table}
+
+\end{document}
