@@ -1,0 +1,411 @@
+% =====================================================================
+%  MASTER LaTeX EXAM CHEAT SHEET
+%  A single compilable reference covering every feature likely to appear
+%  in a fast, 50-minute typesetting test. Read it, compile it, keep the
+%  PDF open beside you during the exam.
+%
+%  Compile: pdflatex cheatsheet.tex  (run twice for TOC / refs)
+%  Some sections need: -shell-escape (only if you switch listings->minted)
+% =====================================================================
+\documentclass[11pt]{article}
+
+% ---------------- CORE PREAMBLE (copy this every time) ----------------
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb,amsfonts,amsthm}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{hyperref}          % keep hyperref near-last
+
+% ---------------- FEATURE PACKAGES ----------------
+\usepackage{subcaption}        % subfigures
+\usepackage{wrapfig}           % text-wrapped figures
+\usepackage{rotating}          % rotated floats
+\usepackage{array}             % column tuning
+\usepackage{multirow}          % row spanning in tables
+\usepackage{booktabs}          % \toprule \midrule \bottomrule
+\usepackage{tabularx}          % auto-width columns
+\usepackage{colortbl}          % \rowcolor \cellcolor \columncolor
+\usepackage{listings}          % code listings
+\usepackage{authblk}           % numbered author affiliations
+\usepackage{tcolorbox}         % coloured boxes / custom theorem boxes
+\usepackage[ruled,vlined,linesnumbered]{algorithm2e} % pseudocode
+
+\hypersetup{colorlinks=true, linkcolor=blue, urlcolor=magenta, citecolor=teal}
+
+% ---------------- CUSTOM COMMANDS (save keystrokes) ----------------
+\newcommand{\R}{\mathbb{R}}            % \R -> real numbers
+\newcommand{\dd}{\,\mathrm{d}}         % upright differential
+\newcommand{\pd}[2]{\frac{\partial #1}{\partial #2}} % partial derivative
+\DeclareMathOperator{\Lap}{\mathcal{L}} % a named operator
+
+% ---------------- THEOREM ENVIRONMENTS ----------------
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
+
+% A coloured tcolorbox theorem for "custom theorem box" questions
+\newtcolorbox{keybox}[1][]{colback=yellow!8, colframe=orange!70!black,
+  fonttitle=\bfseries, title=#1}
+
+% ---------------- LISTINGS STYLE ----------------
+\lstdefinestyle{code}{
+  basicstyle=\ttfamily\small, keywordstyle=\color{blue}\bfseries,
+  commentstyle=\color{green!50!black}\itshape, stringstyle=\color{red!70!black},
+  numbers=left, numberstyle=\tiny\color{gray}, numbersep=8pt,
+  frame=single, breaklines=true, showstringspaces=false, tabsize=2}
+
+% =====================================================================
+\title{\textbf{Master \LaTeX{} Exam Cheat Sheet}}
+\author{Prepared for a 50-minute typesetting test}
+\date{\today}
+% =====================================================================
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+% =====================================================================
+\section{Fast Preamble Templates}
+
+% --- Minimal (article, math + graphics) ---
+% \documentclass[11pt]{article}
+% \usepackage[margin=1in]{geometry}
+% \usepackage{amsmath,amssymb,graphicx,xcolor,hyperref}
+% \begin{document} ... \end{document}
+
+% --- Exam-standard (everything you usually need) ---
+% see the CORE + FEATURE preamble at the top of this file.
+
+The rule of thumb: load \texttt{amsmath} for equations,
+\texttt{graphicx} for images, \texttt{xcolor} for colour,
+\texttt{hyperref} LAST. Add \texttt{multirow}, \texttt{subcaption},
+\texttt{listings} only when the question needs them.
+
+% =====================================================================
+\section{Document Structure}
+\subsection{Title block}
+Use either \texttt{\textbackslash author} with \texttt{\textbackslash thanks}
+or the \texttt{authblk} package for numbered affiliations:
+\begin{verbatim}
+\title{My Title}
+\author[1]{Alice}\author[2]{Bob}
+\affil[1]{University A}
+\affil[2]{University B}
+\date{}            % remove date
+\maketitle
+\end{verbatim}
+
+\subsection{Sectioning \& Table of Contents}
+\verb|\section \subsection \subsubsection \paragraph|. Star versions
+(\verb|\section*|) are unnumbered and skip the TOC. \verb|\tableofcontents|
+prints a clickable TOC when \texttt{hyperref} is loaded.
+
+% =====================================================================
+\section{Text Formatting \& Colour}
+\textbf{bold}, \textit{italic}, \underline{underline},
+\texttt{monospace}, \textsc{Small Caps}, \emph{emphasis},
+{\Large large} and {\tiny tiny} sizes.
+Colour: {\color{red}red text}, \textcolor{blue}{blue text},
+\colorbox{yellow}{highlighted}, \fcolorbox{black}{green!20}{boxed}.
+Define your own: \verb|\definecolor{myblue}{RGB}{0,80,180}|.
+
+Size ladder (small $\to$ big): \verb|\tiny \scriptsize \footnotesize|
+\verb|\small \normalsize \large \Large \LARGE \huge \Huge|.
+
+% =====================================================================
+\section{Lists \& Nested Lists}
+\begin{enumerate}[label=(\alph*)]     % (a) (b) (c)
+  \item Ordered with custom label.
+  \item Second.
+    \begin{itemize}[label=$\star$]    % star bullets
+      \item bullet with star.
+      \item[$\oplus$] one-off different marker via \verb|\item[...]|.
+    \end{itemize}
+\end{enumerate}
+\begin{enumerate}[label=\Roman*.]     % I. II. III.
+  \item Roman numerals.
+\end{enumerate}
+\begin{description}
+  \item[Term] definition-style list (bold term + text).
+\end{description}
+Handy \texttt{enumitem} keys: \verb|label=|, \verb|leftmargin=|,
+\verb|itemsep=2pt|, \verb|noitemsep|, \verb|resume| (continue numbering),
+\verb|start=3| (begin at 3).
+
+% =====================================================================
+\section{Mathematics}
+\subsection{Modes}
+Inline math with \verb|$...$|: $E=mc^2$.
+Display with \verb|\[ ... \]| (never use \verb|$$...$$| in modern LaTeX):
+\[ \int_0^\infty e^{-x}\dd x = 1. \]
+Numbered single equation with \texttt{equation}; multi-line with
+\texttt{align} (\verb|&| = alignment point, \verb|\\| = new line).
+
+\subsection{Alignment environments}
+\begin{align}
+  f(x) &= (x+1)^2            \label{eq:cs1}\\
+       &= x^2 + 2x + 1 .     \label{eq:cs2}
+\end{align}
+\verb|align*| suppresses all numbers; \verb|\nonumber| suppresses one line;
+\verb|\tag{$\ast$}| forces a custom tag. \texttt{gather} centres each line
+with its own number; \texttt{multline} splits one long equation.
+\[
+  \begin{gathered}         % grouped, single number outside
+    a = b + c \\
+    d = e - f
+  \end{gathered}
+\]
+
+\subsection{Fractions, roots, operators}
+$\dfrac{a}{b}$ (display size) vs $\tfrac{a}{b}$ (text size),
+$\sqrt{x}$, $\sqrt[n]{x}$, $\displaystyle\sum_{i=1}^{n} i$,
+$\displaystyle\prod_{k}$, $\displaystyle\lim_{x\to\infty}$,
+$\displaystyle\int_a^b$, $\oint$, $\iint$, $\binom{n}{k}$.
+
+\subsection{Sub/superscripts, deep nesting}
+Group with braces: \verb|x^{2n+1}|, \verb|a_{i,j}|. Nest freely:
+$x_{i_{j_{k}}}$, $e^{-t/(RC)}$, $A^{\mu}_{\ \nu}$ (aligned tensor indices
+via a phantom space \verb|\ |), $T^{2}_{M}$. Multi-line subscript:
+$\displaystyle\sum_{\substack{i=1\\ i\ne j}}^{n}$.
+
+\subsection{Delimiters that grow}
+\verb|\left( \right)| auto-size: $\left(\dfrac{a}{b}\right)$,
+$\left[\;\right]$, $\left\{\;\right\}$, $\left|\;\right|$,
+$\left\langle\;\right\rangle$, $\left\lfloor x \right\rfloor$,
+$\left\lceil x \right\rceil$. Manual sizes: \verb|\big \Big \bigg \Bigg|.
+
+\subsection{Matrices \& cases}
+\[
+  \begin{pmatrix} a & b \\ c & d \end{pmatrix}
+  \begin{bmatrix} 1 & 0 \\ 0 & 1 \end{bmatrix}
+  \begin{vmatrix} a & b \\ c & d \end{vmatrix}
+  \quad
+  f(x)=\begin{cases} x^2 & x\ge 0\\ -x & x<0 \end{cases}
+\]
+\texttt{pmatrix}=( ), \texttt{bmatrix}=[ ], \texttt{Bmatrix}=\{ \},
+\texttt{vmatrix}=| |, \texttt{Vmatrix}=$\|\ \|$, \texttt{matrix}=none.
+
+\subsection{Spacing in math}
+Thin \verb|\,| medium \verb|\:| thick \verb|\;| negative \verb|\!| quad
+\verb|\quad| \verb|\qquad|. Text inside math: \verb|\text{...}|.
+Upright differential: \verb|\mathrm{d}|.
+
+\subsection{Symbol quick reference}
+Greek: $\alpha\beta\gamma\delta\epsilon\varepsilon\zeta\eta\theta
+\vartheta\iota\kappa\lambda\mu\nu\xi\pi\varpi\rho\varrho\sigma\varsigma
+\tau\upsilon\phi\varphi\chi\psi\omega$ and caps
+$\Gamma\Delta\Theta\Lambda\Xi\Pi\Sigma\Upsilon\Phi\Psi\Omega$.\\
+Relations: $\le\ge\ne\approx\equiv\sim\simeq\cong\propto\ll\gg
+\subset\subseteq\supset\supseteq\in\notin\ni\prec\succ\preceq\succeq$.\\
+Arrows: $\to\gets\Rightarrow\Leftarrow\Leftrightarrow\iff\implies
+\mapsto\longrightarrow\xrightarrow{f}\uparrow\downarrow\rightleftharpoons$.\\
+Operators/sets: $\cup\cap\uplus\setminus\times\div\pm\mp\cdot\ast\star
+\oplus\otimes\odot\wedge\vee\forall\exists\nexists\emptyset\varnothing
+\nabla\partial\infty\angle\triangleright\triangleleft\diamond\dagger$.\\
+Blackboard/script/frak: $\mathbb{R}\ \mathcal{L}\ \mathfrak{g}$
+(need \texttt{amssymb}/\texttt{amsfonts}). Dots: $\dots\cdots\vdots\ddots$.
+Decorations: $\hat{a}\ \bar{a}\ \tilde{a}\ \vec{a}\ \dot{a}\ \widehat{abc}
+\ \overline{abc}\ \underline{abc}\ \overrightarrow{abc}$.
+
+% =====================================================================
+\section{Tables}
+\subsection{Basic \texttt{tabular}}
+\begin{center}
+\begin{tabular}{|l|c|r|}     % left, center, right; | = vertical rule
+  \hline
+  Left & Centre & Right \\ \hline
+  a & b & c \\ \hline
+\end{tabular}
+\end{center}
+\verb|&| separates columns, \verb|\\| ends a row, \verb|\hline| draws a
+full rule, \verb|\cline{2-3}| a partial rule over columns 2--3.
+
+\subsection{\texttt{multirow} + \texttt{multicolumn} + colour}
+\begin{center}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{|c|c|c|}
+  \hline
+  \rowcolor{gray!30}
+  \multicolumn{2}{|c|}{\textbf{Spanning header}} & \textbf{C} \\ \hline
+  \multirow{2}{*}{Merged}
+    & \cellcolor{yellow!30}$x^2$ & $s>0$ \\ \cline{2-3}
+    & $\dfrac{1}{s}$             & $s>0$ \\ \hline
+\end{tabular}
+\end{center}
+\verb|\multirow{N}{*}{txt}| spans N rows (\verb|*| = natural width);
+\verb|\multicolumn{N}{|c|}{txt}| spans N columns and re-declares the
+border; \verb|\rowcolor|, \verb|\cellcolor|, \verb|\columncolor| shade.
+Math goes in cells simply by using \verb|$...$| or \verb|\dfrac|.
+
+\subsection{Line thickness \& widths}
+Thicker rules: \verb|\setlength{\arrayrulewidth}{1pt}| or use
+\texttt{booktabs} (\verb|\toprule \midrule \bottomrule|).
+Auto-fit to page: \texttt{tabularx} with an \texttt{X} column:
+\begin{center}
+\begin{tabularx}{0.8\textwidth}{|l|X|}
+  \hline Key & Long wrapping description column \\ \hline
+\end{tabularx}
+\end{center}
+
+% =====================================================================
+\section{Figures \& Graphics}
+\subsection{Single figure}
+\begin{verbatim}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.6\textwidth]{example-image-a}
+  \caption{A caption.}\label{fig:one}
+\end{figure}
+\end{verbatim}
+Scaling keys: \verb|width=|, \verb|height=|, \verb|scale=|,
+\verb|angle=45| (rotate), \verb|keepaspectratio|. Float placement
+\verb|[htbp]| = here/top/bottom/page; add \verb|!| to override LaTeX's
+reluctance, or \verb|[H]| (needs \texttt{float}) to force exact spot.
+
+\subsection{Side-by-side \& subfigures}
+\begin{figure}[htbp]
+  \centering
+  \begin{subfigure}[b]{0.3\textwidth}
+    \includegraphics[width=\linewidth]{example-image-a}
+    \caption{First}\label{fig:sa}
+  \end{subfigure}\hfill
+  \begin{subfigure}[b]{0.3\textwidth}
+    \includegraphics[width=\linewidth]{example-image-b}
+    \caption{Second}\label{fig:sb}
+  \end{subfigure}
+  \caption{Two subfigures.}\label{fig:subs}
+\end{figure}
+\verb|\ref{fig:sa}| $\to$ ``\ref{fig:sa}''; \verb|\subref{fig:sa}| gives
+just the sub-letter. \texttt{minipage} works too when you do not want
+sub-captions:
+\verb|\begin{minipage}{0.48\textwidth}...\end{minipage}|.
+
+\subsection{Wrapped \& rotated figures}
+\begin{verbatim}
+\begin{wrapfigure}{r}{0.4\textwidth}   % r=right, l=left
+  \centering
+  \includegraphics[width=\linewidth]{example-image}
+  \caption{Wrapped.}\label{fig:wrap}
+\end{wrapfigure}
+% rotated:
+\includegraphics[angle=90]{example-image}   % rotate the image
+\begin{sidewaysfigure}...\end{sidewaysfigure} % rotate whole float (rotating)
+\end{verbatim}
+
+% =====================================================================
+\section{Cross-References \& Hyperlinks}
+Label anything with \verb|\label{type:name}| directly after its
+\verb|\caption| or in the equation, then cite with \verb|\ref| (number),
+\verb|\eqref| (adds parentheses for equations), \verb|\pageref| (page),
+or \verb|\autoref| (adds the word ``Figure''/``Table'').
+External link: \verb|\href{https://url}{clickable text}|; bare URL:
+\verb|\url{https://url}|. Configure colours with \verb|\hypersetup{...}|.
+A clickable TOC comes free once \texttt{hyperref} is loaded.
+
+% =====================================================================
+\section{Code Listings}
+\begin{lstlisting}[style=code, language=Python, caption={Demo}, label={lst:demo}]
+def greet(name):
+    """Say hello."""
+    return f"Hello, {name}"      # f-string
+\end{lstlisting}
+Inline code: \verb|\lstinline|print(x)||. From a file:
+\verb|\lstinputlisting[style=code]{script.py}|. For prettier output use
+\texttt{minted} (needs \verb|-shell-escape| + Pygments).
+
+% =====================================================================
+\section{Theorems, Proofs \& Custom Boxes}
+\begin{definition}
+A statement being defined.
+\end{definition}
+\begin{theorem}[Named]\label{thm:x}
+The claim.
+\end{theorem}
+\begin{proof}
+Argument. \qedhere
+\end{proof}
+\begin{proposition}
+Shares the theorem counter (see the preamble \verb|[theorem]| option).
+\end{proposition}
+A coloured ``custom theorem box'' with \texttt{tcolorbox}:
+\begin{keybox}[Key Result]
+$E = mc^2$ inside a coloured, titled box.
+\end{keybox}
+
+% =====================================================================
+\section{Algorithms / Pseudocode}
+\begin{algorithm}[H]
+\SetAlgoLined
+\KwIn{array $A$ of length $n$}
+\KwOut{maximum element}
+$m \gets A[1]$\;
+\For{$i \gets 2$ \KwTo $n$}{
+  \If{$A[i] > m$}{ $m \gets A[i]$\; }
+}
+\Return $m$\;
+\caption{Find maximum (algorithm2e)}
+\end{algorithm}
+Alternative package: \texttt{algorithm} + \texttt{algpseudocode}
+(\verb|\State \For \While \If \EndIf|).
+
+% =====================================================================
+\section{Footnotes}
+Text with a footnote.\footnote{This is the footnote body.}
+Multiple footnotes auto-number. Reuse one with
+\verb|\footnotemark| / \verb|\footnotetext|.
+
+% =====================================================================
+\section{References / Bibliography}
+Manual (no external tool, fastest for exams):
+\begin{verbatim}
+\begin{thebibliography}{9}
+  \bibitem{key1} A. Author, \textit{Title}, Publisher, Year.
+  \bibitem{key2} B. Writer, ``Article,'' Journal, 2024.
+\end{thebibliography}
+\end{verbatim}
+Cite in text with \verb|\cite{key1}| $\to$ [1]. The \verb|{9}| argument
+just sizes the label box (one digit here).
+
+% =====================================================================
+\section{Predicted Tricky Variations}
+\begin{enumerate}[label=\arabic*.]
+  \item \textbf{Aligned multi-column equations}: use \texttt{alignat} to
+        control inter-column spacing manually:
+        \verb|\begin{alignat}{2} a&=b &\quad c&=d \end{alignat}|.
+  \item \textbf{Piecewise + annotations}: \texttt{cases} plus
+        \verb|\underbrace{expr}_{\text{note}}| and
+        \verb|\overbrace{expr}^{\text{note}}|.
+  \item \textbf{Numbered sub-equations}: wrap several equations in
+        \verb|\begin{subequations} ... \end{subequations}| to get
+        (1a),(1b).
+  \item \textbf{Long division-style derivations}: keep \verb|&=| aligned
+        and end intermediate lines with \verb|\nonumber| so only the
+        final result is numbered.
+  \item \textbf{Units}: load \texttt{siunitx} and use \verb|\SI{9.8}{m/s^2}|
+        and \verb|\num{1.496e11}| for clean scientific notation.
+  \item \textbf{Coloured full-row headers}: \verb|\rowcolor| must be the
+        FIRST token of the row, before any \verb|\multicolumn|.
+  \item \textbf{Landscape table/figure}: \texttt{\{sidewaystable\}} or the
+        \texttt{lscape} \verb|{landscape}| environment.
+  \item \textbf{Custom theorem box with counter}: \texttt{tcolorbox} with
+        \verb|\newtcbtheorem| gives numbered, coloured theorems.
+  \item \textbf{Chemical/tensor indices}: pre-subscripts via
+        \verb|{}_a^b X| and aligned indices via phantom \verb|\ | or
+        \verb|\vphantom|.
+  \item \textbf{Boxed final answer}: \verb|\boxed{x = \frac{-b\pm\sqrt{\Delta}}{2a}}|.
+\end{enumerate}
+
+Referenced items for completeness: Equation~\eqref{eq:cs1},
+Theorem~\ref{thm:x}, Figure~\ref{fig:subs}, Listing~\ref{lst:demo}.
+
+\end{document}

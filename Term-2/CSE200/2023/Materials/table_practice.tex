@@ -1,0 +1,794 @@
+% ======================================================================
+%  LATEX TABLE PRACTICE PACK  ---  10 graded exercises + full solutions
+%  ------------------------------------------------------------------
+%  HOW TO USE THIS FILE
+%    1. Compile TWICE:  pdflatex table_practice.tex
+%    2. PRINT (or keep open) only PART I  -- the target tables.
+%    3. Open a BLANK .tex file, start a timer, and reproduce each target
+%       from scratch. Do NOT scroll to Part II.
+%    4. Only after your attempt compiles, check PART II for the solution
+%       and the marking notes.
+%
+%  Difficulty rises from Exercise 1 (warm-up) to Exercise 10 (full exam
+%  simulation). Target times are printed with each exercise.
+% ======================================================================
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
+\usepackage{amsmath,amssymb}
+\usepackage[table,dvipsnames]{xcolor}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{makecell}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{diagbox}          % diagonal header cell (Exercise 9)
+\usepackage{float}
+\usepackage{listings}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, linkcolor=RoyalBlue, urlcolor=magenta}
+
+\lstdefinestyle{tex}{
+  language=[LaTeX]TeX, basicstyle=\ttfamily\footnotesize,
+  keywordstyle=\color{RoyalBlue}\bfseries,
+  commentstyle=\color{gray}\itshape,
+  backgroundcolor=\color{black!3}, frame=single, framerule=0.3pt,
+  breaklines=true, columns=fullflexible, showstringspaces=false,
+  keepspaces=true,
+  morekeywords={multirow,multicolumn,rowcolor,cellcolor,cline,toprule,
+  midrule,bottomrule,makecell,diagbox,arraystretch,caption,label}}
+
+% a small badge printed before each exercise
+\newcommand{\exinfo}[3]{%
+  \par\noindent
+  \colorbox{RoyalBlue!12}{\parbox{0.97\textwidth}{\small
+  \textbf{Difficulty:} #1 \qquad \textbf{Target time:} #2 \\
+  \textbf{Tests:} #3}}\par\medskip}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+
+\title{\textbf{\LaTeX{} Table Practice Pack}\\[2pt]
+  \large 10 Graded Exercises Modelled on the Lab-Exam Papers}
+\author{Reproduce Part I from scratch --- check Part II afterwards}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.92\textwidth}{\small\centering
+\textbf{Rules of engagement.} Print Part I only. Start from a blank file with
+your own preamble. Time each attempt. A table ``passes'' only if it
+\emph{compiles} and matches the target structurally --- merged cells in the
+right places, rules in the right places, maths rendered as maths.}}
+\end{center}
+
+\tableofcontents
+\newpage
+
+% ======================================================================
+\part*{PART I --- Target Tables}
+\addcontentsline{toc}{section}{PART I --- Target Tables}
+\section*{Reproduce each of the following}
+\addcontentsline{toc}{subsection}{Exercises 1--10}
+
+% ----------------------------------------------------------------------
+\subsection*{Exercise 1 --- Warm-up}
+\exinfo{$\star$}{3 minutes}{column spec, borders, inline maths in cells}
+
+\begin{table}[H]
+\centering
+\caption{Sorting-algorithm complexity.}
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{Algorithm} & \textbf{Best} & \textbf{Average} & \textbf{Worst} \\
+\hline
+Bubble sort    & $\mathcal{O}(n)$        & $\mathcal{O}(n^2)$      & $\mathcal{O}(n^2)$ \\
+\hline
+Merge sort     & $\mathcal{O}(n\log n)$  & $\mathcal{O}(n\log n)$  & $\mathcal{O}(n\log n)$ \\
+\hline
+Quick sort     & $\mathcal{O}(n\log n)$  & $\mathcal{O}(n\log n)$  & $\mathcal{O}(n^2)$ \\
+\hline
+Binary search  & $\mathcal{O}(1)$        & $\mathcal{O}(\log n)$   & $\mathcal{O}(\log n)$ \\
+\hline
+\end{tabular}
+\end{table}
+
+% ----------------------------------------------------------------------
+\subsection*{Exercise 2 --- Two-tier header}
+\exinfo{$\star\star$}{5 minutes}{\texttt{multicolumn}, \texttt{multirow},
+\texttt{cline} --- the header pattern from the Laplace paper}
+
+\begin{table}[H]
+\centering
+\caption{Numerical integration methods.}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{|l|c|c|c|}
+\hline
+\multirow{2}{*}{\textbf{Method}} & \multicolumn{2}{c|}{\textbf{Error}} &
+  \multirow{2}{*}{\textbf{Order}} \\
+\cline{2-3}
+ & \textbf{Local} & \textbf{Global} & \\
+\hline
+Trapezoidal & $\mathcal{O}(h^3)$ & $\mathcal{O}(h^2)$ & 2 \\
+\hline
+Simpson     & $\mathcal{O}(h^5)$ & $\mathcal{O}(h^4)$ & 4 \\
+\hline
+Euler       & $\mathcal{O}(h^2)$ & $\mathcal{O}(h)$   & 1 \\
+\hline
+\end{tabular}
+\end{table}
+
+% ----------------------------------------------------------------------
+\subsection*{Exercise 3 --- Multirow families with stacked fractions}
+\exinfo{$\star\star\star$}{8 minutes}{\texttt{multirow} spanning 3 rows,
+\texttt{dfrac} in cells, \texttt{arraystretch}, partial \texttt{cline}}
+
+\begin{table}[H]
+\centering
+\caption{Standard derivatives and integrals by family.}
+\renewcommand{\arraystretch}{1.7}
+\begin{tabular}{|c|c|c|c|}
+\hline
+\multirow{2}{*}{\textbf{Family}} &
+  \multicolumn{2}{c|}{\textbf{Operation}} &
+  \multirow{2}{*}{\textbf{Domain}} \\
+\cline{2-3}
+ & \textbf{Function} & \textbf{Derivative} & \\
+\hline
+\multirow{3}{*}{Power}
+  & $x^n$              & $n x^{n-1}$                 & $n \in \mathbb{R}$ \\ \cline{2-4}
+  & $\dfrac{1}{x}$     & $-\dfrac{1}{x^2}$           & $x \neq 0$ \\ \cline{2-4}
+  & $\sqrt{x}$         & $\dfrac{1}{2\sqrt{x}}$      & $x > 0$ \\
+\hline
+\multirow{2}{*}{Trigonometric}
+  & $\sin x$           & $\cos x$                    & $x \in \mathbb{R}$ \\ \cline{2-4}
+  & $\tan x$           & $\sec^2 x$                  & $x \neq \dfrac{\pi}{2}$ \\
+\hline
+\multirow{2}{*}{Exponential}
+  & $e^{ax}$           & $a e^{ax}$                  & $a \in \mathbb{R}$ \\ \cline{2-4}
+  & $\ln x$            & $\dfrac{1}{x}$              & $x > 0$ \\
+\hline
+\multicolumn{2}{|c|}{\textbf{Chain rule } $f(g(x))$}
+  & $f'(g(x))\,g'(x)$  & differentiable \\
+\hline
+\end{tabular}
+\end{table}
+
+% ----------------------------------------------------------------------
+\newpage
+\subsection*{Exercise 4 --- Coloured table with scientific notation}
+\exinfo{$\star\star\star$}{8 minutes}{\texttt{rowcolor}, \texttt{cellcolor},
+fraction inside a header cell, $\times 10^{-n}$ notation}
+
+\begin{table}[H]
+\centering
+\caption{Semiconductor material parameters.}
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{|l|cc|cc|}
+\hline
+\rowcolor{Gray!35}
+\multirow{2}{*}{\textbf{Material}} &
+  \multicolumn{2}{c|}{\textbf{Electrical}} &
+  \multicolumn{2}{c|}{\textbf{Derived}} \\
+\cline{2-5}
+\rowcolor{Gray!20}
+ & $E_g$ (eV) & $\mu_n$ & $\sigma = \dfrac{1}{\rho}$ & $\beta = \sqrt{\mu_n}$ \\
+\hline
+\rowcolor{Yellow!15} Silicon   & 1.12 & $1.35\times10^{3}$  & $4.35\times10^{-4}$ & $36.7$ \\
+\rowcolor{Yellow!25} Germanium & 0.67 & $3.90\times10^{3}$  & $2.17\times10^{-2}$ & $62.4$ \\
+\rowcolor{Cyan!15}   GaAs      & 1.42 & $8.50\times10^{3}$  & $1.00\times10^{-8}$ & $92.2$ \\
+\rowcolor{Cyan!25}   InP       & 1.34 & $5.40\times10^{3}$  & $1.25\times10^{-7}$ & $73.5$ \\
+\hline
+\multicolumn{3}{|r|}{\cellcolor{Green!15}\textbf{Mean gap}} &
+  \multicolumn{2}{c|}{\cellcolor{Green!15}$1.14$ eV} \\
+\hline
+\end{tabular}
+\end{table}
+
+% ----------------------------------------------------------------------
+\subsection*{Exercise 5 --- Spanning in both directions}
+\exinfo{$\star\star\star$}{7 minutes}{\texttt{multirow} and
+\texttt{multicolumn} interacting, merged footer row}
+
+\begin{table}[H]
+\centering
+\caption{Course assessment breakdown.}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{|c|l|c|c|}
+\hline
+\textbf{Component} & \textbf{Item} & \textbf{Weight} & \textbf{Marks} \\
+\hline
+\multirow{3}{*}{Continuous}
+  & Quizzes      & 10\% & 10 \\ \cline{2-4}
+  & Assignments  & 15\% & 15 \\ \cline{2-4}
+  & Lab work     & 15\% & 15 \\
+\hline
+\multirow{2}{*}{Examination}
+  & Midterm      & 25\% & 25 \\ \cline{2-4}
+  & Final        & 35\% & 35 \\
+\hline
+\multicolumn{2}{|c|}{\textbf{Total}} & \textbf{100\%} & \textbf{100} \\
+\hline
+\end{tabular}
+\end{table}
+
+% ----------------------------------------------------------------------
+\subsection*{Exercise 6 --- Professional rules with wrapped cell text}
+\exinfo{$\star\star$}{6 minutes}{\texttt{booktabs}, \texttt{makecell}
+line breaks inside a cell, no vertical rules}
+
+\begin{table}[H]
+\centering
+\caption{Comparison of transform methods.}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{lcc}
+\toprule
+\textbf{Transform} & \makecell{\textbf{Kernel}\\\textbf{function}} &
+  \makecell{\textbf{Typical}\\\textbf{application}} \\
+\midrule
+Laplace  & $e^{-st}$        & \makecell{transient circuits,\\control systems} \\
+Fourier  & $e^{-j\omega t}$ & \makecell{spectra,\\signal filtering} \\
+Z        & $z^{-n}$         & \makecell{discrete systems,\\digital filters} \\
+\midrule
+\multicolumn{3}{c}{\textit{All three convert differential relations into algebraic ones.}} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% ----------------------------------------------------------------------
+\newpage
+\subsection*{Exercise 7 --- Fixed total width with a wrapping column}
+\exinfo{$\star\star$}{5 minutes}{\texttt{tabularx}, the \texttt{X} column,
+maths inside a paragraph column}
+
+\begin{table}[H]
+\centering
+\caption{Boundary conditions and their meaning.}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{0.92\textwidth}{|l|c|X|}
+\hline
+\textbf{Name} & \textbf{Form} & \textbf{Physical interpretation} \\
+\hline
+Dirichlet & $u = g$ on $\partial\Omega$ &
+  The value of the solution is prescribed on the boundary, for example a
+  surface held at a fixed temperature. \\
+\hline
+Neumann & $\dfrac{\partial u}{\partial n} = g$ &
+  The flux across the boundary is prescribed; a zero value models a
+  perfectly insulated wall. \\
+\hline
+Robin & $\alpha u + \beta \dfrac{\partial u}{\partial n} = g$ &
+  A weighted combination of the two above, used for convective heat
+  exchange with a surrounding medium. \\
+\hline
+\end{tabularx}
+\end{table}
+
+% ----------------------------------------------------------------------
+\subsection*{Exercise 8 --- Heavy maths inside cells}
+\exinfo{$\star\star\star\star$}{10 minutes}{matrices, \texttt{cases},
+integrals and limits nested inside table cells}
+
+\begin{table}[H]
+\centering
+\caption{Objects that must survive inside a cell.}
+\renewcommand{\arraystretch}{2.0}
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{Object} & \textbf{Expression} & \textbf{Note} \\
+\hline
+Matrix &
+  $\begin{bmatrix} a_{11} & a_{12} \\ a_{21} & a_{22} \end{bmatrix}$ &
+  $2 \times 2$ real \\
+\hline
+Determinant &
+  $\begin{vmatrix} 1 & 0 \\ 0 & 1 \end{vmatrix} = 1$ &
+  identity \\
+\hline
+Piecewise &
+  $f(x) = \begin{cases} x^2 & x \geq 0 \\ -x & x < 0 \end{cases}$ &
+  continuous at $0$ \\
+\hline
+Integral &
+  $\displaystyle\int_{0}^{\infty} e^{-st} \, dt = \dfrac{1}{s}$ &
+  $s > 0$ \\
+\hline
+Limit &
+  $\displaystyle\lim_{n \to \infty} \left(1 + \dfrac{1}{n}\right)^{n} = e$ &
+  classical \\
+\hline
+Nested index &
+  $\displaystyle\sum_{\substack{i=1 \\ i \neq j}}^{n} a_{i_{j}}$ &
+  double subscript \\
+\hline
+\end{tabular}
+\end{table}
+
+% ----------------------------------------------------------------------
+\newpage
+\subsection*{Exercise 9 --- Three-tier header with a diagonal cell}
+\exinfo{$\star\star\star\star\star$}{12 minutes}{\texttt{diagbox}, a
+\texttt{multirow} spanning three header rows, repeated
+\texttt{multicolumn} tiers}
+
+\begin{table}[H]
+\centering
+\caption{Network layer performance matrix.}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+\multirow{3}{*}{\diagbox[width=6em]{\textbf{Layer}}{\textbf{Metric}}} &
+  \multicolumn{2}{c|}{\textbf{Training}} &
+  \multicolumn{2}{c|}{\textbf{Inference}} \\
+\cline{2-5}
+ & \multicolumn{2}{c|}{(per epoch)} & \multicolumn{2}{c|}{(per sample)} \\
+\cline{2-5}
+ & \textbf{Time} & \textbf{Memory} & \textbf{Time} & \textbf{Memory} \\
+\hline
+Convolution & $12.4$ s & $1.8$ GB & $3.1$ ms & $0.4$ GB \\
+\hline
+Pooling     & $0.8$ s  & $0.2$ GB & $0.2$ ms & $0.1$ GB \\
+\hline
+Dense       & $4.6$ s  & $3.4$ GB & $1.0$ ms & $0.9$ GB \\
+\hline
+\multicolumn{1}{|r|}{\textbf{Total}} & $17.8$ s & $5.4$ GB & $4.3$ ms & $1.4$ GB \\
+\hline
+\end{tabular}
+\end{table}
+
+% ----------------------------------------------------------------------
+\subsection*{Exercise 10 --- Full exam simulation}
+\exinfo{$\star\star\star\star\star$}{15 minutes}{everything at once ---
+colour, both spans, nested maths, footnote marker, caption, label and a
+cross-reference from the body text}
+
+Table~\ref{tab:sim} summarises the four candidate designs.
+
+\begin{table}[H]
+\centering
+\caption{Design trade-off study for the RC filter stage.}
+\label{tab:sim}
+\renewcommand{\arraystretch}{1.6}
+\begin{tabular}{|l|c|c|c|c|}
+\hline
+\rowcolor{RoyalBlue!25}
+\multirow{2}{*}{\textbf{Design}} &
+  \multicolumn{2}{c|}{\textbf{Components}} &
+  \multicolumn{2}{c|}{\textbf{Response}} \\
+\cline{2-5}
+\rowcolor{RoyalBlue!12}
+ & $R$ (k$\Omega$) & $C$ ($\mu$F) &
+   $\tau = RC$ & $f_c = \dfrac{1}{2\pi RC}$ \\
+\hline
+\multirow{2}{*}{Fast}
+  & 1.0  & 0.10 & $0.10$ ms & $1.59$ kHz \\ \cline{2-5}
+  & 2.2  & 0.10 & $0.22$ ms & $723$ Hz \\
+\hline
+\multirow{2}{*}{Slow}
+  & 10.0 & 1.00 & $10.0$ ms & $15.9$ Hz \\ \cline{2-5}
+  & 22.0 & 4.70 & $103$ ms  & $1.54$ Hz\footnotemark \\
+\hline
+\rowcolor{Green!12}
+\multicolumn{3}{|r|}{\textbf{Selected design}} &
+  \multicolumn{2}{c|}{Fast, $R = 1.0$ k$\Omega$} \\
+\hline
+\end{tabular}
+\end{table}
+\footnotetext{Measured with a $5$\,V step input at $25^{\circ}$C.}
+
+The selected design in Table~\ref{tab:sim} gives the widest bandwidth.
+
+\clearpage
+% ======================================================================
+\part*{PART II --- Solutions and Marking Notes}
+\addcontentsline{toc}{section}{PART II --- Solutions and Marking Notes}
+\section*{Do not read until you have attempted Part I}
+\addcontentsline{toc}{subsection}{Solutions 1--10}
+
+% ----------------------------------------------------------------------
+\subsection*{Solution 1}
+\begin{lstlisting}[style=tex]
+\begin{table}[H]
+\centering
+\caption{Sorting-algorithm complexity.}
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{Algorithm} & \textbf{Best} & \textbf{Average} & \textbf{Worst} \\
+\hline
+Bubble sort   & $\mathcal{O}(n)$       & $\mathcal{O}(n^2)$     & $\mathcal{O}(n^2)$ \\
+\hline
+Merge sort    & $\mathcal{O}(n\log n)$ & $\mathcal{O}(n\log n)$ & $\mathcal{O}(n\log n)$ \\
+\hline
+Quick sort    & $\mathcal{O}(n\log n)$ & $\mathcal{O}(n\log n)$ & $\mathcal{O}(n^2)$ \\
+\hline
+Binary search & $\mathcal{O}(1)$       & $\mathcal{O}(\log n)$  & $\mathcal{O}(\log n)$ \\
+\hline
+\end{tabular}
+\end{table}
+\end{lstlisting}
+\textbf{Marking notes.} The column spec \verb!{|l|c|c|c|}! has four entries and
+four \verb!|! fences --- count them before typing the body. \verb|\log| must be
+a command, not the letters \texttt{log}, or it prints in italic. \verb|\mathcal{O}|
+needs \texttt{amssymb}/\texttt{amsfonts}.
+
+% ----------------------------------------------------------------------
+\subsection*{Solution 2}
+\begin{lstlisting}[style=tex]
+\begin{table}[H]
+\centering
+\caption{Numerical integration methods.}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{|l|c|c|c|}
+\hline
+\multirow{2}{*}{\textbf{Method}} & \multicolumn{2}{c|}{\textbf{Error}} &
+  \multirow{2}{*}{\textbf{Order}} \\
+\cline{2-3}
+ & \textbf{Local} & \textbf{Global} & \\
+\hline
+Trapezoidal & $\mathcal{O}(h^3)$ & $\mathcal{O}(h^2)$ & 2 \\
+\hline
+Simpson     & $\mathcal{O}(h^5)$ & $\mathcal{O}(h^4)$ & 4 \\
+\hline
+Euler       & $\mathcal{O}(h^2)$ & $\mathcal{O}(h)$   & 1 \\
+\hline
+\end{tabular}
+\end{table}
+\end{lstlisting}
+\textbf{Marking notes.} The second header row starts with a bare \verb|&| and
+ends with \verb|& \\| --- those two cells are \emph{already occupied} by the
+\verb|\multirow| above. Forgetting the empty cells is the single most common
+failure. \verb|\cline{2-3}| rules only the two Error columns; a full
+\verb|\hline| there would cut through ``Method'' and ``Order''.
+
+% ----------------------------------------------------------------------
+\subsection*{Solution 3}
+\begin{lstlisting}[style=tex]
+\begin{table}[H]
+\centering
+\caption{Standard derivatives and integrals by family.}
+\renewcommand{\arraystretch}{1.7}
+\begin{tabular}{|c|c|c|c|}
+\hline
+\multirow{2}{*}{\textbf{Family}} &
+  \multicolumn{2}{c|}{\textbf{Operation}} &
+  \multirow{2}{*}{\textbf{Domain}} \\
+\cline{2-3}
+ & \textbf{Function} & \textbf{Derivative} & \\
+\hline
+\multirow{3}{*}{Power}
+  & $x^n$          & $n x^{n-1}$            & $n \in \mathbb{R}$ \\ \cline{2-4}
+  & $\dfrac{1}{x}$ & $-\dfrac{1}{x^2}$      & $x \neq 0$ \\ \cline{2-4}
+  & $\sqrt{x}$     & $\dfrac{1}{2\sqrt{x}}$ & $x > 0$ \\
+\hline
+\multirow{2}{*}{Trigonometric}
+  & $\sin x$ & $\cos x$    & $x \in \mathbb{R}$ \\ \cline{2-4}
+  & $\tan x$ & $\sec^2 x$  & $x \neq \dfrac{\pi}{2}$ \\
+\hline
+\multirow{2}{*}{Exponential}
+  & $e^{ax}$ & $a e^{ax}$     & $a \in \mathbb{R}$ \\ \cline{2-4}
+  & $\ln x$  & $\dfrac{1}{x}$ & $x > 0$ \\
+\hline
+\multicolumn{2}{|c|}{\textbf{Chain rule } $f(g(x))$}
+  & $f'(g(x))\,g'(x)$ & differentiable \\
+\hline
+\end{tabular}
+\end{table}
+\end{lstlisting}
+\textbf{Marking notes.} This is the Laplace-table pattern with different
+content. Three rules to internalise: (i) after a \verb|\multirow{3}|, the next
+\emph{two} rows must begin with a bare \verb|&|; (ii) use \verb|\cline{2-4}|
+between sub-rows so the family label stays unbroken, and a full \verb|\hline|
+only when the family changes; (iii) without
+\verb|\renewcommand{\arraystretch}{1.7}| the stacked \verb|\dfrac|s collide.
+The last row flips orientation --- \verb|\multicolumn{2}{|c|}{...}| merges
+\emph{across} instead of down.
+
+% ----------------------------------------------------------------------
+\subsection*{Solution 4}
+\begin{lstlisting}[style=tex]
+\begin{table}[H]
+\centering
+\caption{Semiconductor material parameters.}
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{|l|cc|cc|}
+\hline
+\rowcolor{Gray!35}
+\multirow{2}{*}{\textbf{Material}} &
+  \multicolumn{2}{c|}{\textbf{Electrical}} &
+  \multicolumn{2}{c|}{\textbf{Derived}} \\
+\cline{2-5}
+\rowcolor{Gray!20}
+ & $E_g$ (eV) & $\mu_n$ & $\sigma = \dfrac{1}{\rho}$ & $\beta = \sqrt{\mu_n}$ \\
+\hline
+\rowcolor{Yellow!15} Silicon   & 1.12 & $1.35\times10^{3}$ & $4.35\times10^{-4}$ & $36.7$ \\
+\rowcolor{Yellow!25} Germanium & 0.67 & $3.90\times10^{3}$ & $2.17\times10^{-2}$ & $62.4$ \\
+\rowcolor{Cyan!15}   GaAs      & 1.42 & $8.50\times10^{3}$ & $1.00\times10^{-8}$ & $92.2$ \\
+\rowcolor{Cyan!25}   InP       & 1.34 & $5.40\times10^{3}$ & $1.25\times10^{-7}$ & $73.5$ \\
+\hline
+\multicolumn{3}{|r|}{\cellcolor{Green!15}\textbf{Mean gap}} &
+  \multicolumn{2}{c|}{\cellcolor{Green!15}$1.14$ eV} \\
+\hline
+\end{tabular}
+\end{table}
+\end{lstlisting}
+\textbf{Marking notes.} \verb|\rowcolor| must be the \textbf{first token of the
+row}, before \verb|\multirow| --- anywhere else and it errors. The colour
+package must be loaded as \verb|\usepackage[table]{xcolor}|; without the
+\texttt{[table]} option \verb|\rowcolor| is undefined. \verb|Gray!35| means
+35\,\% Gray on white. Note two \verb|\multicolumn|s coexist in the final row,
+each carrying its own \verb|\cellcolor|.
+
+% ----------------------------------------------------------------------
+\subsection*{Solution 5}
+\begin{lstlisting}[style=tex]
+\begin{table}[H]
+\centering
+\caption{Course assessment breakdown.}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{|c|l|c|c|}
+\hline
+\textbf{Component} & \textbf{Item} & \textbf{Weight} & \textbf{Marks} \\
+\hline
+\multirow{3}{*}{Continuous}
+  & Quizzes     & 10\% & 10 \\ \cline{2-4}
+  & Assignments & 15\% & 15 \\ \cline{2-4}
+  & Lab work    & 15\% & 15 \\
+\hline
+\multirow{2}{*}{Examination}
+  & Midterm & 25\% & 25 \\ \cline{2-4}
+  & Final   & 35\% & 35 \\
+\hline
+\multicolumn{2}{|c|}{\textbf{Total}} & \textbf{100\%} & \textbf{100} \\
+\hline
+\end{tabular}
+\end{table}
+\end{lstlisting}
+\textbf{Marking notes.} The percent sign must be escaped as \verb|\%| --- a bare
+\texttt{\%} comments out the rest of the line and silently eats your row. This
+is a favourite way to lose marks. The footer merges the first two columns while
+the last two stay separate.
+
+% ----------------------------------------------------------------------
+\subsection*{Solution 6}
+\begin{lstlisting}[style=tex]
+\begin{table}[H]
+\centering
+\caption{Comparison of transform methods.}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{lcc}
+\toprule
+\textbf{Transform} & \makecell{\textbf{Kernel}\\\textbf{function}} &
+  \makecell{\textbf{Typical}\\\textbf{application}} \\
+\midrule
+Laplace  & $e^{-st}$        & \makecell{transient circuits,\\control systems} \\
+Fourier  & $e^{-j\omega t}$ & \makecell{spectra,\\signal filtering} \\
+Z        & $z^{-n}$         & \makecell{discrete systems,\\digital filters} \\
+\midrule
+\multicolumn{3}{c}{\textit{All three convert differential relations into algebraic ones.}} \\
+\bottomrule
+\end{tabular}
+\end{table}
+\end{lstlisting}
+\textbf{Marking notes.} \texttt{booktabs} style deliberately has \emph{no}
+vertical rules, so the column spec is plain \verb|{lcc}|. Never mix
+\verb|\hline| with \verb|\toprule|/\verb|\midrule|. \verb|\makecell{a\\b}|
+is how you break a line inside a cell --- a bare \verb|\\| there would end
+the whole row instead.
+
+% ----------------------------------------------------------------------
+\subsection*{Solution 7}
+\begin{lstlisting}[style=tex]
+\begin{table}[H]
+\centering
+\caption{Boundary conditions and their meaning.}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{0.92\textwidth}{|l|c|X|}
+\hline
+\textbf{Name} & \textbf{Form} & \textbf{Physical interpretation} \\
+\hline
+Dirichlet & $u = g$ on $\partial\Omega$ &
+  The value of the solution is prescribed on the boundary, for example a
+  surface held at a fixed temperature. \\
+\hline
+Neumann & $\dfrac{\partial u}{\partial n} = g$ &
+  The flux across the boundary is prescribed; a zero value models a
+  perfectly insulated wall. \\
+\hline
+Robin & $\alpha u + \beta \dfrac{\partial u}{\partial n} = g$ &
+  A weighted combination of the two above, used for convective heat
+  exchange with a surrounding medium. \\
+\hline
+\end{tabularx}
+\end{table}
+\end{lstlisting}
+\textbf{Marking notes.} \texttt{tabularx} takes an \emph{extra} first argument:
+the total width. The \texttt{X} column absorbs the leftover space and wraps
+text automatically --- this is the fix whenever a table overflows the margin.
+You may use several \texttt{X} columns; they share the space equally.
+
+% ----------------------------------------------------------------------
+\subsection*{Solution 8}
+\begin{lstlisting}[style=tex]
+\begin{table}[H]
+\centering
+\caption{Objects that must survive inside a cell.}
+\renewcommand{\arraystretch}{2.0}
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{Object} & \textbf{Expression} & \textbf{Note} \\
+\hline
+Matrix & $\begin{bmatrix} a_{11} & a_{12} \\ a_{21} & a_{22} \end{bmatrix}$
+       & $2 \times 2$ real \\
+\hline
+Determinant & $\begin{vmatrix} 1 & 0 \\ 0 & 1 \end{vmatrix} = 1$ & identity \\
+\hline
+Piecewise & $f(x) = \begin{cases} x^2 & x \geq 0 \\ -x & x < 0 \end{cases}$
+          & continuous at $0$ \\
+\hline
+Integral & $\displaystyle\int_{0}^{\infty} e^{-st} \, dt = \dfrac{1}{s}$
+         & $s > 0$ \\
+\hline
+Limit & $\displaystyle\lim_{n \to \infty} \left(1 + \dfrac{1}{n}\right)^{n} = e$
+      & classical \\
+\hline
+Nested index & $\displaystyle\sum_{\substack{i=1 \\ i \neq j}}^{n} a_{i_{j}}$
+             & double subscript \\
+\hline
+\end{tabular}
+\end{table}
+\end{lstlisting}
+\textbf{Marking notes.} The surprise here is that \verb|&| and \verb|\\| inside
+\texttt{bmatrix}/\texttt{cases} do \emph{not} break the outer table --- the inner
+environment claims them. That is why the matrix row works despite containing
+three \verb|&| and one \verb|\\|. Add \verb|\displaystyle| to force full-size
+$\sum$, $\int$ and $\lim$ with limits above and below; without it they shrink to
+inline size. Push \verb|\arraystretch| up to 2.0 to stop tall cells colliding.
+
+% ----------------------------------------------------------------------
+\subsection*{Solution 9}
+\begin{lstlisting}[style=tex]
+\begin{table}[H]
+\centering
+\caption{Network layer performance matrix.}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+\multirow{3}{*}{\diagbox[width=6em]{\textbf{Layer}}{\textbf{Metric}}} &
+  \multicolumn{2}{c|}{\textbf{Training}} &
+  \multicolumn{2}{c|}{\textbf{Inference}} \\
+\cline{2-5}
+ & \multicolumn{2}{c|}{(per epoch)} & \multicolumn{2}{c|}{(per sample)} \\
+\cline{2-5}
+ & \textbf{Time} & \textbf{Memory} & \textbf{Time} & \textbf{Memory} \\
+\hline
+Convolution & $12.4$ s & $1.8$ GB & $3.1$ ms & $0.4$ GB \\
+\hline
+Pooling     & $0.8$ s  & $0.2$ GB & $0.2$ ms & $0.1$ GB \\
+\hline
+Dense       & $4.6$ s  & $3.4$ GB & $1.0$ ms & $0.9$ GB \\
+\hline
+\multicolumn{1}{|r|}{\textbf{Total}} & $17.8$ s & $5.4$ GB & $4.3$ ms & $1.4$ GB \\
+\hline
+\end{tabular}
+\end{table}
+\end{lstlisting}
+\textbf{Marking notes.} A \verb|\multirow{3}| means the next \emph{two} rows
+each open with a bare \verb|&|. \verb|\diagbox{A}{B}| (package \texttt{diagbox})
+splits one cell with a diagonal; fix its width with the optional
+\verb|[width=6em]| or the column will bulge. If \texttt{diagbox} is unavailable
+on the exam machine, substitute
+\verb|\multirow{3}{*}{\textbf{Layer}}| and move on --- structure earns more
+marks than the diagonal. The last row uses
+\verb|\multicolumn{1}{|r|}{...}| purely to \emph{re-align} a single cell to the
+right, which is a legitimate and handy trick.
+
+% ----------------------------------------------------------------------
+\subsection*{Solution 10}
+\begin{lstlisting}[style=tex]
+Table~\ref{tab:sim} summarises the four candidate designs.
+
+\begin{table}[H]
+\centering
+\caption{Design trade-off study for the RC filter stage.}
+\label{tab:sim}
+\renewcommand{\arraystretch}{1.6}
+\begin{tabular}{|l|c|c|c|c|}
+\hline
+\rowcolor{RoyalBlue!25}
+\multirow{2}{*}{\textbf{Design}} &
+  \multicolumn{2}{c|}{\textbf{Components}} &
+  \multicolumn{2}{c|}{\textbf{Response}} \\
+\cline{2-5}
+\rowcolor{RoyalBlue!12}
+ & $R$ (k$\Omega$) & $C$ ($\mu$F) &
+   $\tau = RC$ & $f_c = \dfrac{1}{2\pi RC}$ \\
+\hline
+\multirow{2}{*}{Fast}
+  & 1.0 & 0.10 & $0.10$ ms & $1.59$ kHz \\ \cline{2-5}
+  & 2.2 & 0.10 & $0.22$ ms & $723$ Hz \\
+\hline
+\multirow{2}{*}{Slow}
+  & 10.0 & 1.00 & $10.0$ ms & $15.9$ Hz \\ \cline{2-5}
+  & 22.0 & 4.70 & $103$ ms  & $1.54$ Hz\footnotemark \\
+\hline
+\rowcolor{Green!12}
+\multicolumn{3}{|r|}{\textbf{Selected design}} &
+  \multicolumn{2}{c|}{Fast, $R = 1.0$ k$\Omega$} \\
+\hline
+\end{tabular}
+\end{table}
+\footnotetext{Measured with a $5$\,V step input at $25^{\circ}$C.}
+
+The selected design in Table~\ref{tab:sim} gives the widest bandwidth.
+\end{lstlisting}
+\textbf{Marking notes.} Five things are graded at once here.
+\verb|\caption| goes \emph{before} \verb|\label|, and \verb|\label| must follow
+\verb|\caption| or \verb|\ref| prints the wrong number. \verb|\ref{tab:sim}|
+resolves only on the \textbf{second} compile --- a \texttt{??} means run again,
+not that your code is wrong. A normal \verb|\footnote| is swallowed inside a
+float, so use \verb|\footnotemark| in the cell and \verb|\footnotetext| just
+after the table. Greek and units inside cells are ordinary maths:
+\verb|k$\Omega$|, \verb|$\mu$F|, \verb|$25^{\circ}$C|. And \verb|\rowcolor|
+still has to lead its row even when a \verb|\multicolumn| follows.
+
+% ======================================================================
+\clearpage
+\section*{Drill Routine}
+\addcontentsline{toc}{section}{Drill Routine}
+
+\begin{enumerate}[leftmargin=*]
+\item \textbf{Round 1 --- untimed.} Work through 1--5 with this file's Part II
+  open. The aim is recognition, not speed.
+\item \textbf{Round 2 --- timed, easy half.} Close Part II. Reproduce 1, 2, 5, 6
+  in under 20 minutes total. If you exceed it, the bottleneck is almost always
+  counting columns --- write the column spec first and count the \verb!|!.
+\item \textbf{Round 3 --- timed, hard half.} Reproduce 3, 4, 8 in under
+  25 minutes. These three contain every pattern the real papers used.
+\item \textbf{Round 4 --- exam pace.} Do Exercise 10 cold in 15 minutes,
+  including the surrounding sentence and the cross-reference.
+\item \textbf{Round 5 --- from memory.} Write Exercise 3 with no reference open
+  at all. When you can do that, tables will not cost you marks.
+\end{enumerate}
+
+\section*{The Five Errors That Cost the Most Marks}
+\addcontentsline{toc}{section}{The Five Errors That Cost the Most Marks}
+
+\renewcommand{\arraystretch}{1.4}
+\begin{tabularx}{\textwidth}{|c|l|X|}
+\hline
+\textbf{\#} & \textbf{Mistake} & \textbf{Symptom and fix} \\
+\hline
+1 & Missing \verb|&| after a \verb|\multirow| &
+  \texttt{Extra alignment tab} or shifted columns. Every row covered by a
+  \verb|\multirow{N}| needs a placeholder \verb|&| in that column. \\
+\hline
+2 & \verb|\rowcolor| not first &
+  Error or uncoloured row. It must precede \verb|\multirow| and
+  \verb|\multicolumn|. \\
+\hline
+3 & Bare \verb|%| or \verb|&| in text &
+  A row silently vanishes. Escape them: \verb|\%| and \verb|\&|. \\
+\hline
+4 & Column count mismatch &
+  \texttt{Extra alignment tab has been changed to \textbackslash cr}. Count the
+  \texttt{\&} in the row: it must be one fewer than the number of columns,
+  after accounting for spans. \\
+\hline
+5 & Compiling once &
+  \verb|\ref| shows \texttt{??} and the TOC is stale. Always run
+  \texttt{pdflatex} twice. \\
+\hline
+\end{tabularx}
+
+\vfill
+\begin{center}\small\itshape
+Reproduce, compile, compare, repeat.
+\end{center}
+
+\end{document}

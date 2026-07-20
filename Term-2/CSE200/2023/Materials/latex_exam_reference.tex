@@ -1,0 +1,882 @@
+% ======================================================================
+%  LATEX LAB-EXAM COMPLETE REFERENCE
+%  ------------------------------------------------------------------
+%  ONE self-contained, printable manual. Compile with pdflatex TWICE
+%  (so the Table of Contents and cross-references resolve).
+%
+%    pdflatex latex_exam_reference.tex
+%    pdflatex latex_exam_reference.tex
+%
+%  Every symbol is shown beside the code that makes it. Every table,
+%  figure, list and math construct is shown as CODE + RENDERED OUTPUT.
+%  Read it, compile it, print it, take it to the lab.
+% ======================================================================
+\documentclass[11pt]{article}
+
+% ---------- Page ----------
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{textcomp}
+
+% ---------- Colour (BEFORE tcolorbox / tikz) ----------
+\usepackage[table,dvipsnames]{xcolor}
+
+% ---------- Mathematics ----------
+\usepackage{mathtools}   % superset of amsmath
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{mathrsfs}    % \mathscr
+\usepackage{bm}          % \bm bold math
+
+% ---------- Graphics ----------
+\usepackage{graphicx}
+\usepackage{mwe}         % supplies example-image, example-image-a/b/c
+
+% ---------- Tables ----------
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{makecell}
+\usepackage{booktabs}
+\usepackage{tabularx}
+
+% ---------- Floats ----------
+\usepackage{subcaption}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage{float}
+
+% ---------- Lists / code / authors / boxes ----------
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{authblk}
+\usepackage[most]{tcolorbox}
+\usepackage{pifont}      % \ding{51} check, \ding{55} cross
+
+% ---------- Hyperlinks (near last) ----------
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, linkcolor=RoyalBlue, urlcolor=magenta,
+            citecolor=teal, filecolor=RoyalBlue}
+
+% ---------- Algorithms (after hyperref, per algorithm2e docs) ----------
+\usepackage[ruled,vlined,linesnumbered]{algorithm2e}
+
+% ======================================================================
+%  HELPER MACROS
+% ======================================================================
+% \sym{<cmd>} : renders the symbol AND prints its literal code side by side
+% Used inside tabulars: \sym{\alpha} & \sym{\beta} & \sym{\gamma} \\
+\newcommand{\sym}[1]{\ensuremath{#1} & {\ttfamily\footnotesize\detokenize{#1}}}
+% text-mode version (for \dag, \S, \%, ...)
+\newcommand{\tsym}[1]{#1 & {\ttfamily\footnotesize\detokenize{#1}}}
+
+% a light box to show "code -> output" demos
+\newtcolorbox{demo}{colback=black!3, colframe=black!25, boxrule=0.4pt,
+  left=4pt, right=4pt, top=3pt, bottom=3pt, breakable}
+
+% listing styles
+\lstdefinestyle{tex}{
+  language=[LaTeX]TeX, basicstyle=\ttfamily\small,
+  keywordstyle=\color{RoyalBlue}\bfseries,
+  commentstyle=\color{gray}\itshape,
+  backgroundcolor=\color{black!3}, frame=single, framerule=0.3pt,
+  breaklines=true, columns=fullflexible, showstringspaces=false,
+  keepspaces=true, morekeywords={multirow,multicolumn,rowcolor,cellcolor,
+  includegraphics,subfigure,caption,label,cline,toprule,midrule,bottomrule,
+  href,url,cite,eqref,ref,dfrac,align,cases,bmatrix,pmatrix}}
+\lstdefinestyle{py}{
+  language=Python, basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue}\bfseries,
+  commentstyle=\color{OliveGreen}\itshape, stringstyle=\color{BrickRed},
+  numbers=left, numberstyle=\tiny\color{gray}, numbersep=8pt,
+  frame=single, breaklines=true, showstringspaces=false}
+
+% theorem environments
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
+
+% coloured theorem box
+\newtcbtheorem[number within=section]{keyresult}{Key Result}
+  {colback=yellow!8, colframe=orange!75!black, fonttitle=\bfseries}{kr}
+
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+
+% ======================================================================
+\title{\textbf{\LaTeX{} Lab-Exam Complete Reference}\\[2pt]
+       \large Syntax, Symbols, Tables, Figures \& Explanations --- One Sheet}
+\author{Personal exam documentation}
+\date{\today}
+% ======================================================================
+
+\begin{document}
+\maketitle
+\begin{center}
+\fbox{\parbox{0.9\textwidth}{\centering\small
+Compile \textbf{twice} with \texttt{pdflatex}. Every symbol appears beside
+its code. Every construct is shown as \textbf{code} then \textbf{output}.
+Ctrl--F any feature during the exam.}}
+\end{center}
+\tableofcontents
+\newpage
+
+% ======================================================================
+\section{The 30-Second Preamble}
+Everything starts with a \emph{document class} and a \emph{preamble} (the
+zone before \verb|\begin{document}| where you load packages). Copy one of
+these first, then start typing.
+
+\textbf{Minimal} --- math, images, colour, links:
+\begin{lstlisting}[style=tex]
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,graphicx,xcolor,hyperref}
+\begin{document}
+% ... your content ...
+\end{document}
+\end{lstlisting}
+
+\textbf{Exam-standard} --- add only what the paper needs:
+\begin{lstlisting}[style=tex]
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage[T1]{fontenc}\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb,amsthm}   % maths + theorems
+\usepackage{graphicx}                 % images
+\usepackage[table,dvipsnames]{xcolor} % colour + coloured tables
+\usepackage{multirow,array,booktabs}  % strong tables
+\usepackage{subcaption,wrapfig}       % subfigures, wrapped figures
+\usepackage{enumitem}                 % custom list labels
+\usepackage{listings}                 % code
+\usepackage{authblk}                  % numbered author affiliations
+\usepackage{hyperref}                 % LOAD LAST: links + clickable TOC
+\end{lstlisting}
+
+\begin{tcolorbox}[colback=RoyalBlue!6,colframe=RoyalBlue!60,title=Golden rules]
+\ding{51}\ \texttt{amsmath} for equations, \texttt{graphicx} for images,
+\texttt{xcolor} for colour, \texttt{hyperref} \textbf{last}.\\
+\ding{51}\ A \emph{package} is loaded with \verb|\usepackage{name}|; options
+go in brackets: \verb|\usepackage[opt]{name}|.\\
+\ding{51}\ Comment out a line with \texttt{\%}. Escape specials:
+\verb|\% \$ \& \# \_ \{ \}|.
+\end{tcolorbox}
+
+% ======================================================================
+\section{Document Structure}
+\subsection{Title block and authors}
+The \texttt{authblk} package wires each author to a numbered affiliation:
+\begin{lstlisting}[style=tex]
+\title{My Paper Title}
+\author[1]{Alice Smith}\author[2]{Bob Jones}
+\affil[1]{University A, City}
+\affil[2]{Institute B, City}
+\date{}                 % empty {} deletes the date; omit it -> today's date
+\maketitle              % first line INSIDE \begin{document}
+\end{lstlisting}
+
+\subsection{Sectioning}
+The commands, from largest to smallest, are
+\verb|\section|, \verb|\subsection|, \verb|\subsubsection|,
+\verb|\paragraph|, \verb|\subparagraph|. Each auto-numbers and enters the
+Table of Contents. Add a star (\verb|\section*{...}|) to make a heading
+\emph{unnumbered} and keep it \emph{out} of the TOC --- useful for
+``Abstract'' or an unnumbered ``Circuit Model'' heading.
+
+\subsection{Table of contents}
+\verb|\tableofcontents| prints every heading with page numbers, and becomes
+clickable once \texttt{hyperref} is loaded. Because it reads data recorded
+on the \emph{previous} run, you must compile \textbf{twice}.
+
+% ======================================================================
+\section{Text Formatting, Fonts, Sizes and Colour}
+\subsection{Weights and shapes}
+\begin{tabular}{@{}ll@{\hspace{2em}}ll@{}}
+\toprule
+Output & Code & Output & Code\\\midrule
+\textbf{bold} & \verb|\textbf{..}| & \textit{italic} & \verb|\textit{..}|\\
+\underline{under} & \verb|\underline{..}| & \texttt{mono} & \verb|\texttt{..}|\\
+\textsc{Small Caps} & \verb|\textsc{..}| & \emph{emphasis} & \verb|\emph{..}|\\
+\textsf{sans serif} & \verb|\textsf{..}| & \textrm{roman} & \verb|\textrm{..}|\\
+\bottomrule
+\end{tabular}
+
+\subsection{Size ladder}
+From tiny to huge (declared inside braces to keep the scope local):
+{\tiny tiny} {\scriptsize script} {\footnotesize footnote} {\small small}
+{\normalsize normal} {\large large} {\Large Large} {\LARGE LARGE}
+{\huge huge}. Codes: \verb|\tiny \scriptsize \footnotesize \small|
+\verb|\normalsize \large \Large \LARGE \huge \Huge|.
+
+\subsection{Colour}
+\begin{demo}
+\ttfamily\small
+\{\textbackslash color\{red\}text\} $\to$ {\color{red}text}\quad
+\textbackslash textcolor\{blue\}\{text\} $\to$ \textcolor{blue}{text}\\
+\textbackslash colorbox\{yellow\}\{hi\} $\to$ \colorbox{yellow}{hi}\quad
+\textbackslash fcolorbox\{black\}\{green!20\}\{hi\} $\to$
+  \fcolorbox{black}{green!20}{hi}
+\end{demo}
+Define your own colour once, reuse it anywhere:
+\verb|\definecolor{myblue}{RGB}{0,80,180}| then
+\verb|\textcolor{myblue}{...}|. The \verb|!| operator mixes:
+\verb|blue!30| means 30\,\% blue, 70\,\% white.
+
+% ======================================================================
+\section{Lists and Nested Lists}
+Three base environments: \texttt{itemize} (bullets), \texttt{enumerate}
+(numbers), \texttt{description} (bold terms). The \texttt{enumitem} package
+lets you set the label with \verb|[label=...]| and reduce spacing with
+\verb|[noitemsep]|.
+
+\begin{demo}
+\begin{minipage}[t]{0.55\textwidth}
+\begin{lstlisting}[style=tex]
+\begin{enumerate}[label=(\alph*)]
+  \item first
+  \item second
+    \begin{itemize}[label=$\star$]
+      \item star bullet
+      \item[$\oplus$] one-off marker
+    \end{itemize}
+\end{enumerate}
+\end{lstlisting}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.4\textwidth}
+\begin{enumerate}[label=(\alph*)]
+  \item first
+  \item second
+    \begin{itemize}[label=$\star$]
+      \item star bullet
+      \item[$\oplus$] one-off marker
+    \end{itemize}
+\end{enumerate}
+\end{minipage}
+\end{demo}
+
+Common label patterns:
+\begin{tabular}{@{}ll@{\hspace{2em}}ll@{}}
+\toprule
+Produces & \texttt{label=} & Produces & \texttt{label=}\\\midrule
+1. 2. 3.       & \verb|\arabic*.|   & a) b) c)   & \verb|\alph*)|\\
+(a) (b)        & \verb|(\alph*)|    & I. II. III.& \verb|\Roman*.|\\
+i. ii. iii.    & \verb|\roman*.|    & A) B)      & \verb|\Alph*)|\\
+$\dagger$      & \verb|$\dagger$|   & $\triangleright$ & \verb|$\triangleright$|\\
+\bottomrule
+\end{tabular}
+
+The \texttt{description} list (definition style):
+\begin{demo}
+\begin{minipage}[t]{0.5\textwidth}
+\begin{lstlisting}[style=tex]
+\begin{description}
+  \item[Term A] its meaning.
+  \item[Term B] its meaning.
+\end{description}
+\end{lstlisting}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.45\textwidth}
+\begin{description}
+  \item[Term A] its meaning.
+  \item[Term B] its meaning.
+\end{description}
+\end{minipage}
+\end{demo}
+Useful keys: \verb|resume| (continue a previous list's count),
+\verb|start=3| (begin at 3), \verb|itemsep=2pt|, \verb|leftmargin=1cm|.
+
+% ======================================================================
+\section{Mathematics}
+\subsection{The two modes}
+\emph{Inline} math sits in the running line with \verb|$...$|: the mass
+energy relation $E = mc^2$. \emph{Display} math is centred on its own line
+with \verb|\[...\]| (never the obsolete \verb|$$...$$|):
+\[ \int_0^\infty e^{-x}\,dx = 1. \]
+
+\subsection{Numbered and multi-line equations}
+\begin{tabular}{@{}p{0.32\textwidth}p{0.63\textwidth}@{}}
+\toprule
+Environment & Purpose\\\midrule
+\texttt{equation} & one numbered line\\
+\texttt{align} & many lines, \verb|&| = alignment column, each numbered\\
+\texttt{align*} & same but no numbers\\
+\texttt{aligned} & align inside ONE \texttt{equation} (single number)\\
+\texttt{gather} & each line centred with its own number (no \verb|&|)\\
+\texttt{multline} & one long formula broken across lines\\
+\texttt{cases} & piecewise definitions\\
+\texttt{subequations} & wraps lines to number them (1a),(1b)\\
+\bottomrule
+\end{tabular}
+
+\begin{demo}
+\begin{minipage}[t]{0.55\textwidth}
+\begin{lstlisting}[style=tex]
+\begin{align}
+  f(x) &= (x+1)^2      \\
+       &= x^2 + 2x + 1
+\end{align}
+\end{lstlisting}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.4\textwidth}
+\begin{align*}
+  f(x) &= (x+1)^2 \\
+       &= x^2 + 2x + 1
+\end{align*}
+\end{minipage}
+\end{demo}
+Suppress one line's number with \verb|\nonumber|; force a custom number with
+\verb|\tag{$\ast$}|. The \verb|&| always marks where lines align; \verb|\\|
+ends a line.
+
+\subsection{Fractions, roots and big operators}
+\begin{tabular}{@{}lll@{\hspace{1.5em}}lll@{}}
+\toprule
+Out & Code & & Out & Code &\\\midrule
+$\dfrac{a}{b}$ & \verb|\dfrac{a}{b}| & & $\sqrt{x}$ & \verb|\sqrt{x}| &\\
+$\tfrac{a}{b}$ & \verb|\tfrac{a}{b}| & & $\sqrt[n]{x}$ & \verb|\sqrt[n]{x}| &\\
+$\binom{n}{k}$ & \verb|\binom{n}{k}| & & $x^{2n}$ & \verb|x^{2n}| &\\
+$\displaystyle\sum_{i=1}^{n}$ & \verb|\sum_{i=1}^{n}| & &
+$\displaystyle\int_a^b$ & \verb|\int_a^b| &\\
+$\displaystyle\prod_{k}$ & \verb|\prod_{k}| & &
+$\displaystyle\lim_{x\to\infty}$ & \verb|\lim_{x\to\infty}| &\\
+\bottomrule
+\end{tabular}
+
+\subsection{Subscripts, superscripts and deep nesting}
+Always \textbf{group with braces}. \verb|e^-st| breaks; \verb|e^{-st}|
+works. Nest freely: \verb|x_{i_{j_{k}}}| gives $x_{i_{j_{k}}}$;
+\verb|e^{-t/(RC)}| gives $e^{-t/(RC)}$; a symbol with both indices,
+\verb|\Gamma^{\mu}_{\alpha\beta}| gives $\Gamma^{\mu}_{\alpha\beta}$; a
+tensor with a gap, \verb|A^{\mu}_{\ \nu}| gives $A^{\mu}_{\ \nu}$. A
+stacked multi-line subscript uses \verb|\substack|:
+\[ \sum_{\substack{i=1\\ i\ne j}}^{n} a_{ij}. \]
+
+\subsection{Delimiters that grow}
+\verb|\left...\right| auto-sizes to the content; they must be paired
+(use \verb|\right.| for an invisible partner).
+\begin{demo}
+\ttfamily\small
+\textbackslash left(\textbackslash dfrac\{a\}\{b\}\textbackslash right)
+$\to \left(\dfrac{a}{b}\right)$\quad
+\textbackslash left[\ \textbackslash right]$\to\left[\ \rule{0pt}{2ex}\right]$\quad
+\textbackslash left\textbackslash\{\ \textbackslash right\textbackslash\}
+$\to\left\{\ \rule{0pt}{2ex}\right\}$\quad
+\textbackslash left|\ \textbackslash right|$\to\left|\ \rule{0pt}{2ex}\right|$\quad
+\textbackslash langle\ \textbackslash rangle $\to\langle\ \rangle$
+\end{demo}
+Manual sizes (small$\to$big): \verb|\big \Big \bigg \Bigg|. Floor/ceiling:
+\verb|\lfloor x \rfloor| $=\lfloor x\rfloor$,
+\verb|\lceil x \rceil| $=\lceil x\rceil$.
+
+\subsection{Matrices and cases}
+\begin{demo}
+\begin{minipage}[t]{0.55\textwidth}
+\begin{lstlisting}[style=tex]
+\begin{pmatrix} a & b\\ c & d \end{pmatrix}
+\begin{bmatrix} 1 & 0\\ 0 & 1 \end{bmatrix}
+f(x)=\begin{cases}
+   x^2 & x\ge 0\\ -x & x<0 \end{cases}
+\end{lstlisting}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.4\textwidth}
+\[ \begin{pmatrix} a & b\\ c & d \end{pmatrix}
+   \begin{bmatrix} 1 & 0\\ 0 & 1 \end{bmatrix} \]
+\[ f(x)=\begin{cases} x^2 & x\ge 0\\ -x & x<0 \end{cases} \]
+\end{minipage}
+\end{demo}
+Bracket styles by name: \texttt{pmatrix}=( ), \texttt{bmatrix}=[ ],
+\texttt{Bmatrix}=\{ \}, \texttt{vmatrix}=$|\;|$, \texttt{Vmatrix}=$\|\;\|$,
+\texttt{matrix}=none.
+
+\subsection{Spacing, text, braces and boxed answers}
+Spaces: thin \verb|\,|, medium \verb|\:|, thick \verb|\;|, negative
+\verb|\!|, and \verb|\quad|/\verb|\qquad| for big gaps. Upright words in
+math: \verb|\text{if } x>0|. Annotate with braces:
+\verb|\underbrace{x^2+2x+1}_{\text{square}}| $=\underbrace{x^2+2x+1}_{\text{square}}$
+and \verb|\overbrace{a+b}^{n}| $=\overbrace{a+b}^{n}$. Box a final result:
+\verb|\boxed{x=\frac{-b\pm\sqrt{\Delta}}{2a}}| $=\boxed{x=\tfrac{-b\pm\sqrt{\Delta}}{2a}}$.
+
+% ======================================================================
+\section{Symbol Reference (glyph + code)}
+Every entry shows the printed symbol and the command that makes it. Most
+need \texttt{amsmath}/\texttt{amssymb} (already loaded here).
+
+\subsection{Lowercase Greek}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{@{}llllllll@{}}
+\toprule
+\sym{\alpha} & \sym{\beta} & \sym{\gamma} & \sym{\delta}\\
+\sym{\epsilon} & \sym{\varepsilon} & \sym{\zeta} & \sym{\eta}\\
+\sym{\theta} & \sym{\vartheta} & \sym{\iota} & \sym{\kappa}\\
+\sym{\lambda} & \sym{\mu} & \sym{\nu} & \sym{\xi}\\
+\sym{\pi} & \sym{\varpi} & \sym{\rho} & \sym{\varrho}\\
+\sym{\sigma} & \sym{\varsigma} & \sym{\tau} & \sym{\upsilon}\\
+\sym{\phi} & \sym{\varphi} & \sym{\chi} & \sym{\psi}\\
+\sym{\omega} & \sym{\digamma} & \sym{\varkappa} &\\
+\bottomrule
+\end{tabular}
+
+\subsection{Uppercase Greek}
+(Letters that look like Latin --- A, B, E, Z, H, I, K, M, N, O, P, T, X ---
+are just typed as capitals.)
+\begin{tabular}{@{}llllllll@{}}
+\toprule
+\sym{\Gamma} & \sym{\Delta} & \sym{\Theta} & \sym{\Lambda}\\
+\sym{\Xi} & \sym{\Pi} & \sym{\Sigma} & \sym{\Upsilon}\\
+\sym{\Phi} & \sym{\Psi} & \sym{\Omega} & \sym{\aleph}\\
+\bottomrule
+\end{tabular}
+Slanted variants (with \texttt{amsmath}): \verb|\varGamma \varDelta|
+$\ldots$ $\varGamma\,\varDelta\,\varTheta\,\varPhi\,\varOmega$.
+
+\subsection{Binary operators}
+\begin{tabular}{@{}llllllll@{}}
+\toprule
+\sym{\pm} & \sym{\mp} & \sym{\times} & \sym{\div}\\
+\sym{\cdot} & \sym{\ast} & \sym{\star} & \sym{\circ}\\
+\sym{\bullet} & \sym{\oplus} & \sym{\ominus} & \sym{\otimes}\\
+\sym{\oslash} & \sym{\odot} & \sym{\cup} & \sym{\cap}\\
+\sym{\uplus} & \sym{\sqcup} & \sym{\sqcap} & \sym{\wedge}\\
+\sym{\vee} & \sym{\setminus} & \sym{\wr} & \sym{\diamond}\\
+\sym{\bigtriangleup} & \sym{\bigtriangledown} & \sym{\triangleleft} & \sym{\triangleright}\\
+\sym{\dagger} & \sym{\ddagger} & \sym{\amalg} & \sym{\boxplus}\\
+\sym{\boxtimes} & \sym{\boxdot} & \sym{\ltimes} & \sym{\rtimes}\\
+\bottomrule
+\end{tabular}
+
+\subsection{Relations}
+\begin{tabular}{@{}llllllll@{}}
+\toprule
+\sym{\leq} & \sym{\geq} & \sym{\neq} & \sym{\equiv}\\
+\sym{\approx} & \sym{\cong} & \sym{\simeq} & \sym{\sim}\\
+\sym{\propto} & \sym{\ll} & \sym{\gg} & \sym{\asymp}\\
+\sym{\doteq} & \sym{\prec} & \sym{\succ} & \sym{\preceq}\\
+\sym{\succeq} & \sym{\subset} & \sym{\supset} & \sym{\subseteq}\\
+\sym{\supseteq} & \sym{\sqsubseteq} & \sym{\sqsupseteq} & \sym{\in}\\
+\sym{\ni} & \sym{\notin} & \sym{\vdash} & \sym{\dashv}\\
+\sym{\models} & \sym{\perp} & \sym{\mid} & \sym{\parallel}\\
+\sym{\bowtie} & \sym{\smile} & \sym{\frown} & \sym{\therefore}\\
+\sym{\because} & \sym{\triangleq} & \sym{\lesssim} & \sym{\gtrsim}\\
+\bottomrule
+\end{tabular}
+
+\subsection{Negated relations}
+\begin{tabular}{@{}llllllll@{}}
+\toprule
+\sym{\neq} & \sym{\notin} & \sym{\nleq} & \sym{\ngeq}\\
+\sym{\nless} & \sym{\ngtr} & \sym{\nsim} & \sym{\ncong}\\
+\sym{\nsubseteq} & \sym{\nsupseteq} & \sym{\subsetneq} & \sym{\supsetneq}\\
+\sym{\nprec} & \sym{\nsucc} & \sym{\nmid} & \sym{\nparallel}\\
+\sym{\nvdash} & \sym{\nvDash} & \sym{\nleftarrow} & \sym{\nrightarrow}\\
+\bottomrule
+\end{tabular}
+
+\subsection{Arrows}
+\begin{tabular}{@{}llll@{}}
+\toprule
+\sym{\leftarrow} & \sym{\rightarrow}\\
+\sym{\leftrightarrow} & \sym{\Leftarrow}\\
+\sym{\Rightarrow} & \sym{\Leftrightarrow}\\
+\sym{\longleftarrow} & \sym{\longrightarrow}\\
+\sym{\longleftrightarrow} & \sym{\Longrightarrow}\\
+\sym{\Longleftrightarrow} & \sym{\mapsto}\\
+\sym{\longmapsto} & \sym{\hookleftarrow}\\
+\sym{\hookrightarrow} & \sym{\uparrow}\\
+\sym{\downarrow} & \sym{\updownarrow}\\
+\sym{\Uparrow} & \sym{\Downarrow}\\
+\sym{\nearrow} & \sym{\searrow}\\
+\sym{\swarrow} & \sym{\nwarrow}\\
+\sym{\rightleftharpoons} & \sym{\leftharpoonup}\\
+\sym{\rightharpoonup} & \sym{\twoheadrightarrow}\\
+\sym{\rightarrowtail} & \sym{\leadsto}\\
+\sym{\rightrightarrows} & \sym{\rightleftarrows}\\
+\bottomrule
+\end{tabular}
+\quad Labelled arrows (need \texttt{amsmath}):
+\verb|\xrightarrow{f}| $\xrightarrow{f}$,
+\verb|\xleftarrow{g}| $\xleftarrow{g}$.
+
+\subsection{Big (variable-size) operators}
+\begin{tabular}{@{}llllllll@{}}
+\toprule
+\sym{\sum} & \sym{\prod} & \sym{\coprod} & \sym{\int}\\
+\sym{\oint} & \sym{\iint} & \sym{\iiint} & \sym{\bigcup}\\
+\sym{\bigcap} & \sym{\bigsqcup} & \sym{\bigvee} & \sym{\bigwedge}\\
+\sym{\bigoplus} & \sym{\bigotimes} & \sym{\bigodot} & \sym{\biguplus}\\
+\bottomrule
+\end{tabular}
+
+\subsection{Delimiters}
+\begin{tabular}{@{}llllllll@{}}
+\toprule
+\sym{\langle} & \sym{\rangle} & \sym{\lfloor} & \sym{\rfloor}\\
+\sym{\lceil} & \sym{\rceil} & \sym{\|} & \sym{\vert}\\
+\sym{\Vert} & \sym{\backslash} & \sym{\ulcorner} & \sym{\urcorner}\\
+\bottomrule
+\end{tabular}
+
+\subsection{Dots and accents}
+\begin{tabular}{@{}llllllll@{}}
+\toprule
+\sym{\dots} & \sym{\cdots} & \sym{\vdots} & \sym{\ddots}\\
+\sym{\hat{a}} & \sym{\bar{a}} & \sym{\tilde{a}} & \sym{\vec{a}}\\
+\sym{\dot{a}} & \sym{\ddot{a}} & \sym{\acute{a}} & \sym{\grave{a}}\\
+\sym{\breve{a}} & \sym{\check{a}} & \sym{\dddot{a}} & \sym{\widehat{abc}}\\
+\sym{\widetilde{abc}} & \sym{\overline{abc}} & \sym{\underline{abc}} & \sym{\overrightarrow{abc}}\\
+\bottomrule
+\end{tabular}
+
+\subsection{Miscellaneous symbols}
+\begin{tabular}{@{}llllllll@{}}
+\toprule
+\sym{\infty} & \sym{\partial} & \sym{\nabla} & \sym{\emptyset}\\
+\sym{\varnothing} & \sym{\forall} & \sym{\exists} & \sym{\nexists}\\
+\sym{\neg} & \sym{\top} & \sym{\bot} & \sym{\angle}\\
+\sym{\measuredangle} & \sym{\triangle} & \sym{\square} & \sym{\blacksquare}\\
+\sym{\blacktriangle} & \sym{\lozenge} & \sym{\blacklozenge} & \sym{\eth}\\
+\sym{\clubsuit} & \sym{\diamondsuit} & \sym{\heartsuit} & \sym{\spadesuit}\\
+\sym{\flat} & \sym{\natural} & \sym{\sharp} & \sym{\Re}\\
+\sym{\Im} & \sym{\wp} & \sym{\ell} & \sym{\hbar}\\
+\sym{\imath} & \sym{\jmath} & \sym{\aleph} & \sym{\complement}\\
+\sym{\prime} & \sym{\surd} & \sym{\checkmark} & \sym{\maltese}\\
+\sym{\circledR} & \sym{\circledS} & \sym{\bigstar} & \sym{\mho}\\
+\bottomrule
+\end{tabular}
+
+\subsection{Special alphabets}
+\begin{tabular}{@{}ll@{}}
+\toprule
+Output & Code \\\midrule
+$\mathbb{R}\ \mathbb{N}\ \mathbb{Z}\ \mathbb{Q}\ \mathbb{C}$
+  & \verb|\mathbb{R} \mathbb{N} ...|\quad(blackboard, \texttt{amssymb})\\
+$\mathcal{A}\ \mathcal{B}\ \mathcal{L}\ \mathcal{F}$
+  & \verb|\mathcal{A} \mathcal{L} ...|\quad(calligraphic)\\
+$\mathscr{A}\ \mathscr{B}\ \mathscr{L}\ \mathscr{F}$
+  & \verb|\mathscr{A} ...|\quad(script, \texttt{mathrsfs})\\
+$\mathfrak{A}\ \mathfrak{g}\ \mathfrak{p}\ \mathfrak{m}$
+  & \verb|\mathfrak{A} ...|\quad(fraktur, \texttt{amssymb})\\
+$\mathbf{A}\ \mathrm{A}\ \mathsf{A}\ \mathtt{A}\ \bm{A}$
+  & \verb|\mathbf \mathrm \mathsf \mathtt \bm|\\
+\bottomrule
+\end{tabular}
+
+\subsection{Named functions / operators}
+Type these as commands so they print upright with correct spacing:
+\verb|\sin \cos \tan \cot \sec \csc \arcsin \arccos \arctan \sinh|
+\verb|\cosh \tanh \coth \exp \log \ln \lg \lim \limsup \liminf \sup|
+\verb|\inf \max \min \arg \deg \det \dim \gcd \hom \ker \Pr|. For a
+\emph{custom} operator with limits use
+\verb|\DeclareMathOperator*{\argmax}{arg\,max}| in the preamble.
+
+\subsection{Text-mode symbols (outside math)}
+\begin{tabular}{@{}llllllll@{}}
+\toprule
+\tsym{\dag} & \tsym{\ddag} & \tsym{\S} & \tsym{\P}\\
+\tsym{\copyright} & \tsym{\textregistered} & \tsym{\texttrademark} & \tsym{\pounds}\\
+\tsym{\textbullet} & \tsym{\textdegree} & \tsym{\textbackslash} & \tsym{\ldots}\\
+\tsym{\&} & \tsym{\%} & \tsym{\#} & \tsym{\_}\\
+\bottomrule
+\end{tabular}
+\quad Check/cross via \texttt{pifont}: \verb|\ding{51}|\,\ding{51}\
+\verb|\ding{55}|\,\ding{55}.
+
+% ======================================================================
+\section{Tables}
+\subsection{The basics}
+A \texttt{tabular} needs a \emph{column spec}: \texttt{l}/\texttt{c}/\texttt{r}
+(left/centre/right), \verb=|= for a vertical rule, \verb|p{3cm}| for a fixed
+wrapping width. Inside: \verb|&| separates columns, \verb|\\| ends a row,
+\verb|\hline| draws a full horizontal rule, \verb|\cline{2-3}| a partial one.
+\begin{demo}
+\begin{minipage}[t]{0.5\textwidth}
+\begin{lstlisting}[style=tex]
+\begin{tabular}{|l|c|r|}
+  \hline
+  Left & Mid & Right\\ \hline
+  a & b & c\\ \hline
+\end{tabular}
+\end{lstlisting}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.45\textwidth}\centering
+\begin{tabular}{|l|c|r|}
+  \hline Left & Mid & Right\\ \hline a & b & c\\ \hline
+\end{tabular}
+\end{minipage}
+\end{demo}
+
+\subsection{multirow, multicolumn, colour and math in cells}
+\verb|\multirow{N}{*}{txt}| spans \texttt{N} rows; \verb|\multicolumn{N}{|c|}{txt}|
+spans \texttt{N} columns (and \emph{re-declares} the borders). Colour with
+\verb|\rowcolor| (must be the \textbf{first} token of the row),
+\verb|\cellcolor|, \verb|\columncolor|. Put maths in a cell with \verb|$...$|.
+\begin{demo}
+\begin{minipage}[t]{0.54\textwidth}
+\begin{lstlisting}[style=tex]
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{|c|c|c|}
+\hline
+\rowcolor{gray!30}
+\multicolumn{2}{|c|}{\textbf{Header}} & C\\
+\hline
+\multirow{2}{*}{Merged}
+  & \cellcolor{yellow!30}$x^2$ & $s>0$\\
+\cline{2-3}
+  & $\dfrac{1}{s}$ & $s>0$\\
+\hline
+\end{tabular}
+\end{lstlisting}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.42\textwidth}\centering
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{|c|c|c|}
+\hline
+\rowcolor{gray!30}
+\multicolumn{2}{|c|}{\textbf{Header}} & C\\ \hline
+\multirow{2}{*}{Merged} & \cellcolor{yellow!30}$x^2$ & $s>0$\\ \cline{2-3}
+ & $\dfrac{1}{s}$ & $s>0$\\ \hline
+\end{tabular}
+\end{minipage}
+\end{demo}
+Taller rows: \verb|\renewcommand{\arraystretch}{1.5}|. Thicker rules:
+\verb|\setlength{\arrayrulewidth}{1pt}| or use \texttt{booktabs}
+(\verb|\toprule \midrule \bottomrule|, no vertical rules --- the modern look).
+Line breaks inside a cell: \verb|\makecell{line 1\\ line 2}| (\texttt{makecell}).
+
+\subsection{Auto-width tables (tabularx)}
+When a column must stretch to fill a set total width, use \texttt{tabularx}
+and the \texttt{X} column type:
+\begin{demo}
+\ttfamily\small
+\textbackslash begin\{tabularx\}\{0.8\textbackslash textwidth\}\{|l|X|\}
+\end{demo}
+\begin{tabularx}{0.8\textwidth}{|l|X|}
+\hline Key & This X-column wraps automatically to fill the declared width so
+the table always spans exactly 80\% of the text width.\\ \hline
+\end{tabularx}
+
+% ======================================================================
+\section{Figures and Graphics}
+\subsection{One figure}
+\begin{lstlisting}[style=tex]
+\begin{figure}[htbp]          % h=here t=top b=bottom p=floats-page
+  \centering
+  \includegraphics[width=0.5\textwidth]{example-image-a}
+  \caption{A single figure.}  % \caption BEFORE \label
+  \label{fig:single}
+\end{figure}
+\end{lstlisting}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.45\textwidth]{example-image-a}
+  \caption{A single figure (rendered here with \texttt{[H]} from \texttt{float}).}
+  \label{fig:single}
+\end{figure}
+Scaling keys for \verb|\includegraphics|: \verb|width=|, \verb|height=|,
+\verb|scale=0.5|, \verb|angle=90| (rotate), \verb|keepaspectratio|. Force an
+exact position with \verb|[H]| (needs \texttt{float}); use \verb|[htbp!]| to
+strongly suggest.
+
+\subsection{Side-by-side subfigures}
+\texttt{subcaption} gives each panel its own (a),(b) sub-label.
+\begin{lstlisting}[style=tex]
+\begin{figure}[htbp]\centering
+  \begin{subfigure}[b]{0.3\textwidth}
+    \includegraphics[width=\linewidth]{example-image-a}
+    \caption{First}\label{fig:a}
+  \end{subfigure}\hfill
+  \begin{subfigure}[b]{0.3\textwidth}
+    \includegraphics[width=\linewidth]{example-image-b}
+    \caption{Second}\label{fig:b}
+  \end{subfigure}
+  \caption{Two panels.}\label{fig:pair}
+\end{figure}
+\end{lstlisting}
+\begin{figure}[H]\centering
+  \begin{subfigure}[b]{0.3\textwidth}\centering
+    \includegraphics[width=\linewidth]{example-image-a}\caption{First}\label{fig:a}
+  \end{subfigure}\hfill
+  \begin{subfigure}[b]{0.3\textwidth}\centering
+    \includegraphics[width=\linewidth]{example-image-b}\caption{Second}\label{fig:b}
+  \end{subfigure}
+  \caption{Two panels (rendered).}\label{fig:pair}
+\end{figure}
+\verb|\ref{fig:a}| gives the full number ``\ref{fig:a}''; \verb|\subref{fig:a}|
+gives just the letter. For panels \emph{without} sub-captions, use
+\verb|\begin{minipage}{0.48\textwidth}...\end{minipage}| instead.
+
+\subsection{Wrapped and rotated figures}
+\begin{lstlisting}[style=tex]
+\begin{wrapfigure}{r}{0.35\textwidth}  % r=right side, l=left side
+  \centering
+  \includegraphics[width=\linewidth]{example-image}
+  \caption{Text flows around me.}\label{fig:wrap}
+\end{wrapfigure}
+% ---- rotation ----
+\includegraphics[angle=90]{example-image}  % rotate the image
+\rotatebox{45}{slanted text}               % rotate anything (graphicx)
+\begin{sidewaysfigure}...\end{sidewaysfigure}  % 90-deg whole float (rotating)
+\end{lstlisting}
+Rotated text sample: \rotatebox{20}{\fbox{tilted 20\textdegree}}.
+
+% ======================================================================
+\section{Cross-References and Hyperlinks}
+Label anything right after its \verb|\caption| (or in an equation), then
+point at it:
+\begin{tabular}{@{}ll@{\hspace{2em}}l@{}}
+\toprule
+Command & Prints & Note\\\midrule
+\verb|\ref{k}|     & the bare number   & figures, tables, sections\\
+\verb|\eqref{k}|   & (number)          & equations --- adds parentheses\\
+\verb|\pageref{k}| & the page number   & ``see p.~\pageref{fig:single}''\\
+\verb|\autoref{k}| & ``Figure~3''      & adds the word automatically\\
+\verb|\cite{k}|    & [1]               & links to a \verb|\bibitem|\\
+\bottomrule
+\end{tabular}\\[4pt]
+External links (\texttt{hyperref}): clickable text
+\verb|\href{https://example.com}{visit site}| $\to$
+\href{https://example.com}{visit site}; bare URL
+\verb|\url{https://example.com}|. Always put a \verb|~| (non-breaking space)
+before a reference so the number never wraps alone: \verb|Figure~\ref{fig:pair}|.
+Configure link colours once with \verb|\hypersetup{colorlinks=true,...}|.
+
+% ======================================================================
+\section{Code Listings}
+The \texttt{listings} package typesets source code verbatim with optional
+syntax colouring and line numbers.
+\begin{lstlisting}[style=py, caption={Inline Python}, label={lst:py}]
+def rc_response(R, C, V, times):
+    """One-line docstring."""
+    tau = R * C
+    return [V * (1 - 2.718**(-t / tau)) for t in times]
+\end{lstlisting}
+Inline snippet: \verb|\lstinline!print(x)!|. From an external file:
+\verb|\lstinputlisting[style=py]{script.py}|. Define a reusable style once
+with \verb|\lstdefinestyle{py}{language=Python, numbers=left, frame=single,|
+\verb|keywordstyle=\color{blue}, ...}|. For publication-grade output the
+\texttt{minted} package is prettier but needs \verb|-shell-escape| + Python.
+
+% ======================================================================
+\section{Theorems, Proofs and Coloured Boxes}
+Declare environments in the preamble with \texttt{amsthm}:
+\verb|\newtheorem{theorem}{Theorem}[section]| numbers them ``1.1, 1.2''.
+\begin{definition}
+A \emph{prime} is an integer $>1$ divisible only by $1$ and itself.
+\end{definition}
+\begin{theorem}[Pythagoras]\label{thm:pyth}
+In a right triangle, $a^2 + b^2 = c^2$.
+\end{theorem}
+\begin{proof}
+Standard area argument. \qedhere
+\end{proof}
+The \texttt{proof} environment adds the italic ``Proof.'' lead-in and the
+$\square$. A \emph{coloured, titled} theorem box via \texttt{tcolorbox}:
+\begin{keyresult}{Weak-field orbit}{weak}
+$\left(\dfrac{v}{c}\right)^2 = \dfrac{GM}{rc^2} = \dfrac{r_s}{2r}.$
+\end{keyresult}
+Reference them like anything else: Theorem~\ref{thm:pyth}.
+
+% ======================================================================
+\section{Algorithms / Pseudocode}
+Using \texttt{algorithm2e} (loaded with \texttt{[ruled,vlined,linesnumbered]}):
+\begin{algorithm}[H]
+\SetAlgoLined
+\KwIn{array $A$ of length $n$}
+\KwOut{maximum element}
+$m \gets A[1]$\;
+\For{$i \gets 2$ \KwTo $n$}{
+  \If{$A[i] > m$}{$m \gets A[i]$\;}
+}
+\Return $m$\;
+\caption{Find the maximum}
+\end{algorithm}
+Key commands: \verb|\KwIn \KwOut \For \While \If \ElseIf \Else \Return|,
+end each statement line with \verb|\;|. The alternative package pair is
+\texttt{algorithm} + \texttt{algpseudocode} (\verb|\State \For \EndFor|).
+
+% ======================================================================
+\section{Footnotes and Bibliography}
+A footnote\footnote{This text drops to the bottom of the page and
+auto-numbers.} is placed with \verb|\footnote{...}| immediately after the
+word. The fastest bibliography for a timed exam is the manual
+\texttt{thebibliography} environment (no BibTeX run needed):
+\begin{lstlisting}[style=tex]
+\begin{thebibliography}{9}   % {9} = widest label is one digit
+  \bibitem{kreyszig} E. Kreyszig, \textit{Advanced Engineering
+    Mathematics}, 10th ed. Wiley, 2011.
+  \bibitem{ogata} K. Ogata, \textit{Modern Control Engineering},
+    5th ed. Prentice Hall, 2010.
+\end{thebibliography}
+\end{lstlisting}
+Cite in the text with \verb|\cite{kreyszig}|, which prints [1] and links to
+the entry.
+
+% ======================================================================
+\section{Predicted Tricky Variations}
+\begin{enumerate}[label=\textbf{\arabic*.},leftmargin=*]
+\item \textbf{Multi-column aligned maths} --- when two equation pairs sit
+  side by side, \texttt{align} spaces them oddly; use \texttt{alignat}, where
+  you control the gaps:
+  \verb|\begin{alignat}{2} a&=b &\quad c&=d \end{alignat}|.
+\item \textbf{Numbered sub-equations} (1a),(1b): wrap an \texttt{align} in
+  \verb|\begin{subequations}...\end{subequations}|.
+\item \textbf{Numbered derivation, one number} --- keep \verb|&=| aligned and
+  end each intermediate line with \verb|\nonumber| so only the last is numbered.
+\item \textbf{Clean scientific notation / units} --- \texttt{siunitx}:
+  \verb|\num{1.496e11}| $\to 1.496\times10^{11}$ and \verb|\SI{9.8}{m/s^2}|.
+\item \textbf{Coloured full-row header} --- \verb|\rowcolor| must be the FIRST
+  token of the row, even before \verb|\multicolumn|.
+\item \textbf{Landscape float} --- \texttt{sidewaystable}/\texttt{sidewaysfigure}
+  (\texttt{rotating}) or the \verb|{landscape}| environment (\texttt{lscape}).
+\item \textbf{Custom numbered coloured theorem} --- \texttt{tcolorbox} with
+  \verb|\newtcbtheorem| (as the ``Key Result'' box above).
+\item \textbf{Tensor / pre-indices} --- \verb|{}_a^b X| for pre-scripts, and a
+  phantom space \verb|\ | (or \verb|\vphantom|) to stop indices stacking.
+\item \textbf{Continued fractions} --- \verb|\cfrac{1}{1+\cfrac{1}{1+x}}|.
+\item \textbf{Highlight/box a final answer} --- \verb|\boxed{...}| or
+  \verb|\colorbox{yellow}{$...$}|.
+\end{enumerate}
+
+% ======================================================================
+\section{Common Errors and Instant Fixes}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{@{}p{0.42\textwidth}p{0.54\textwidth}@{}}
+\toprule
+Message / symptom & Fix\\\midrule
+\texttt{Missing \$ inserted} & A maths symbol used in text --- wrap it in \verb|$...$|.\\
+\texttt{Undefined control sequence} & Typo, or the package that defines it isn't loaded.\\
+\texttt{! Misplaced alignment tab \&} & A bare \verb|&| outside a table/align --- escape it \verb|\&|.\\
+\verb|\ref| shows ``??'' & Compile again (labels resolve on the 2nd pass).\\
+Float ``lost'' / on wrong page & Use \verb|[htbp]|, add \verb|!|, or \verb|[H]| (\texttt{float}).\\
+Table too wide & Shrink columns, use \texttt{tabularx}, or \verb|\small| / \verb|\resizebox|.\\
+Fractions collide in a table & \verb|\renewcommand{\arraystretch}{1.5}|.\\
+\texttt{Option clash for package xcolor} & Load \texttt{xcolor} (with options) \emph{before} \texttt{tcolorbox}/\texttt{tikz}.\\
+Accented letter breaks & Load \verb|\usepackage[T1]{fontenc}| and \verb|[utf8]{inputenc}|.\\
+\bottomrule
+\end{tabular}
+
+% ======================================================================
+\section{Exam Speed Strategy}
+\begin{enumerate}[leftmargin=*]
+\item Paste a preamble first; add packages only as each feature appears.
+\item Build in reading order: preamble $\to$ title $\to$ sections/lists $\to$
+  equations $\to$ tables $\to$ figures $\to$ code $\to$ references.
+\item \textbf{Compile every few environments} so any error is easy to locate.
+\item \textbf{Copy--paste--tweak} repetitive blocks (table rows, subfigures,
+  \verb|\bibitem|s) --- never retype them.
+\item Keep this compiled PDF open on a second window for instant symbol lookup.
+\item Leave line breaks, exact float positions and page breaks for last ---
+  they are usually \emph{not} graded, but successful compilation always is.
+\end{enumerate}
+
+\vfill
+\begin{center}\small\itshape
+End of reference --- compile twice, print, and keep beside you.
+\end{center}
+
+\end{document}

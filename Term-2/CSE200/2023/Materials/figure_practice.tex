@@ -1,0 +1,810 @@
+% ======================================================================
+%  LATEX FIGURE PRACTICE PACK  ---  10 graded exercises + full solutions
+%  ------------------------------------------------------------------
+%  HOW TO USE THIS FILE
+%    1. Compile TWICE:  pdflatex figure_practice.tex
+%    2. PRINT (or keep open) only PART I -- the target figures.
+%    3. Open a BLANK .tex file, start a timer, reproduce each target
+%       from scratch. Do NOT scroll to Part II.
+%    4. Only after your attempt compiles, check PART II for the solution
+%       and the marking notes.
+%
+%  All images are the placeholders shipped with the `mwe' package:
+%    example-image        example-image-a    example-image-b
+%    example-image-c      example-image-16x9 example-image-golden
+%  In the real exam, swap these for the supplied filenames.
+% ======================================================================
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
+\usepackage{amsmath,amssymb}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{graphicx}
+\usepackage{mwe}              % supplies the example-image-* placeholders
+\usepackage{subcaption}       % subfigures + \subref (loads caption)
+\usepackage{wrapfig}          % text-wrapped figures
+\usepackage{rotating}         % sidewaysfigure
+\usepackage{float}            % [H] exact placement
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{listings}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, linkcolor=RoyalBlue, urlcolor=magenta}
+
+\lstdefinestyle{tex}{
+  language=[LaTeX]TeX, basicstyle=\ttfamily\footnotesize,
+  keywordstyle=\color{RoyalBlue}\bfseries,
+  commentstyle=\color{gray}\itshape,
+  backgroundcolor=\color{black!3}, frame=single, framerule=0.3pt,
+  breaklines=true, columns=fullflexible, showstringspaces=false,
+  keepspaces=true,
+  morekeywords={includegraphics,subfigure,minipage,wrapfigure,sidewaysfigure,
+  rotatebox,caption,captionof,subref,label,centering,hfill,linewidth,
+  textwidth,resizebox,fbox}}
+
+\newcommand{\exinfo}[3]{%
+  \par\noindent
+  \colorbox{RoyalBlue!12}{\parbox{0.97\textwidth}{\small
+  \textbf{Difficulty:} #1 \qquad \textbf{Target time:} #2 \\
+  \textbf{Tests:} #3}}\par\medskip}
+
+% filler prose for the text-wrapping exercises
+\newcommand{\filler}{The transform method replaces differentiation in the
+time domain with multiplication in the frequency domain, which turns an
+awkward differential relation into ordinary algebra. Once the algebraic
+problem has been solved, the inverse transform carries the result back to
+the time domain. This detour is worthwhile because algebraic manipulation
+is mechanical, whereas solving differential equations directly requires
+case-by-case ingenuity.}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+
+\title{\textbf{\LaTeX{} Figure Practice Pack}\\[2pt]
+  \large 10 Graded Exercises Modelled on the Lab-Exam Papers}
+\author{Reproduce Part I from scratch --- check Part II afterwards}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.92\textwidth}{\small\centering
+\textbf{Rules of engagement.} Print Part I only. Start from a blank file with
+your own preamble. Time each attempt. A figure ``passes'' only if it
+\emph{compiles} and matches the target structurally --- panels in the right
+arrangement, captions and sub-captions present, labels resolving in the text.}}
+\end{center}
+
+\tableofcontents
+\newpage
+
+% ======================================================================
+\part*{PART I --- Target Figures}
+\addcontentsline{toc}{section}{PART I --- Target Figures}
+\section*{Reproduce each of the following}
+\addcontentsline{toc}{subsection}{Exercises 1--10}
+
+% ----------------------------------------------------------------------
+\subsection*{Exercise 1 --- Warm-up}
+\exinfo{$\star$}{3 minutes}{\texttt{figure} float, \texttt{centering},
+width scaling, \texttt{caption} + \texttt{label}, cross-reference}
+
+Figure~\ref{fig:warm} shows the reference waveform used throughout.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.45\textwidth]{example-image-a}
+  \caption{The reference waveform.}
+  \label{fig:warm}
+\end{figure}
+
+As shown in Figure~\ref{fig:warm}, the response settles quickly.
+
+% ----------------------------------------------------------------------
+\subsection*{Exercise 2 --- Two panels, no sub-captions}
+\exinfo{$\star\star$}{5 minutes}{\texttt{minipage} side by side,
+\texttt{hfill}, one shared caption}
+
+\begin{figure}[H]
+  \centering
+  \begin{minipage}{0.45\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{example-image-a}
+  \end{minipage}\hfill
+  \begin{minipage}{0.45\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{example-image-b}
+  \end{minipage}
+  \caption{Input signal (left) and filtered output (right).}
+  \label{fig:pair}
+\end{figure}
+
+% ----------------------------------------------------------------------
+\subsection*{Exercise 3 --- Three sub-captioned panels}
+\exinfo{$\star\star$}{6 minutes}{\texttt{subfigure}, individual
+sub-captions and labels, \texttt{ref} vs \texttt{subref}}
+
+\begin{figure}[H]
+  \centering
+  \begin{subfigure}[b]{0.3\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{example-image-a}
+    \caption{Under-damped}
+    \label{fig:under}
+  \end{subfigure}\hfill
+  \begin{subfigure}[b]{0.3\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{example-image-b}
+    \caption{Critically damped}
+    \label{fig:crit}
+  \end{subfigure}\hfill
+  \begin{subfigure}[b]{0.3\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{example-image-c}
+    \caption{Over-damped}
+    \label{fig:over}
+  \end{subfigure}
+  \caption{Three damping regimes of a second-order system.}
+  \label{fig:damping}
+\end{figure}
+
+Panel~\subref{fig:crit} of Figure~\ref{fig:damping} settles fastest, while
+Figure~\ref{fig:under} overshoots.
+
+% ----------------------------------------------------------------------
+\newpage
+\subsection*{Exercise 4 --- Nine panels in labelled groups}
+\exinfo{$\star\star\star\star$}{12 minutes}{the Solar-System grid ---
+group headings inside a float, row breaks, nine sub-labels}
+
+Figure~\ref{fig:grid} shows all nine bodies.
+
+\begin{figure}[H]
+  \centering
+
+  {\large\textbf{Star}}\par\medskip
+  \begin{subfigure}[b]{0.3\textwidth}
+    \centering
+    \includegraphics[width=0.6\linewidth]{example-image-a}
+    \caption{The Sun}\label{fig:sun}
+  \end{subfigure}
+
+  \bigskip
+  {\large\textbf{Inner Planets}}\par\medskip
+  \begin{subfigure}[b]{0.22\textwidth}
+    \centering\includegraphics[width=\linewidth]{example-image-b}
+    \caption{Mercury}\label{fig:mercury}
+  \end{subfigure}\hfill
+  \begin{subfigure}[b]{0.22\textwidth}
+    \centering\includegraphics[width=\linewidth]{example-image-c}
+    \caption{Venus}\label{fig:venus}
+  \end{subfigure}\hfill
+  \begin{subfigure}[b]{0.22\textwidth}
+    \centering\includegraphics[width=\linewidth]{example-image-a}
+    \caption{Earth}\label{fig:earth}
+  \end{subfigure}\hfill
+  \begin{subfigure}[b]{0.22\textwidth}
+    \centering\includegraphics[width=\linewidth]{example-image-b}
+    \caption{Mars}\label{fig:mars}
+  \end{subfigure}
+
+  \bigskip
+  {\large\textbf{Outer Planets}}\par\medskip
+  \begin{subfigure}[b]{0.22\textwidth}
+    \centering\includegraphics[width=\linewidth]{example-image-c}
+    \caption{Jupiter}\label{fig:jupiter}
+  \end{subfigure}\hfill
+  \begin{subfigure}[b]{0.22\textwidth}
+    \centering\includegraphics[width=\linewidth]{example-image-a}
+    \caption{Saturn}\label{fig:saturn}
+  \end{subfigure}\hfill
+  \begin{subfigure}[b]{0.22\textwidth}
+    \centering\includegraphics[width=\linewidth]{example-image-b}
+    \caption{Uranus}\label{fig:uranus}
+  \end{subfigure}\hfill
+  \begin{subfigure}[b]{0.22\textwidth}
+    \centering\includegraphics[width=\linewidth]{example-image-c}
+    \caption{Neptune}\label{fig:neptune}
+  \end{subfigure}
+
+  \caption{The star and the eight planets, arranged into the inner and
+  outer groups. The displayed sizes and distances are not to scale.}
+  \label{fig:grid}
+\end{figure}
+
+Compare Mars in Figure~\ref{fig:mars} with Jupiter in Figure~\ref{fig:jupiter}.
+
+% ----------------------------------------------------------------------
+\newpage
+\subsection*{Exercise 5 --- Text wrapped around a figure}
+\exinfo{$\star\star\star$}{7 minutes}{\texttt{wrapfigure}, side selection,
+reserved width, caption inside a wrapped float}
+
+\begin{wrapfigure}{r}{0.38\textwidth}
+  \centering
+  \includegraphics[width=\linewidth]{example-image-a}
+  \caption{A wrapped figure on the right.}
+  \label{fig:wrap}
+\end{wrapfigure}
+
+Figure~\ref{fig:wrap} sits on the right while this paragraph flows around
+it. \filler
+
+The text continues past the bottom of the float and returns to the full
+measure once the figure has been cleared. \filler
+
+% ----------------------------------------------------------------------
+\subsection*{Exercise 6 --- Rotation in three flavours}
+\exinfo{$\star\star\star$}{7 minutes}{\texttt{angle=} inside
+\texttt{includegraphics}, \texttt{rotatebox} on arbitrary content}
+
+\begin{figure}[H]
+  \centering
+  \begin{subfigure}[b]{0.28\textwidth}
+    \centering
+    \includegraphics[width=0.7\linewidth]{example-image-a}
+    \caption{Upright}
+    \label{fig:rot0}
+  \end{subfigure}\hfill
+  \begin{subfigure}[b]{0.28\textwidth}
+    \centering
+    \includegraphics[width=0.7\linewidth, angle=90]{example-image-a}
+    \caption{Rotated $90^{\circ}$}
+    \label{fig:rot90}
+  \end{subfigure}\hfill
+  \begin{subfigure}[b]{0.28\textwidth}
+    \centering
+    \rotatebox{30}{\fbox{Rotated text}}
+    \caption{\texttt{rotatebox} on text}
+    \label{fig:rottext}
+  \end{subfigure}
+  \caption{Three ways to rotate content.}
+  \label{fig:rotations}
+\end{figure}
+
+% ----------------------------------------------------------------------
+\newpage
+\subsection*{Exercise 7 --- A $2 \times 3$ grid}
+\exinfo{$\star\star\star$}{9 minutes}{two rows of three panels, blank line
+as a row break, consistent widths}
+
+\begin{figure}[H]
+  \centering
+  \begin{subfigure}[b]{0.3\textwidth}
+    \centering\includegraphics[width=\linewidth]{example-image-a}
+    \caption{Stage 1}\label{fig:s1}
+  \end{subfigure}\hfill
+  \begin{subfigure}[b]{0.3\textwidth}
+    \centering\includegraphics[width=\linewidth]{example-image-b}
+    \caption{Stage 2}\label{fig:s2}
+  \end{subfigure}\hfill
+  \begin{subfigure}[b]{0.3\textwidth}
+    \centering\includegraphics[width=\linewidth]{example-image-c}
+    \caption{Stage 3}\label{fig:s3}
+  \end{subfigure}
+
+  \bigskip
+
+  \begin{subfigure}[b]{0.3\textwidth}
+    \centering\includegraphics[width=\linewidth]{example-image-c}
+    \caption{Stage 4}\label{fig:s4}
+  \end{subfigure}\hfill
+  \begin{subfigure}[b]{0.3\textwidth}
+    \centering\includegraphics[width=\linewidth]{example-image-a}
+    \caption{Stage 5}\label{fig:s5}
+  \end{subfigure}\hfill
+  \begin{subfigure}[b]{0.3\textwidth}
+    \centering\includegraphics[width=\linewidth]{example-image-b}
+    \caption{Stage 6}\label{fig:s6}
+  \end{subfigure}
+  \caption{Six stages of the assembly process.}
+  \label{fig:stages}
+\end{figure}
+
+% ----------------------------------------------------------------------
+\subsection*{Exercise 8 --- Sizing, framing and cropping}
+\exinfo{$\star\star\star$}{8 minutes}{\texttt{scale}, \texttt{height},
+\texttt{keepaspectratio}, \texttt{fbox}, \texttt{trim}+\texttt{clip},
+\texttt{resizebox}}
+
+\begin{figure}[H]
+  \centering
+  \begin{subfigure}[b]{0.22\textwidth}
+    \centering
+    \fbox{\includegraphics[width=\linewidth]{example-image-a}}
+    \caption{Framed}\label{fig:framed}
+  \end{subfigure}\hfill
+  \begin{subfigure}[b]{0.22\textwidth}
+    \centering
+    \includegraphics[height=2.2cm, keepaspectratio]{example-image-b}
+    \caption{Fixed height}\label{fig:height}
+  \end{subfigure}\hfill
+  \begin{subfigure}[b]{0.22\textwidth}
+    \centering
+    \includegraphics[width=\linewidth, trim=2cm 1cm 2cm 1cm, clip]{example-image-c}
+    \caption{Cropped}\label{fig:crop}
+  \end{subfigure}\hfill
+  \begin{subfigure}[b]{0.22\textwidth}
+    \centering
+    \resizebox{\linewidth}{2.2cm}{\includegraphics{example-image-a}}
+    \caption{Stretched}\label{fig:stretch}
+  \end{subfigure}
+  \caption{Four ways to control the size and extent of an image.}
+  \label{fig:sizing}
+\end{figure}
+
+% ----------------------------------------------------------------------
+\newpage
+\subsection*{Exercise 9 --- Figure beside a table}
+\exinfo{$\star\star\star\star$}{10 minutes}{mixing float types in
+\texttt{minipage}s, \texttt{captionof}, independent numbering}
+
+\begin{figure}[H]
+\centering
+\begin{minipage}[b]{0.46\textwidth}
+  \centering
+  \includegraphics[width=\linewidth]{example-image-golden}
+  \caption{Measured step response.}
+  \label{fig:beside}
+\end{minipage}\hfill
+\begin{minipage}[b]{0.46\textwidth}
+  \centering
+  \captionof{table}{Extracted parameters.}
+  \label{tab:beside}
+  \renewcommand{\arraystretch}{1.3}
+  \begin{tabular}{|l|c|}
+    \hline
+    \textbf{Quantity} & \textbf{Value} \\ \hline
+    Time constant $\tau$ & $10.0$ ms \\ \hline
+    Rise time $t_r$      & $22.0$ ms \\ \hline
+    Overshoot            & $4.3\%$   \\ \hline
+  \end{tabular}
+\end{minipage}
+\end{figure}
+
+Figure~\ref{fig:beside} and Table~\ref{tab:beside} describe the same
+measurement.
+
+% ----------------------------------------------------------------------
+\subsection*{Exercise 10 --- Full exam simulation}
+\exinfo{$\star\star\star\star\star$}{15 minutes}{everything at once ---
+a wrapped figure, a grouped multi-panel float, sub-references, a footnote
+and two cross-references}
+
+\begin{wrapfigure}{l}{0.34\textwidth}
+  \centering
+  \includegraphics[width=\linewidth]{example-image-16x9}
+  \caption{Test rig layout.}
+  \label{fig:rig}
+\end{wrapfigure}
+
+The apparatus of Figure~\ref{fig:rig} was used to record every trace shown
+in Figure~\ref{fig:results}.\footnote{All traces recorded at $25^{\circ}$C
+with a $5$\,V step input.} \filler
+
+\begin{figure}[H]
+  \centering
+
+  {\large\textbf{Low frequency}}\par\medskip
+  \begin{subfigure}[b]{0.28\textwidth}
+    \centering\includegraphics[width=\linewidth]{example-image-a}
+    \caption{$10$ Hz}\label{fig:f10}
+  \end{subfigure}\hfill
+  \begin{subfigure}[b]{0.28\textwidth}
+    \centering\includegraphics[width=\linewidth]{example-image-b}
+    \caption{$50$ Hz}\label{fig:f50}
+  \end{subfigure}\hfill
+  \begin{subfigure}[b]{0.28\textwidth}
+    \centering\includegraphics[width=\linewidth]{example-image-c}
+    \caption{$100$ Hz}\label{fig:f100}
+  \end{subfigure}
+
+  \bigskip
+  {\large\textbf{High frequency}}\par\medskip
+  \begin{subfigure}[b]{0.28\textwidth}
+    \centering\includegraphics[width=\linewidth]{example-image-c}
+    \caption{$1$ kHz}\label{fig:f1k}
+  \end{subfigure}\hfill
+  \begin{subfigure}[b]{0.28\textwidth}
+    \centering\includegraphics[width=\linewidth]{example-image-a}
+    \caption{$5$ kHz}\label{fig:f5k}
+  \end{subfigure}\hfill
+  \begin{subfigure}[b]{0.28\textwidth}
+    \centering\includegraphics[width=\linewidth]{example-image-b}
+    \caption{$10$ kHz}\label{fig:f10k}
+  \end{subfigure}
+
+  \caption{Frequency response of the filter stage, grouped by decade.}
+  \label{fig:results}
+\end{figure}
+
+Attenuation becomes visible from panel~\subref{fig:f1k} onward, and
+Figure~\ref{fig:f10k} shows the roll-off clearly.
+
+\clearpage
+% ======================================================================
+\part*{PART II --- Solutions and Marking Notes}
+\addcontentsline{toc}{section}{PART II --- Solutions and Marking Notes}
+\section*{Do not read until you have attempted Part I}
+\addcontentsline{toc}{subsection}{Solutions 1--10}
+
+% ----------------------------------------------------------------------
+\subsection*{Solution 1}
+\begin{lstlisting}[style=tex]
+Figure~\ref{fig:warm} shows the reference waveform used throughout.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.45\textwidth]{example-image-a}
+  \caption{The reference waveform.}
+  \label{fig:warm}
+\end{figure}
+
+As shown in Figure~\ref{fig:warm}, the response settles quickly.
+\end{lstlisting}
+\textbf{Marking notes.} Four things must appear in this exact order:
+\verb|\centering|, \verb|\includegraphics|, \verb|\caption|, \verb|\label|.
+For \emph{figures} the caption goes \textbf{below} the image (for tables it goes
+above) --- graders check this. \verb|\label| must follow \verb|\caption|, never
+precede it, or \verb|\ref| picks up the wrong counter. Use \verb|~| in
+\verb|Figure~\ref{...}| so the number never wraps to the next line alone.
+\verb|[htbp]| is the normal placement request; this file uses \verb|[H]| only so
+targets appear exactly where printed.
+
+% ----------------------------------------------------------------------
+\subsection*{Solution 2}
+\begin{lstlisting}[style=tex]
+\begin{figure}[htbp]
+  \centering
+  \begin{minipage}{0.45\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{example-image-a}
+  \end{minipage}\hfill
+  \begin{minipage}{0.45\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{example-image-b}
+  \end{minipage}
+  \caption{Input signal (left) and filtered output (right).}
+  \label{fig:pair}
+\end{figure}
+\end{lstlisting}
+\textbf{Marking notes.} Use \texttt{minipage} when the panels need \emph{no}
+individual captions --- it is lighter than \texttt{subfigure}. Widths must sum
+to less than $1.0$: $0.45 + 0.45 = 0.9$ leaves room for \verb|\hfill| to push
+them apart. Inside a minipage, \verb|\linewidth| means \emph{the minipage's}
+width, not the page's --- this is the distinction that decides whether your
+panels fit. Do not leave a blank line between the two minipages or they will
+stack vertically instead of sitting side by side.
+
+% ----------------------------------------------------------------------
+\subsection*{Solution 3}
+\begin{lstlisting}[style=tex]
+\begin{figure}[htbp]
+  \centering
+  \begin{subfigure}[b]{0.3\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{example-image-a}
+    \caption{Under-damped}
+    \label{fig:under}
+  \end{subfigure}\hfill
+  \begin{subfigure}[b]{0.3\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{example-image-b}
+    \caption{Critically damped}
+    \label{fig:crit}
+  \end{subfigure}\hfill
+  \begin{subfigure}[b]{0.3\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{example-image-c}
+    \caption{Over-damped}
+    \label{fig:over}
+  \end{subfigure}
+  \caption{Three damping regimes of a second-order system.}
+  \label{fig:damping}
+\end{figure}
+
+Panel~\subref{fig:crit} of Figure~\ref{fig:damping} settles fastest, while
+Figure~\ref{fig:under} overshoots.
+\end{lstlisting}
+\textbf{Marking notes.} Each \texttt{subfigure} has its own
+\verb|\caption|+\verb|\label|; the float has one more of each at the end.
+Note the difference in output: \verb|\ref{fig:under}| prints the \emph{full}
+number \ref{fig:under} (figure number plus sub-letter) while
+\verb|\subref{fig:crit}| prints only \subref{fig:crit}. The optional
+\verb|[b]| bottom-aligns panels so their captions line up even when images
+differ in height. Three panels at $0.3$ leaves $0.1$ for the two \verb|\hfill|s.
+
+% ----------------------------------------------------------------------
+\subsection*{Solution 4}
+\begin{lstlisting}[style=tex]
+\begin{figure}[htbp]
+  \centering
+
+  {\large\textbf{Star}}\par\medskip
+  \begin{subfigure}[b]{0.3\textwidth}
+    \centering
+    \includegraphics[width=0.6\linewidth]{example-image-a}
+    \caption{The Sun}\label{fig:sun}
+  \end{subfigure}
+
+  \bigskip
+  {\large\textbf{Inner Planets}}\par\medskip
+  \begin{subfigure}[b]{0.22\textwidth}
+    \centering\includegraphics[width=\linewidth]{example-image-b}
+    \caption{Mercury}\label{fig:mercury}
+  \end{subfigure}\hfill
+  ... three more at 0.22\textwidth ...
+
+  \bigskip
+  {\large\textbf{Outer Planets}}\par\medskip
+  ... four more at 0.22\textwidth ...
+
+  \caption{The star and the eight planets, arranged into the inner and
+  outer groups. The displayed sizes and distances are not to scale.}
+  \label{fig:grid}
+\end{figure}
+\end{lstlisting}
+\textbf{Marking notes.} This is the most time-expensive item in either paper, so
+the technique matters more than the typing. \textbf{Write one subfigure block,
+compile it, then copy--paste it eight times} and change only three things per
+copy: the image name, the caption word, the label. Never retype from scratch.
+
+The group headings are ordinary centred bold text \emph{inside} the float:
+\verb|{\large\textbf{Star}}\par\medskip|. The \verb|\par| is essential --- it
+closes the paragraph so the heading sits on its own line; without it the
+heading and the first panel collide. A \textbf{blank line} between panel rows
+is what breaks to a new row; \verb|\bigskip| just adds the vertical gap. Four
+panels at $0.22$ sum to $0.88$, leaving room for three \verb|\hfill|s.
+
+% ----------------------------------------------------------------------
+\subsection*{Solution 5}
+\begin{lstlisting}[style=tex]
+\begin{wrapfigure}{r}{0.38\textwidth}   % r = right, l = left
+  \centering
+  \includegraphics[width=\linewidth]{example-image-a}
+  \caption{A wrapped figure on the right.}
+  \label{fig:wrap}
+\end{wrapfigure}
+
+Figure~\ref{fig:wrap} sits on the right while this paragraph flows
+around it. Lorem ipsum ... (enough text to fill the figure's height)
+\end{lstlisting}
+\textbf{Marking notes.} \texttt{wrapfigure} takes \emph{two} mandatory
+arguments: the side (\texttt{r}, \texttt{l}, or capital \texttt{R}/\texttt{L} to
+allow floating) and the reserved width. It is \textbf{not} a float in the usual
+sense --- place it immediately before the paragraph that should wrap, and never
+inside a list, another float, or directly after \verb|\section|, where it
+misbehaves. You need enough following text to fill the figure's height, or the
+wrap spills untidily onto the next paragraph. If the wrap looks broken, add
+\verb|\bigskip| before it or shift it one paragraph earlier.
+
+% ----------------------------------------------------------------------
+\subsection*{Solution 6}
+\begin{lstlisting}[style=tex]
+% inside the middle subfigure:
+\includegraphics[width=0.7\linewidth, angle=90]{example-image-a}
+% inside the third subfigure:
+\rotatebox{30}{\fbox{Rotated text}}
+% whole-float rotation (package rotating), used on its own:
+\begin{sidewaysfigure}
+  \centering
+  \includegraphics[width=0.8\textwidth]{example-image-a}
+  \caption{A landscape figure on its own page.}
+  \label{fig:sideways}
+\end{sidewaysfigure}
+\end{lstlisting}
+\textbf{Marking notes.} Three distinct tools. \verb|angle=| inside
+\verb|\includegraphics| rotates \emph{the image}, and it interacts with
+\verb|width=|: the width is applied \emph{before} rotation, so a rotated image
+ends up as wide as the original was tall --- always check the result rather than
+assuming. \verb|\rotatebox{deg}{...}| (from \texttt{graphicx}) rotates
+\emph{anything}, including text and tables. \texttt{sidewaysfigure} (from
+\texttt{rotating}) turns the entire float, caption included, onto its own
+landscape page --- reach for it when a wide figure will not fit upright.
+Positive angles rotate counter-clockwise.
+
+% ----------------------------------------------------------------------
+\subsection*{Solution 7}
+\begin{lstlisting}[style=tex]
+\begin{figure}[htbp]
+  \centering
+  \begin{subfigure}[b]{0.3\textwidth}
+    \centering\includegraphics[width=\linewidth]{example-image-a}
+    \caption{Stage 1}\label{fig:s1}
+  \end{subfigure}\hfill
+  \begin{subfigure}[b]{0.3\textwidth} ... \end{subfigure}\hfill
+  \begin{subfigure}[b]{0.3\textwidth} ... \end{subfigure}
+
+  \bigskip                       % <-- blank line above = new row
+
+  \begin{subfigure}[b]{0.3\textwidth} ... \end{subfigure}\hfill
+  \begin{subfigure}[b]{0.3\textwidth} ... \end{subfigure}\hfill
+  \begin{subfigure}[b]{0.3\textwidth} ... \end{subfigure}
+  \caption{Six stages of the assembly process.}
+  \label{fig:stages}
+\end{figure}
+\end{lstlisting}
+\textbf{Marking notes.} The row break is the \emph{blank line}, not
+\verb|\bigskip| --- \verb|\bigskip| only adds space. Equivalently you can end a
+row with \verb|\\|. Keep every panel the same declared width or the columns will
+not align between rows. Sub-labels run (a)--(f) continuously across both rows;
+they are numbered in source order, so if you reorder panels the letters follow.
+
+% ----------------------------------------------------------------------
+\subsection*{Solution 8}
+\begin{lstlisting}[style=tex]
+\fbox{\includegraphics[width=\linewidth]{example-image-a}}          % framed
+\includegraphics[height=2.2cm, keepaspectratio]{example-image-b}    % fixed height
+\includegraphics[width=\linewidth, trim=2cm 1cm 2cm 1cm, clip]{example-image-c}
+\resizebox{\linewidth}{2.2cm}{\includegraphics{example-image-a}}    % stretched
+% also valid:
+\includegraphics[scale=0.4]{example-image}       % fraction of natural size
+\end{lstlisting}
+\textbf{Marking notes.} \verb|scale=| is relative to the image's natural size;
+\verb|width=|/\verb|height=| are absolute. Giving \emph{both} width and height
+distorts the image unless you add \verb|keepaspectratio|. \verb|trim=| takes
+four lengths in the order \textbf{left bottom right top}, and it does nothing
+visible unless you also pass \verb|clip| --- forgetting \verb|clip| is the
+classic bug. \verb|\resizebox{W}{H}{...}| forces content into an exact box
+(use \verb|!| for one dimension to preserve the ratio, e.g.
+\verb|\resizebox{5cm}{!}{...}|); it works on tables too, which is the quickest
+rescue for a table that overflows the margin.
+
+% ----------------------------------------------------------------------
+\subsection*{Solution 9}
+\begin{lstlisting}[style=tex]
+\begin{figure}[htbp]
+\centering
+\begin{minipage}[b]{0.46\textwidth}
+  \centering
+  \includegraphics[width=\linewidth]{example-image-golden}
+  \caption{Measured step response.}
+  \label{fig:beside}
+\end{minipage}\hfill
+\begin{minipage}[b]{0.46\textwidth}
+  \centering
+  \captionof{table}{Extracted parameters.}
+  \label{tab:beside}
+  \begin{tabular}{|l|c|}
+    \hline \textbf{Quantity} & \textbf{Value} \\ \hline
+    Time constant $\tau$ & $10.0$ ms \\ \hline
+    Rise time $t_r$      & $22.0$ ms \\ \hline
+    Overshoot            & $4.3\%$   \\ \hline
+  \end{tabular}
+\end{minipage}
+\end{figure}
+\end{lstlisting}
+\textbf{Marking notes.} A \texttt{table} float cannot be nested inside a
+\texttt{figure} float, so the trick is to put \emph{both} in minipages and use
+\verb|\captionof{table}{...}| (from \texttt{caption}, which \texttt{subcaption}
+already loads) to borrow the table counter. The figure keeps the figure counter,
+the table keeps the table counter, and both \verb|\ref|s work independently.
+Remember the table caption goes \textbf{above} its tabular while the figure
+caption goes \textbf{below} its image --- that asymmetry is visible here in one
+float and is a favourite examiner detail. Escape the percent sign as
+\verb|4.3\%|.
+
+% ----------------------------------------------------------------------
+\subsection*{Solution 10}
+\begin{lstlisting}[style=tex]
+\begin{wrapfigure}{l}{0.34\textwidth}
+  \centering
+  \includegraphics[width=\linewidth]{example-image-16x9}
+  \caption{Test rig layout.}\label{fig:rig}
+\end{wrapfigure}
+
+The apparatus of Figure~\ref{fig:rig} was used to record every trace shown
+in Figure~\ref{fig:results}.\footnote{All traces recorded at $25^{\circ}$C
+with a $5$\,V step input.} ... enough text to fill the wrap ...
+
+\begin{figure}[htbp]
+  \centering
+  {\large\textbf{Low frequency}}\par\medskip
+  \begin{subfigure}[b]{0.28\textwidth}
+    \centering\includegraphics[width=\linewidth]{example-image-a}
+    \caption{$10$ Hz}\label{fig:f10}
+  \end{subfigure}\hfill
+  ... two more ...
+
+  \bigskip
+  {\large\textbf{High frequency}}\par\medskip
+  ... three more ...
+
+  \caption{Frequency response of the filter stage, grouped by decade.}
+  \label{fig:results}
+\end{figure}
+
+Attenuation becomes visible from panel~\subref{fig:f1k} onward, and
+Figure~\ref{fig:f10k} shows the roll-off clearly.
+\end{lstlisting}
+\textbf{Marking notes.} Six things are graded at once. The \verb|\footnote|
+here works because it sits in \emph{body text}, not inside the float --- had it
+been inside, you would need \verb|\footnotemark| plus \verb|\footnotetext|.
+Units and degrees inside captions are ordinary maths: \verb|$10$ Hz|,
+\verb|$25^{\circ}$C|, and \verb|$5$\,V| uses a thin space before the unit.
+Build order under time pressure: place the wrapped figure first, then one
+subfigure block, compile, then copy it five times. Finish with the two
+cross-references, and compile \textbf{twice} so every \verb|\ref| resolves.
+
+% ======================================================================
+\clearpage
+\section*{Drill Routine}
+\addcontentsline{toc}{section}{Drill Routine}
+
+\begin{enumerate}[leftmargin=*]
+\item \textbf{Round 1 --- untimed.} Work through 1, 2, 3, 5 with Part II open.
+  The aim is recognition of the four base patterns: single float, minipage pair,
+  subfigure row, wrapped float.
+\item \textbf{Round 2 --- timed, base patterns.} Close Part II. Reproduce
+  1, 2, 3, 6 in under 20 minutes total.
+\item \textbf{Round 3 --- the grid.} Exercise 4 alone, in 12 minutes, using
+  copy--paste discipline. This is the highest-value drill in the pack: the same
+  structure appeared as a ten-mark item in the real paper.
+\item \textbf{Round 4 --- awkward layouts.} Exercises 7, 8, 9 in 25 minutes.
+\item \textbf{Round 5 --- exam pace.} Exercise 10 cold in 15 minutes, including
+  the surrounding prose, the footnote and both cross-references.
+\item \textbf{Round 6 --- from memory.} Write Exercise 4 with nothing open. When
+  the nine-panel grid costs you under ten minutes, figures are solved.
+\end{enumerate}
+
+\section*{The Figure Checklist}
+\addcontentsline{toc}{section}{The Figure Checklist}
+
+Run this over every float before moving on:
+\begin{enumerate}[label=\textbf{\arabic*.}, leftmargin=*]
+\item \verb|\centering| is present (not the \texttt{center} environment, which
+  adds unwanted vertical space inside a float).
+\item The caption is \textbf{below} the image, and \verb|\label| comes
+  \textbf{after} \verb|\caption|.
+\item Every panel width is declared and the widths sum to less than $1.0$.
+\item Panels are separated by \verb|\hfill| with \textbf{no blank line} between
+  them; a blank line is used only to start a new row.
+\item Each label is unique and every one is actually referenced in the text.
+\item The document has been compiled \textbf{twice}.
+\end{enumerate}
+
+\section*{The Six Errors That Cost the Most Marks}
+\addcontentsline{toc}{section}{The Six Errors That Cost the Most Marks}
+
+\renewcommand{\arraystretch}{1.4}
+\begin{tabularx}{\textwidth}{|c|l|X|}
+\hline
+\textbf{\#} & \textbf{Mistake} & \textbf{Symptom and fix} \\
+\hline
+1 & Blank line between panels &
+  Panels stack vertically instead of sitting side by side. Remove the empty
+  line; keep only \verb|\hfill|. \\
+\hline
+2 & \verb|\label| before \verb|\caption| &
+  \verb|\ref| prints the number of the \emph{previous} float. Always
+  \verb|\caption| then \verb|\label|. \\
+\hline
+3 & Panel widths sum to $\geq 1.0$ &
+  \texttt{Overfull \textbackslash hbox} and panels spill into the margin.
+  Three panels: use $0.3$; four: use $0.22$. \\
+\hline
+4 & \verb|\textwidth| inside a minipage &
+  The image bursts out of its panel. Inside a minipage or subfigure use
+  \verb|\linewidth|. \\
+\hline
+5 & \verb|trim| without \verb|clip| &
+  Nothing appears to crop. Both keys are required. \\
+\hline
+6 & Compiling once &
+  \verb|\ref| shows \texttt{??} and sub-references are blank. Run
+  \texttt{pdflatex} twice. \\
+\hline
+\end{tabularx}
+
+\vfill
+\begin{center}\small\itshape
+One panel, compiled and correct, then copy it eight times.
+\end{center}
+
+\end{document}

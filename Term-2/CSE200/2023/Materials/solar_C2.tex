@@ -1,0 +1,300 @@
+% =====================================================================
+%  CSE 200 Online-1 (C2)  ---  "The Solar System"
+%  Faithful reproduction. Compile with pdflatex TWICE (TOC + refs).
+%  Replace the example-image-* placeholders with the real planet images
+%  supplied in the exam (sun.jpg, mercury.jpg, ...).
+% =====================================================================
+\documentclass[10pt]{article}
+
+% ---------- Geometry / encoding ----------
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
+% ---------- Mathematics ----------
+\usepackage{amsmath}   % align, \tag, \implies, \dfrac, \text
+\usepackage{amssymb}   % \odot, \varpi, \diamond, \dagger, \propto
+\usepackage{amsthm}    % proposition + proof environments
+
+% ---------- Figures & subfigures ----------
+\usepackage{graphicx}
+\usepackage{subcaption}    % subfigure environment + \subref  (1a,1b,...)
+
+% ---------- Colour tables ----------
+\usepackage[table,dvipsnames]{xcolor} % loads colortbl; \rowcolor/\cellcolor
+\usepackage{array}
+\usepackage{multirow}
+
+% ---------- Lists ----------
+\usepackage{enumitem}      % (\Roman*), $\dagger$, $\diamond$ labels
+
+% ---------- Author affiliation ----------
+\usepackage{authblk}
+
+% ---------- Hyperlinks (LAST) ----------
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks = true,
+  linkcolor  = blue,   % clickable TOC / \ref
+  citecolor  = blue,
+  urlcolor   = magenta
+}
+
+% ---------- Theorem style ----------
+\newtheorem{proposition}{Proposition}[section]  % numbers like 3.1
+
+% =====================================================================
+\title{The Solar System}
+\author[1]{Johannes Kepler}
+\affil[1]{Imperial Mathematician, Prague}
+\date{}
+% =====================================================================
+
+\begin{document}
+\maketitle
+\tableofcontents
+\bigskip
+
+% =====================================================================
+\section{Our Planetary Neighborhood}
+
+\subsection{The Sun and Its Planets}
+The Sun and its gravity-bound bodies form the Solar System~\cite{kepler}.
+See \href{https://solarsystem.nasa.gov/}{NASA Solar System Exploration}.
+In increasing distance, the planets are
+\[
+  \text{Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune.}
+\]
+The planets form two groups:
+\begin{enumerate}[label=(\Roman*)]
+  \item \textbf{Inner planets}
+    \begin{itemize}[label=$\dagger$]
+      \item Mercury, Venus, Earth, and Mars belong to this group.
+      \item They are comparatively small and have solid surfaces.
+      \item They are also called the terrestrial planets.
+    \end{itemize}
+  \item \textbf{Outer planets}
+    \begin{itemize}[label=$\dagger$]
+      \item Jupiter and Saturn are gas giants.
+      \item Uranus and Neptune are commonly called ice giants.
+      \item All four outer planets possess ring systems.
+    \end{itemize}
+\end{enumerate}
+The inner planets are small, dense, and relatively close to the Sun,
+whereas the outer planets are much larger and travel along considerably
+wider orbits.
+
+\subsection{Portraits of the Solar System}
+Figure~\ref{fig:solar} shows the Sun and eight planets.\footnote{Sizes and
+distances are schematic.}
+Compare Mars in Figure~\ref{fig:mars} with Jupiter in Figure~\ref{fig:jupiter}.
+
+\begin{figure}[htbp]
+  \centering
+
+  {\large\textbf{Star}}\par\medskip
+  \begin{subfigure}[b]{0.30\textwidth}
+    \centering
+    \includegraphics[width=0.6\linewidth]{example-image-a}
+    \caption{The Sun}\label{fig:sun}
+  \end{subfigure}
+
+  \bigskip
+  {\large\textbf{Inner Planets}}\par\medskip
+  \begin{subfigure}[b]{0.23\textwidth}
+    \includegraphics[width=\linewidth]{example-image-b}
+    \caption{Mercury}\label{fig:mercury}
+  \end{subfigure}\hfill
+  \begin{subfigure}[b]{0.23\textwidth}
+    \includegraphics[width=\linewidth]{example-image-c}
+    \caption{Venus}\label{fig:venus}
+  \end{subfigure}\hfill
+  \begin{subfigure}[b]{0.23\textwidth}
+    \includegraphics[width=\linewidth]{example-image-a}
+    \caption{Earth}\label{fig:earth}
+  \end{subfigure}\hfill
+  \begin{subfigure}[b]{0.23\textwidth}
+    \includegraphics[width=\linewidth]{example-image-b}
+    \caption{Mars}\label{fig:mars}
+  \end{subfigure}
+
+  \bigskip
+  {\large\textbf{Outer Planets}}\par\medskip
+  \begin{subfigure}[b]{0.23\textwidth}
+    \includegraphics[width=\linewidth]{example-image-c}
+    \caption{Jupiter}\label{fig:jupiter}
+  \end{subfigure}\hfill
+  \begin{subfigure}[b]{0.23\textwidth}
+    \includegraphics[width=\linewidth]{example-image-a}
+    \caption{Saturn}\label{fig:saturn}
+  \end{subfigure}\hfill
+  \begin{subfigure}[b]{0.23\textwidth}
+    \includegraphics[width=\linewidth]{example-image-b}
+    \caption{Uranus}\label{fig:uranus}
+  \end{subfigure}\hfill
+  \begin{subfigure}[b]{0.23\textwidth}
+    \includegraphics[width=\linewidth]{example-image-c}
+    \caption{Neptune}\label{fig:neptune}
+  \end{subfigure}
+
+  \caption{The Sun and the eight planets of the Solar System, arranged
+  into the inner and outer planetary groups. The displayed sizes and
+  distances are not to scale.}
+  \label{fig:solar}
+\end{figure}
+
+% =====================================================================
+\section{Kepler's Laws of Planetary Motion}
+Kepler's three laws describe planetary motion~\cite{nasa-kepler}.
+
+\subsection{First Law: Elliptical Orbits}
+A planetary orbit is elliptical, with the Sun at one focus:
+\begin{equation}
+  \frac{x^{2}}{a^{2}} + \frac{y^{2}}{b^{2}} = 1,
+  \qquad a \ge b > 0 .
+\end{equation}
+Here $a$ and $b$ are the semi-axes.
+
+For focal distance $c$,
+\begin{equation}
+  \begin{aligned}
+    c^{2} &= a^{2} - b^{2} \\
+    e     &= \frac{c}{a}
+  \end{aligned}
+\end{equation}
+Here $e$ is the eccentricity.
+
+In polar form,
+\begin{equation}
+  r(\theta) = \frac{a\,(1 - e^{2})}{1 + e\cos\theta}.
+  \label{eq:polar}
+\end{equation}
+Equation~\eqref{eq:polar} gives the orbital distance.
+
+\subsection{Second Law: Equal Areas in Equal Times}
+Equal times sweep equal areas:
+\begin{equation}
+  \Delta t_{1} = \Delta t_{2}
+  \implies
+  \Delta A_{1} = \Delta A_{2}.
+\end{equation}
+Consequently, a planet moves
+\begin{itemize}[label=$\diamond$]
+  \item faster when it is closer to the Sun, and
+  \item slower when it is farther from the Sun.
+\end{itemize}
+
+\subsection{Third Law: Orbital Period and Distance}
+For planets orbiting one star,
+\begin{equation}
+  T^{2} \propto a^{3}.
+\end{equation}
+Newtonian form:
+\[
+  T^{2} = \frac{4\pi^{2}}{G M_{\odot}}\, a^{3},
+\]
+Here $M_{\odot}$ is the solar mass.
+
+\subsection{An Earth--Mars Comparison}
+Using Earth as reference,
+\[
+  a_{E} = 1~\text{AU}, \qquad T_{E} = 1~\text{year}
+\]
+where $1~\text{AU} \approx 1.496 \times 10^{11}~\text{m}$.\footnote{AU
+denotes the mean Earth--Sun distance.} For Mars, $a_{M} \approx
+1.524~\text{AU}$, so
+\[
+  \frac{T_{M}^{2}}{T_{E}^{2}} = \frac{a_{M}^{3}}{a_{E}^{3}},
+  \qquad
+  T_{M} = T_{E}\left(\frac{a_{M}}{a_{E}}\right)^{3/2}
+        \approx (1.524)^{3/2} \approx 1.88~\text{years}.
+\]
+Thus $T_{M} \approx 1.88$ years.
+
+% =====================================================================
+\section{A Relativistic Extension}
+General relativity extends Kepler's model.\footnote{Planetary corrections
+are small but measurable.} Einstein's equations are
+\begin{equation}
+  G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^{4}}\, T_{\mu\nu}.
+\end{equation}
+For spherical mass $M$,
+\begin{equation}
+  ds^{2} = -\left(1 - \frac{r_{s}}{r}\right)c^{2}\,dt^{2}
+           + \left(1 - \frac{r_{s}}{r}\right)^{-1} dr^{2}
+           + r^{2}\left(d\theta^{2} + \sin^{2}\!\theta\, d\varphi^{2}\right),
+  \qquad r_{s} = \frac{2GM}{c^{2}}.
+\end{equation}
+Free fall satisfies
+\begin{equation}
+  \frac{d^{2}x^{\mu}}{d\tau^{2}}
+  + \Gamma^{\mu}_{\alpha\beta}\,
+    \frac{dx^{\alpha}}{d\tau}\frac{dx^{\beta}}{d\tau} = 0 .
+\end{equation}
+Per orbit,
+\begin{equation}
+  \Delta\varpi = \frac{6\pi G M}{a\,(1 - e^{2})\,c^{2}} .
+\end{equation}
+
+\begin{proposition}[Weak-field circular orbit]\label{prop:weak}
+For a circular orbit of radius $r$,
+\begin{equation}
+  \left(\frac{v}{c}\right)^{2} = \frac{GM}{r c^{2}} = \frac{r_{s}}{2r}.
+  \tag{10}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+The circular-orbit balance $v^{2}/r = GM/r^{2}$ gives $v^{2} = GM/r$.
+Divide by $c^{2}$ and use $r_{s} = 2GM/c^{2}$.
+\end{proof}
+
+See Proposition~\ref{prop:weak}.
+
+% =====================================================================
+\section{The Outer Planets}
+The outer planets are Jupiter, Saturn, Uranus, and
+Neptune~\cite{nasa-planets}. The first two are gas giants; the last two
+are ice giants.
+
+Table~\ref{tab:outer} uses scientific and relativistic
+notation.\footnote{Values are rounded for typesetting practice.}
+
+\begin{table}[htbp]
+  \centering
+  \caption{Orbital and relativistic parameters of the outer planets}
+  \label{tab:outer}
+  \renewcommand{\arraystretch}{1.5}
+  \begin{tabular}{|l|cc|cc|}
+    \hline
+    \rowcolor{Gray!35}
+    \multirow{2}{*}{\textbf{Planet}}
+      & \multicolumn{2}{c|}{\textbf{Orbital parameters}}
+      & \multicolumn{2}{c|}{\textbf{Relativistic notation}} \\
+    \cline{2-5}
+    \rowcolor{Gray!20}
+      & $a$ (AU) & $e$
+      & $\varepsilon = \dfrac{1}{a c^{2}} G M_{\odot}$
+      & $\beta = \sqrt{\varepsilon}$ \\
+    \hline
+    \rowcolor{Yellow!15} Jupiter & 5.204  & $4.89\times10^{-2}$ & $1.90\times10^{-9}$  & $4.36\times10^{-5}$ \\
+    \rowcolor{Yellow!25} Saturn  & 9.583  & $5.65\times10^{-2}$ & $1.03\times10^{-9}$  & $3.21\times10^{-5}$ \\
+    \rowcolor{Cyan!15}   Uranus  & 19.191 & $4.72\times10^{-2}$ & $5.14\times10^{-10}$ & $2.27\times10^{-5}$ \\
+    \rowcolor{Cyan!25}   Neptune & 30.070 & $8.6\times10^{-3}$  & $3.28\times10^{-10}$ & $1.81\times10^{-5}$ \\
+    \hline
+  \end{tabular}
+\end{table}
+
+Table~\ref{tab:outer} compares the four giant planets.
+
+% =====================================================================
+\begin{thebibliography}{9}
+  \bibitem{kepler} J.~Kepler, \textit{Astronomia Nova}. Heidelberg, 1609.
+  \bibitem{nasa-kepler} National Aeronautics and Space Administration,
+    ``Orbits and kepler's laws,'' 2024.
+  \bibitem{nasa-planets} National Aeronautics and Space Administration,
+    ``About the planets,'' 2026.
+    \href{https://solarsystem.nasa.gov/}{Solar System Exploration}.
+\end{thebibliography}
+
+\end{document}
