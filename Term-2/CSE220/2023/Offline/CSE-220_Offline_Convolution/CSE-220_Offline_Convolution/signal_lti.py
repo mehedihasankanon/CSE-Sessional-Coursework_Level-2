@@ -1,4 +1,5 @@
 import numpy as np
+import matplotlib.pyplot as plt
 
 
 def readable_time_ticks(time_values, max_labels=18):
@@ -19,31 +20,40 @@ class DiscreteSignal:
 
     # Create a finite discrete-time signal over the given integer range.
     def __init__(self, start_time, end_time):
-        raise NotImplementedError("Complete the DiscreteSignal constructor")
+        self.start_time = start_time
+        self.end_time = end_time
+        self.size = end_time - start_time + 1
+        
+        self.signal = np.zeros(self.size)
 
     # Return the number of stored samples in the signal.
     def __len__(self):
-        raise NotImplementedError("Complete __len__")
+        return self.size
 
     # Return the integer time indices covered by the signal.
     def times(self):
-        raise NotImplementedError("Complete times")
+        return np.arange(self.start_time, self.end_time, 1)
 
     # Return the signal value at the given time index.
     def get_value_at_time(self, t):
-        raise NotImplementedError("Complete get_value_at_time")
+        return 0 if (t < self.start_time or t > self.end_time) else self.signal[t - self.start_time]
 
     # Set the signal value at the given time index.
     def set_value_at_time(self, t, value):
-        raise NotImplementedError("Complete set_value_at_time")
+        if t >= self.start_time and t <= self.end_time:
+            self.signal[t - self.start_time] = value
 
     # Return a shifted copy of the signal.
     def shift(self, k):
-        raise NotImplementedError("Complete shift")
+        new_signal = DiscreteSignal(self.start_time - k, self.end_time - k)
+        
+        new_signal.signal = self.signal.copy()
+        
+        return new_signal
 
     # Return the sum of this signal and another signal.
     def add(self, other):
-        raise NotImplementedError("Complete add")
+        new_start = np.min(self.start_time, other.start_time)
 
     # Return a scaled copy of the signal.
     def multiply(self, scalar):
