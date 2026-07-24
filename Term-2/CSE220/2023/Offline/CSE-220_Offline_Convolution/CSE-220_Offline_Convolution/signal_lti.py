@@ -24,7 +24,7 @@ class DiscreteSignal:
         self.end_time = end_time
         self.size = end_time - start_time + 1
         
-        self.signal = np.zeros(self.size)
+        self.values = np.zeros(self.size)
 
     # Return the number of stored samples in the signal.
     def __len__(self):
@@ -36,18 +36,18 @@ class DiscreteSignal:
 
     # Return the signal value at the given time index.
     def get_value_at_time(self, t):
-        return 0 if (t < self.start_time or t > self.end_time) else self.signal[t - self.start_time]
+        return 0 if (t < self.start_time or t > self.end_time) else self.values[t - self.start_time]
 
     # Set the signal value at the given time index.
     def set_value_at_time(self, t, value):
         if t >= self.start_time and t <= self.end_time:
-            self.signal[t - self.start_time] = value
+            self.values[t - self.start_time] = value
 
     # Return a shifted copy of the signal.
     def shift(self, k):
         new_signal = DiscreteSignal(self.start_time - k, self.end_time - k)
         
-        new_signal.signal = self.signal.copy()
+        new_signal.values = self.values.copy()
         
         return new_signal
 
