@@ -1,121 +1,116 @@
 """
-CSE220 Online 2 (Step Response)
+CSE220 Online 2 Practice Problem: Cascaded LTI Systems & Equivalences
+
+** changed because 2023 Online uses a different structure **
 
 Instructions:
-- Copy (or import) your completed Signal and LTI_System classes from Offline 1.
+- Use your DiscreteSignal and LTISystem classes imported from signal_lti.py.
 - Implement the TODO functions below.
-- Do NOT use numpy.convolve / scipy.signal / any built-in convolution.
+- Do NOT use numpy.convolve / scipy.signal / built-in convolution.
 """
 
+import os
 import numpy as np
 import matplotlib.pyplot as plt
 
-
-# Paste/Import your Offline 1 implementations here
-# from your_offline1_file import Signal, LTI_System
-
-class Signal:
-    def __init__(self, INF):
-        # TODO: paste your Offline 1 implementation
-        raise NotImplementedError
-
-    def set_value_at_time(self, t, value):
-        raise NotImplementedError
-
-    def shift(self, k):
-        raise NotImplementedError
-
-    def add(self, other):
-        raise NotImplementedError
-
-    def multiply(self, scalar):
-        raise NotImplementedError
-
-    def plot(self, title="Discrete Signal"):
-        raise NotImplementedError
+from signal_lti import DiscreteSignal, LTISystem
 
 
-class LTI_System:
-    def __init__(self, impulse_response: Signal):
-        # TODO: paste your Offline 1 implementation
-        raise NotImplementedError
-
-    def linear_combination_of_impulses(self, input_signal: Signal):
-        raise NotImplementedError
-
-    def output(self, input_signal: Signal):
-        raise NotImplementedError
-
-
-def read_signal_from_file(filename: str, INF: int) -> Signal:
-    sig = Signal(INF)
+# Helper: Reads a signal from file
+def read_signal_from_file(filename: str) -> DiscreteSignal:
+    """
+    File format:
+    Line 1: nstart nend
+    Line 2: sample_0 sample_1 ... sample_N
+    """
     with open(filename, "r", encoding="utf-8") as f:
-        nstart, nend = map(int, f.readline().strip().split())
-        vals = list(map(float, f.readline().strip().split()))
-    assert len(vals) == (nend - nstart + 1)
+        lines = [line.strip() for line in f if line.strip() and not line.startswith("#")]
+        nstart, nend = map(int, lines[0].split())
+        vals = list(map(float, lines[1].split()))
+
+    assert len(vals) == (nend - nstart + 1), "Sample count does not match nstart..nend range"
+    
+    sig = DiscreteSignal(nstart, nend)
     for i, v in enumerate(vals):
         sig.set_value_at_time(nstart + i, v)
     return sig
 
 
-def first_difference(sig: Signal) -> Signal:
+# TODO 1: Compute First Difference of a signal
+def first_difference(sig: DiscreteSignal) -> DiscreteSignal:
     """
-    Returns Δsig[n] = sig[n] - sig[n-1] (assume outside range is 0).
-    Must use Signal.shift/add/multiply.
+    Computes Δsig[n] = sig[n] - sig[n-1].
+    MUST use only DiscreteSignal operations (shift, multiply, add).
     """
-    # TODO
-    raise NotImplementedError
+    
+    return sig.add(sig.shift(1).multiply(-1))
 
 
-def impulse_from_step_response(step_response: Signal) -> Signal:
+# TODO 2: Compute Cascaded Output
+def compute_cascade_output(x: DiscreteSignal, sys1: LTISystem, sys2: LTISystem) -> DiscreteSignal:
     """
-    Given s[n], compute h[n] = s[n] - s[n-1] (with s[-1]=0).
-    Must use only Signal operations.
+    Computes output y_cascade[n] by passing x[n] through sys1 first,
+    and then passing the intermediate result through sys2.
+    
+    w[n] = sys1.output(x)
+    y[n] = sys2.output(w)
     """
-    # TODO
-    raise NotImplementedError
+    return sys2.output(sys1.output(x))
 
 
-def output_using_step_response(x: Signal, step_response: Signal) -> Signal:
+# TODO 3: Compute Equivalent Combined Impulse Response
+def compute_equivalent_impulse_response(sys1: LTISystem, sys2: LTISystem) -> DiscreteSignal:
     """
-    Compute y[n] using ONLY step response:
-        y = (Δx * s)
-    You must reuse your Offline 1 LTI_System machinery (linear combination of impulses).
+    Computes equivalent impulse response h_eq[n] = (h1 * h2)[n].
+    Re-use sys1 or sys2 output machinery!
     """
-    # TODO
-    raise NotImplementedError
+    # TODO: Implement h_eq calculation
+    return sys2.output(sys1.h)
 
 
-# Main (demo workflow)
+# Helper function to generate mock test files if they don't exist
+def create_mock_files():
+    if not os.path.exists("input_x.txt"):
+        with open("input_x.txt", "w") as f:
+            f.write("0 4\n1.0 2.0 3.0 2.0 1.0\n")
+
+    if not os.path.exists("impulse_h1.txt"):
+        with open("impulse_h1.txt", "w") as f:
+            f.write("0 2\n0.5 0.3 0.2\n")
+
+    if not os.path.exists("impulse_h2.txt"):
+        with open("impulse_h2.txt", "w") as f:
+            f.write("0 1\n1.0 -1.0\n")
+
+
 if __name__ == "__main__":
-    # Choose INF large enough for your signals
-    INF = 50
+    # Generate mock files for testing locally
+    create_mock_files()
 
-    # ---- Load provided files ----
-    s = read_signal_from_file("step_response.txt", INF)
-    x = read_signal_from_file("input_signal.txt", INF)
+    # ---- Step 1: Load Signals ----
+    x = read_signal_from_file("input_x.txt")
+    h1 = read_signal_from_file("impulse_h1.txt")
+    h2 = read_signal_from_file("impulse_h2.txt")
 
-    # ---- Part 1: recover impulse response ----
-    h = None
+    sys1 = LTISystem(h1)
+    sys2 = LTISystem(h2)
 
-    s.plot("Step Response s[n]")
-    h.plot("Recovered Impulse Response h[n] = s[n] - s[n-1]")
+    # ---- Step 2: Compute First Difference of Input ----
+    dx = first_difference(x)
 
-    # ---- Part 2: output using only step response ----
-    dx = None
-    y_s = None
+    # ---- Step 3: Compute Cascaded Output ----
+    y_cascade = compute_cascade_output(x, sys1, sys2)
 
-    x.plot("Input x[n]")
-    dx.plot("First Difference Δx[n]")
-    y_s.plot("Output y_s[n] computed via step response")
+    # ---- Step 4: Compute Equivalent Impulse Response and Output ----
+    h_eq = compute_equivalent_impulse_response(sys1, sys2)
+    sys_eq = LTISystem(h_eq)
+    y_eq = sys_eq.output(x)
 
-    # ---- Part 3: verify with impulse-response method ----
-    sys_h = None
-    y_h = None
-    y_h.plot("Output y_h[n] computed via impulse response")
+    # ---- Step 5: Verification ----
+    print("y_cascade values:", y_cascade.values)
+    print("y_eq values:     ", y_eq.values)
 
-    # Check if outputs match closely
-    if np.allclose(y_s.values, y_h.values, atol=1e-6):
-        print("Outputs match closely!")
+    if np.allclose(y_cascade.values, y_eq.values, atol=1e-6):
+        print("✅ SUCCESS: Cascaded output matches Equivalent System output!")
     else:
-        print("Outputs differ!")
+        print("❌ ERROR: Outputs differ!")
