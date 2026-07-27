@@ -481,7 +481,7 @@ class GuestMode extends RoomEnhancement {
  * Not used by the test runner; run `java SmartHome.java` to see it.
  * =====================================================================
  */
-public class SmartHomeDemo {
+public class SmartHomeDemoClaude {
     public static void main(String[] args) {
         System.out.println("=== ORDER SENSITIVITY: throttle-then-eco  vs  raw-eco ===\n");
 

@@ -481,3 +481,37 @@ class GuestMode extends RoomEnhancement {
 
 }
 
+/*
+ * =====================================================================
+ * DEMO (requirement #4: demonstrate order sensitivity concretely)
+ * Not used by the test runner; run `java SmartHome.java` to see it.
+ * =====================================================================
+ */
+class SmartHomeDemo {
+    public static void main(String[] args) {
+        System.out.println("=== ORDER SENSITIVITY: throttle-then-eco  vs  raw-eco ===\n");
+
+        // (A) Throttle the thermostat to 80W BEFORE it enters the EcoMode room.
+        Room a = new Room("Throttled-first");
+        a.addDevice(new SmartLight()); // 10W
+        a.addDevice(new SmartLight()); // 10W
+        a.addDevice(new PowerThrottled(new SmartThermostat(), 80)); // 80W (was 150)
+        SmartDevice ecoA = new EcoMode(a, 100);
+        ecoA.activate();
+        System.out.println("Throttled(80) then Eco(100): total = " + ecoA.getPowerUsage()
+                + "W  (10+10+80 = 100 fits, nothing shed)");
+
+        // (B) Same room, but the thermostat is raw when EcoMode runs.
+        Room b = new Room("Eco-only");
+        b.addDevice(new SmartLight()); // 10W
+        b.addDevice(new SmartLight()); // 10W
+        b.addDevice(new SmartThermostat()); // 150W
+        SmartDevice ecoB = new EcoMode(b, 100);
+        ecoB.activate();
+        System.out.println("Raw then Eco(100):           total = " + ecoB.getPowerUsage()
+                + "W  (10+10+150 > 100, newest (thermostat) shed)");
+
+        System.out.println("\nSame parts, different wrap order => different result. "
+                + "That is the Decorator's order sensitivity.");
+    }
+}
