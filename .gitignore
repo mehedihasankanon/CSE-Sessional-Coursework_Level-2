@@ -6,3 +6,7 @@
 **/.vscode/
 **/**.exe
 **/**.dll
+
+
+**/**drivedownload**
+**/**driveupload**
