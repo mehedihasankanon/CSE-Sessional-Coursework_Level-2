@@ -3,6 +3,12 @@ import numpy as np
 from svg_utils import load_svg_path
 from epicycle_animation import save_outputs
 
+# added imports
+import scipy
+import math
+
+# edited requirements.txt: scipy>=1.18
+
 
 class FourierEpicycles:
     def __init__(self, t, signal, n_harmonics):
@@ -35,8 +41,14 @@ class FourierEpicycles:
                            n -> c_n once calculate_all_coefficients() has
                            been called
         """
-        # TODO: implement this method
-        raise NotImplementedError("Implement __init__")
+
+        self.t = t
+        self.signal = signal
+        self.N = n_harmonics
+        
+        self.T = t[-1]
+        self.omega = (2*math.pi)/self.T
+        self.coeffs = {}
 
     def calculate_cn(self, n):
         """
@@ -48,16 +60,35 @@ class FourierEpicycles:
 
         n may be zero, positive, or negative.
         """
-        # TODO: implement this method
-        raise NotImplementedError("Implement calculate_cn")
+        dt = self.t[1] - self.t[0]
+        
+        new_sig = np.multiply(self.signal, np.exp(-1j * self.omega * n * self.t))
+        
+        # dt not needed since passing self.t autoamtically infers the 
+        # sample spacing from the array
+        # return np.trapezoid(new_sig, self.t, dt) / self.T
+        return np.trapezoid(new_sig, self.t) / self.T
+        
+        # # c_n = a_n + j * b_n
+        
+        # re_sig = np.multiply(self.signal, np.cos(-n*self.omega*self.t))
+        # com_sig = np.multiply(self.signal, np.sin(-n*self.omega*self.t))
+        
+        # # i = np.trapezoid(self.signal, self.t, dt)
+        
+        # a_n = np.trapezoid(re_sig, self.t, dt) / self.T
+        # b_n = np.trapezoid(com_sig, self.t, dt) / self.T
+        
+        # return a_n, b_n
 
     def calculate_all_coefficients(self):
         """
         Step 3: Populate self.coeffs with c_n for every harmonic
         n = -N, ..., -1, 0, 1, ..., N by repeatedly calling calculate_cn(n).
         """
-        # TODO: implement this method
-        raise NotImplementedError("Implement calculate_all_coefficients")
+    
+        for n in range(-self.N, self.N + 1):
+            self.coeffs[n] = self.calculate_cn(n)
 
     def approximate(self, t):
         """
@@ -70,8 +101,31 @@ class FourierEpicycles:
         implementation must support both, since the provided
         plotting/animation code calls this both ways.
         """
-        # TODO: implement this method
-        raise NotImplementedError("Implement approximate")
+
+        # c_n can be converted to a vector
+        # exp(j n omega t) can be another vector
+        # then dot product
+        
+        # c_n = []
+        # terms = []
+        
+        # acc. to docstring -> this is already calculated, so no need 
+        # to call this again
+        
+        # self.calculate_all_coefficients()
+        
+        # for n in range(-self.N, self.N + 1):
+        #     c_n.append(self.coeffs[n])
+        #     terms.append(np.exp())
+        
+        result = np.zeros_like(t,dtype=np.complex128)
+        
+        for n in range(-self.N, self.N + 1):
+            expo = np.exp(1j * n * self.omega * t)
+            result += np.multiply(self.coeffs[n], expo)
+        
+    
+        return result
 
 
 if __name__ == "__main__":
