@@ -101,10 +101,6 @@ class FourierEpicycles:
         implementation must support both, since the provided
         plotting/animation code calls this both ways.
         """
-
-        # c_n can be converted to a vector
-        # exp(j n omega t) can be another vector
-        # then dot product
         
         # c_n = []
         # terms = []

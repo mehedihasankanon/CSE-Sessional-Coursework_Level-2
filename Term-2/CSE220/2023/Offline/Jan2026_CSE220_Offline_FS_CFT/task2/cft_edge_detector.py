@@ -67,18 +67,68 @@ class CFT2D:
         -------
         real, imag : two 2D numpy arrays, each of shape self.I.shape
         """
-        # TODO: implement this method
-        raise NotImplementedError("Implement CFT2D.compute_cft")
+        
+        Re_F = np.zeros(self.I.shape)
+        # Re_F = Int Int I(x,y) cos(2 pi u x) cos(2 pi v y) dx dy 
+        #       -Int Int I(x,y) sin(2 pi u x) sin(2 pi v y) dx dy 
+        
+        
+        Im_F = np.zeros(self.I.shape)
+        # Im_F = -Int Int I(x,y) sin(2 pi u x) cos(2 pi v y) dx dy 
+        #        -Int Int I(x,y) cos(2 pi u x) sin(2 pi v y) dx dy 
+        
+        C_x = np.zeros(self.I.shape) # Int I(x,y) cos(2 pi u x) dx
+        
+        # iterate over all frequenceis in u-axis and store the integraion result of 
+        # one particular index
+        for iu,u in enumerate(self.u):
+            integrand = self.I * np.cos(2 * np.pi * u * self.x)
+            # store the whole column returned by np.trapezoid in the column indexed iu
+            # C_x[: , iu] -> take all rows, and column iu
+            C_x[:, iu] = np.trapezoid(integrand, self.x, axis=1)
+        
+        
+        S_x = np.zeros(self.I.shape) # Int I(x,y) sin(2 pi u x) dx
+        
+        for iu, u in enumerate(self.u):
+            integrand = self.I * np.sin(2 * np.pi * u * self.x)
+            S_x[:, iu] = np.trapezoid(integrand, self.x, axis=1)
+            
+        
+        # loop over v-axis and store the final results 
+        for iv,v in enumerate(self.v):
+            int1 = C_x * np.cos(2 * np.pi * v * self.y)[:, None] 
+            int2 = S_x * np.sin(2 * np.pi * v * self.y)[:, None] 
+            
+            Re_F[iv, :] = np.trapezoid(int1 - int2, self.y, axis=0)
+            
+            int3 = S_x * np.cos(2 * np.pi * v * self.y)[:, None] 
+            int4 = C_x * np.sin(2 * np.pi * v * self.y)[:, None] 
+            
+            Im_F[iv, :] = np.trapezoid(-int3 - int4, self.y, axis=0)
+            
+            
+        return Re_F, Im_F
+            
+        
 
     def plot_magnitude(self):
         """
         Plot the log-scaled magnitude spectrum of the 2D CFT computed by
         compute_cft(), i.e. plt.imshow(np.log(1 + magnitude), ...) where
-        magnitude = sqrt(real**2 + imag**2). Purely for your own visual
+        magnitude = sqrt(real^2 + imag^2). Purely for your own visual
         debugging -- not called by the command-line entry point below.
         """
-        # TODO: implement this method
-        raise NotImplementedError("Implement CFT2D.plot_magnitude")
+    
+        real,imag = self.compute_cft()
+        mag = np.hypot(real,imag)
+        
+        log_mag = np.log(1 + mag)
+        
+        plt.imshow(log_mag, cmap='gray')
+        plt.title('')
+        plt.show()
+    
 
 
 class FrequencyFilter:
@@ -159,6 +209,7 @@ if __name__ == "__main__":
     img = ContinuousImage(input_path)
     cft2d = CFT2D(img)
     real, imag = cft2d.compute_cft()
+    # cft2d.plot_magnitude()
 
     filt = FrequencyFilter()
     real_f, imag_f = filt.high_pass(real, imag, cutoff)
