@@ -186,8 +186,46 @@ class InverseCFT2D:
             has been removed) -- see the command-line entry point below
             for how it gets turned into a displayable edge map.
         """
-        # TODO: implement this method
-        raise NotImplementedError("Implement InverseCFT2D.reconstruct")
+
+        # F(u,v) = R + jI
+        # I(x,y) = Rcos(2 pi (ux + vy)) - Isin(2 pi (ux + vy))
+        #        = (Rcos(2 pi vy) - Isin(2 pi vy))cos(2 pi ux)
+        #          ------------ A(y,u) -----------
+        #         -(Rsin(2 pi vy) + Icos(2 pi vy))sin(2 pi ux)
+        #          ------------ B(y,u) -----------
+        
+        A = np.zeros((self.y.shape[0],self.u.shape[0]))
+        B = np.zeros_like(A)
+        
+        image = np.zeros((self.y.shape[0], self.x.shape[0]))
+        
+        
+        for iy,y in enumerate(self.y):
+            c = np.cos(2 * np.pi * self.v * y)[:, None]
+            s = np.sin(2 * np.pi * self.v * y)[:, None]
+            
+            intA = self.real * c - self.imag * s
+            intB = self.real * s + self.imag * c
+            
+            A[iy, :] = np.trapezoid(intA, self.v, axis=0)
+            B[iy, :] = np.trapezoid(intB, self.v, axis=0)
+                        
+            
+        for ix,x in enumerate(self.x):
+            c = np.cos(2 * np.pi * self.u * x)
+            s = np.sin(2 * np.pi * self.u * x)
+            
+            image[:, ix] = np.trapezoid(A * c - B * s, self.u, axis=1)
+            
+        return image
+            
+            
+        
+        
+        
+        
+        
+        
 
 
 # =====================================================
