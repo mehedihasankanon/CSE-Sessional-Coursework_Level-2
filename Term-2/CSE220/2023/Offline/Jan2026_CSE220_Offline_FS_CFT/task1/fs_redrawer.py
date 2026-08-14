@@ -3,12 +3,6 @@ import numpy as np
 from svg_utils import load_svg_path
 from epicycle_animation import save_outputs
 
-# added imports
-import scipy
-import math
-
-# edited requirements.txt: scipy>=1.18
-
 
 class FourierEpicycles:
     def __init__(self, t, signal, n_harmonics):
@@ -47,7 +41,7 @@ class FourierEpicycles:
         self.N = n_harmonics
         
         self.T = t[-1]
-        self.omega = (2*math.pi)/self.T
+        self.omega = (2*np.pi)/self.T
         self.coeffs = {}
 
     def calculate_cn(self, n):
