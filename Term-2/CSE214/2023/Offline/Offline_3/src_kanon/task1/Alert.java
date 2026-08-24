@@ -8,7 +8,6 @@ public class Alert {
     private final String location;
     private final int severityLevel;
     private final String instructions;
-    private final String msg;
 
     private Alert(Builder builder) {
         this.title = builder.title;
@@ -16,33 +15,36 @@ public class Alert {
         this.location = builder.location;
         this.severityLevel = builder.severityLevel;
         this.instructions = builder.instructions;
-        this.msg = builder.msg;
     }
 
     public Category getCat() {
         return cat;
     }
 
-    public String getMsg() {
-        return String.format("%s | %s | Loc: %s | Severity: %d | Instructions: %s",
-                msg, title, location, severityLevel, instructions);
+    public String getTitle() {
+        return this.title;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s | %s | Location: %s | Severity: %d | Instructions: %s",
+                title, cat, location, severityLevel, instructions);
     }
 
     public static class Builder {
         private final Category cat;
-        private final String msg;
-        private String title = "General Alert";
+        private String title;
         private String location = "Unknown";
         private int severityLevel = 1;
         private String instructions = "No specific instructions.";
 
-        public Builder(Category cat, String msg) {
+        public Builder(Category cat) {
             this.cat = cat;
-            this.msg = msg;
+            this.title = alertMsg(cat);
         }
 
         public Builder title(String title) {
-            this.title = title;
+            this.title = customTitle(title);
             return this;
         }
 
@@ -74,9 +76,13 @@ public class Alert {
         return "[ " + getCurrentTime() + " ]: " + alert.toString() + ' ' + "ALERT";
     }
 
+    private static String customTitle(String title) {
+        return "[ " + getCurrentTime() + " ]: " + title;
+    }
+
     public static Alert generateAlert(Category cat) {
-        return new Alert.Builder(cat, alertMsg(cat))
-                .title(cat.toString() + " Warning")
+        // Generic alert generation fr fast prototyping
+        return new Alert.Builder(cat)
                 .location("Dhaka Division")
                 .severityLevel(8)
                 .instructions("Evacuate immediately to higher ground.")

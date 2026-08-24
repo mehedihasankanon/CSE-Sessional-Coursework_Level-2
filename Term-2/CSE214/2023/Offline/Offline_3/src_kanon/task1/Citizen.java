@@ -20,14 +20,14 @@ public class Citizen implements Subscriber {
     public void notifySubscriber(Alert alert) {
         alerts.add(alert);
 
-        System.out.println(alert.getMsg());
+        // System.out.println(alert.toString());
     }
 
     @Override
     public void displayReceivedAlerts() {
         System.out.println("\n[ Citizen " + getName() + " ] Alerts");
         for(Alert a : alerts) {
-            System.out.println('\t' + a.getMsg());
+            System.out.println('\t' + a.toString());
         }
         System.out.println("");
     }
