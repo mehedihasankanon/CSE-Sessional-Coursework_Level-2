@@ -47,30 +47,30 @@ public class SystemTest {
         // 7. Student notifications and the final status.
         coordinator.displayStatus(mehedi);
 
-        System.out.println("\n===================== ADDITIONAL SEQUENCE-VIOLATION COVERAGE (Nadia) =====================");
+        System.out.println("\n===================== ADDITIONAL SEQUENCE-VIOLATION COVERAGE (Raihan) =====================");
         // Mehedi's run above only ever hit two of the four "out of sequence"
         // rejections (office order without confirmation, certificate without
         // office order). This run exercises the remaining ones: testimonial
         // requested too early, and certificate requested before the
         // testimonial exists.
-        Student nadia = new Student("Nadia");
-        coordinator.registerStudent(nadia);
+        Student raihan = new Student("Raihan");
+        coordinator.registerStudent(raihan);
 
-        dsw.attemptEvent(Event.ISSUE_TESTIMONIAL, nadia);   // reject: no departmental confirmation
-        coe.attemptEvent(Event.ISSUE_CERTIFICATE, nadia);   // reject: no departmental confirmation
+        dsw.attemptEvent(Event.ISSUE_TESTIMONIAL, raihan);   // reject: no departmental confirmation
+        coe.attemptEvent(Event.ISSUE_CERTIFICATE, raihan);   // reject: no departmental confirmation
 
-        dept.attemptEvent(Event.SUBMIT_DEPT_REQ_CONFIRMATION, nadia);
+        dept.attemptEvent(Event.SUBMIT_DEPT_REQ_CONFIRMATION, raihan);
 
-        dsw.attemptEvent(Event.ISSUE_TESTIMONIAL, nadia);   // reject: no office order yet
+        dsw.attemptEvent(Event.ISSUE_TESTIMONIAL, raihan);   // reject: no office order yet
 
-        coe.attemptEvent(Event.ISSUE_OFFICE_ORDER, nadia);
+        coe.attemptEvent(Event.ISSUE_OFFICE_ORDER, raihan);
 
-        coe.attemptEvent(Event.ISSUE_CERTIFICATE, nadia);   // reject: no testimonial yet
+        coe.attemptEvent(Event.ISSUE_CERTIFICATE, raihan);   // reject: no testimonial yet
 
-        dsw.attemptEvent(Event.ISSUE_TESTIMONIAL, nadia);
-        coe.attemptEvent(Event.ISSUE_CERTIFICATE, nadia);
+        dsw.attemptEvent(Event.ISSUE_TESTIMONIAL, raihan);
+        coe.attemptEvent(Event.ISSUE_CERTIFICATE, raihan);
 
-        coordinator.displayStatus(nadia);
+        coordinator.displayStatus(raihan);
 
         System.out.println("\n===================== ROLE ENFORCEMENT: NO OFFICE MAY ACT OUTSIDE ITS ROLE (Rakib) =====================");
         Student rakib = new Student("Rakib");

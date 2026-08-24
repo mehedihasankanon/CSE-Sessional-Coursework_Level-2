@@ -82,7 +82,7 @@ public class Coordinator implements ResultMediator {
                 }
 
                 state.officeOrderIssued = true;
-                student.receiveNotification(new Notification(event, student, "Final-result office order has been successfully issued."));
+                student.receiveNotification(new Notification(event, student, "Final result office order has been successfully issued."));
                 break;
 
             case ISSUE_TESTIMONIAL:

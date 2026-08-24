@@ -2,7 +2,7 @@ package task1;
 
 import java.util.*;
 
-public class BdAlertSystem {
+public class BdAlertSystem implements AlertPublisher {
 
     private Set<Subscriber> allUsers = new HashSet<>();
     private Map<Category, Set<Subscriber>> subscribers;
