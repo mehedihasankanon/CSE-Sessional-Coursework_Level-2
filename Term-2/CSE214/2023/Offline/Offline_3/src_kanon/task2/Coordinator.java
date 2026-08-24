@@ -11,9 +11,25 @@ public class Coordinator implements ResultMediator {
     }
 
     private Map<Student, ClearanceState> studentStates;
+    private Set<Colleague> registeredOffices;
 
     public Coordinator() {
         studentStates = new HashMap<>();
+        registeredOffices = new HashSet<>();
+    }
+
+    private static boolean isAuthorized(Colleague col, Event event) {
+        switch (event) {
+            case SUBMIT_DEPT_REQ_CONFIRMATION:
+                return col instanceof DeptOffice;
+            case ISSUE_OFFICE_ORDER:
+            case ISSUE_CERTIFICATE:
+                return col instanceof ControllerOfExams;
+            case ISSUE_TESTIMONIAL:
+                return col instanceof DSW;
+            default:
+                return false;
+        }
     }
 
     private static class NotifHelper {
@@ -35,8 +51,18 @@ public class Coordinator implements ResultMediator {
 
     @Override
     public void notify(Colleague col, Event event, Student student) {
+        if (!registeredOffices.contains(col)) {
+            System.out.println("Error: " + col.getName() + " is not a registered office.");
+            return;
+        }
+
         if (!studentStates.containsKey(student)) {
             System.out.println("Student " + student.getName() + " not registered yet.");
+            return;
+        }
+
+        if (!isAuthorized(col, event)) {
+            System.out.println("Error: " + col.getName() + " is not authorized to perform " + event + ".");
             return;
         }
 
@@ -96,6 +122,12 @@ public class Coordinator implements ResultMediator {
             default:
                 break;
         }
+    }
+
+    @Override
+    public void registerOffice(Colleague office) {
+        registeredOffices.add(office);
+        System.out.println("Registered office [ " + office.getName() + " ]");
     }
 
     @Override
