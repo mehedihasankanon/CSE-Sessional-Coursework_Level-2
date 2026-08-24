@@ -9,7 +9,7 @@ public abstract class Colleague extends Person {
     }
 
     public void attemptEvent(Event event, Student student) {
-        System.out.println("\n>>> " + this.name + " is attempting: " + event + " for " + student.getName());
+        System.out.println("\n" + this.name + " is attempting: " + event + " for " + student.getName());
         mediator.notify(this, event, student);
     }
 }

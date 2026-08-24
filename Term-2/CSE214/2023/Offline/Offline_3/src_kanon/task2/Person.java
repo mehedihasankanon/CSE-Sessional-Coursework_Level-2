@@ -11,7 +11,4 @@ public abstract class Person {
         return name;
     }
     
-    public void receiveNotification(Notification notification) {
-        System.out.println("[ " + this.name + " ] received: " + notification.getMessage());
-    }
 }

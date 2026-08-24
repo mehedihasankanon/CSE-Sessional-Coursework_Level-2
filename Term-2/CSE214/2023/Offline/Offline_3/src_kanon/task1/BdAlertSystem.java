@@ -30,7 +30,7 @@ public class BdAlertSystem {
     public void addSubscriber(Subscriber sub, Category cat) {
 
         if (!allUsers.contains(sub)) {
-            System.out.println("Error: Citizen " + ((Citizen)sub).getName() + " must be registered first.");
+            System.out.println("Error: Citizen " + sub.getName() + " must be registered first.");
             return; 
         }
 

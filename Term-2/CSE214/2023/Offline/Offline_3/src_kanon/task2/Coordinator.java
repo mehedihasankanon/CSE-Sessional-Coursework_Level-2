@@ -6,7 +6,7 @@ public class Coordinator implements ResultMediator {
     private class ClearanceState {
         boolean deptReqConfirmed = false;
         boolean officeOrderIssued = false;
-        boolean testimonialIssued = false; // Fixed typo here
+        boolean testimonialIssued = false; 
         boolean certificatesIssued = false;
     }
 
@@ -89,7 +89,7 @@ public class Coordinator implements ResultMediator {
                     return;
                 }
                 
-                state.certificatesIssued = true; // Fixed the missing state update here
+                state.certificatesIssued = true;
                 student.receiveNotification(new Notification(event, student, "Certificate and transcript successfully issued. CLEARANCE COMPLETE."));
                 break;
 
@@ -106,7 +106,10 @@ public class Coordinator implements ResultMediator {
 
     @Override
     public void displayStatus(Student student) {
-        if (!studentStates.containsKey(student)) return;
+        if (!studentStates.containsKey(student)) {
+            System.out.println("Student " + student.getName() + " not registered yet.");
+            return;
+        }
         ClearanceState state = studentStates.get(student);
         
         System.out.println("\n" + student.getName() + " status:");
