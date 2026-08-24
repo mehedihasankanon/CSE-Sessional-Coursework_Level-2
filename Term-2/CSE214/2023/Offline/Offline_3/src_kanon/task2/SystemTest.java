@@ -60,7 +60,6 @@ public class SystemTest {
         ControllerOfExams impostor = new ControllerOfExams(coordinator, "Unregistered COE");
         impostor.attemptEvent(Event.ISSUE_OFFICE_ORDER, rakib);
 
-        System.out.println("\nRakib's status must be completely untouched by the rejected attempts above:");
         coordinator.displayStatus(rakib);
     }
 }
