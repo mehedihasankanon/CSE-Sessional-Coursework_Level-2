@@ -35,7 +35,7 @@ public class Alert {
         private final Category cat;
         private String title;
         private String location = "Unknown";
-        private int severityLevel = 1;
+        private int severityLevel = 0;
         private String instructions = "No specific instructions.";
 
         public Builder(Category cat) {
