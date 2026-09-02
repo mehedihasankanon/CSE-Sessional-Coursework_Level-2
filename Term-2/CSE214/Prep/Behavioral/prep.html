@@ -1,0 +1,767 @@
+<!DOCTYPE html><html><head>
+      <title>prep</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="color-scheme" content="light dark">
+      
+      <link rel="stylesheet" href="file:///c:/Users/mhkan/.vscode/extensions/shd101wyy.markdown-preview-enhanced-0.8.32/crossnote/dependencies/katex/katex.min.css">
+      
+      
+      
+      
+      
+      
+      
+      <style>
+      pre{font-family:Menlo,Monaco,Consolas,'Courier New',monospace;direction:ltr;text-align:left;white-space:pre;word-spacing:normal;word-break:normal;padding:1em;margin:.5em 0;overflow:auto;line-height:1.5;tab-size:4;hyphens:none;color:#839496;background-color:#003b4a!important;border:#006c88;border-radius:3px}pre[class*=language-]{padding:1em}code[class*=language-] .token.cdata,code[class*=language-] .token.comment,code[class*=language-] .token.doctype,code[class*=language-] .token.prolog,pre[class*=language-] .token.cdata,pre[class*=language-] .token.comment,pre[class*=language-] .token.doctype,pre[class*=language-] .token.prolog{color:#586e75;font-style:italic}code[class*=language-] .token.punctuation,pre[class*=language-] .token.punctuation{color:#586e75}code[class*=language-] .namespace,pre[class*=language-] .namespace{opacity:.7}code[class*=language-] .token.property,pre[class*=language-] .token.property{color:#859900}code[class*=language-] .token.boolean,code[class*=language-] .token.function-name,code[class*=language-] .token.number,pre[class*=language-] .token.boolean,pre[class*=language-] .token.function-name,pre[class*=language-] .token.number{color:#d33682}code[class*=language-] .token.tag,pre[class*=language-] .token.tag{color:#268bd2}code[class*=language-] .token.selector,pre[class*=language-] .token.selector{color:#859900}code[class*=language-] .token.attr-name,pre[class*=language-] .token.attr-name{color:#657b83}code[class*=language-] .token.string,pre[class*=language-] .token.string{color:#2aa198}code[class*=language-] .token.char,pre[class*=language-] .token.char{color:#cb4b16}code[class*=language-] .token.builtin,pre[class*=language-] .token.builtin{color:#859900}code[class*=language-] .token.entity,pre[class*=language-] .token.entity{color:#268bd2}code[class*=language-] .token.url,pre[class*=language-] .token.url{color:#586e75}code[class*=language-] .token.atrule,code[class*=language-] .token.attr-value,code[class*=language-] .token.keyword,pre[class*=language-] .token.atrule,pre[class*=language-] .token.attr-value,pre[class*=language-] .token.keyword{color:#859900}code[class*=language-] .token.function,pre[class*=language-] .token.function{color:#268bd2}code[class*=language-] .token.class-name,pre[class*=language-] .token.class-name{color:#268bd2}code[class*=language-] .token.variable,pre[class*=language-] .token.variable{color:#268bd2}code[class*=language-] .token.important,code[class*=language-] .token.regex,pre[class*=language-] .token.important,pre[class*=language-] .token.regex{color:#dc322f}code[class*=language-] .token.bold,code[class*=language-] .token.important,pre[class*=language-] .token.bold,pre[class*=language-] .token.important{font-weight:700}code[class*=language-] .token.italic,pre[class*=language-] .token.italic{font-style:italic}code[class*=language-] .token.entity,pre[class*=language-] .token.entity{cursor:help}pre[data-line]{position:relative;padding:1em 0 1em 3em}pre[data-line] .line-highlight-wrapper{position:absolute;top:0;left:0;background-color:transparent;display:block;width:100%}pre[data-line] .line-highlight{position:absolute;left:0;right:0;padding:inherit 0;margin-top:1em;background:hsla(24,20%,50%,.08);background:linear-gradient(to right,hsla(24,20%,50%,.1) 70%,hsla(24,20%,50%,0));pointer-events:none;line-height:inherit;white-space:pre}pre[data-line] .line-highlight:before,pre[data-line] .line-highlight[data-end]:after{content:attr(data-start);position:absolute;top:.4em;left:.6em;min-width:1em;padding:0 .5em;background-color:hsla(24,20%,50%,.4);color:#f4f1ef;font:bold 65%/1.5 sans-serif;text-align:center;vertical-align:.3em;border-radius:999px;text-shadow:none;box-shadow:0 1px #fff}pre[data-line] .line-highlight[data-end]:after{content:attr(data-end);top:auto;bottom:.4em}@media (prefers-color-scheme: dark) {
+pre{font-family:Menlo,Monaco,Consolas,'Courier New',monospace;direction:ltr;text-align:left;white-space:pre;word-spacing:normal;word-break:normal;padding:1em;margin:.5em 0;overflow:auto;line-height:1.5;tab-size:4;hyphens:none;color:#839496;background-color:#003b4a!important;border:#006c88;border-radius:3px}pre[class*=language-]{padding:1em}code[class*=language-] .token.cdata,code[class*=language-] .token.comment,code[class*=language-] .token.doctype,code[class*=language-] .token.prolog,pre[class*=language-] .token.cdata,pre[class*=language-] .token.comment,pre[class*=language-] .token.doctype,pre[class*=language-] .token.prolog{color:#586e75;font-style:italic}code[class*=language-] .token.punctuation,pre[class*=language-] .token.punctuation{color:#586e75}code[class*=language-] .namespace,pre[class*=language-] .namespace{opacity:.7}code[class*=language-] .token.property,pre[class*=language-] .token.property{color:#859900}code[class*=language-] .token.boolean,code[class*=language-] .token.function-name,code[class*=language-] .token.number,pre[class*=language-] .token.boolean,pre[class*=language-] .token.function-name,pre[class*=language-] .token.number{color:#d33682}code[class*=language-] .token.tag,pre[class*=language-] .token.tag{color:#268bd2}code[class*=language-] .token.selector,pre[class*=language-] .token.selector{color:#859900}code[class*=language-] .token.attr-name,pre[class*=language-] .token.attr-name{color:#657b83}code[class*=language-] .token.string,pre[class*=language-] .token.string{color:#2aa198}code[class*=language-] .token.char,pre[class*=language-] .token.char{color:#cb4b16}code[class*=language-] .token.builtin,pre[class*=language-] .token.builtin{color:#859900}code[class*=language-] .token.entity,pre[class*=language-] .token.entity{color:#268bd2}code[class*=language-] .token.url,pre[class*=language-] .token.url{color:#586e75}code[class*=language-] .token.atrule,code[class*=language-] .token.attr-value,code[class*=language-] .token.keyword,pre[class*=language-] .token.atrule,pre[class*=language-] .token.attr-value,pre[class*=language-] .token.keyword{color:#859900}code[class*=language-] .token.function,pre[class*=language-] .token.function{color:#268bd2}code[class*=language-] .token.class-name,pre[class*=language-] .token.class-name{color:#268bd2}code[class*=language-] .token.variable,pre[class*=language-] .token.variable{color:#268bd2}code[class*=language-] .token.important,code[class*=language-] .token.regex,pre[class*=language-] .token.important,pre[class*=language-] .token.regex{color:#dc322f}code[class*=language-] .token.bold,code[class*=language-] .token.important,pre[class*=language-] .token.bold,pre[class*=language-] .token.important{font-weight:700}code[class*=language-] .token.italic,pre[class*=language-] .token.italic{font-style:italic}code[class*=language-] .token.entity,pre[class*=language-] .token.entity{cursor:help}pre[data-line]{position:relative;padding:1em 0 1em 3em}pre[data-line] .line-highlight-wrapper{position:absolute;top:0;left:0;background-color:transparent;display:block;width:100%}pre[data-line] .line-highlight{position:absolute;left:0;right:0;padding:inherit 0;margin-top:1em;background:hsla(24,20%,50%,.08);background:linear-gradient(to right,hsla(24,20%,50%,.1) 70%,hsla(24,20%,50%,0));pointer-events:none;line-height:inherit;white-space:pre}pre[data-line] .line-highlight:before,pre[data-line] .line-highlight[data-end]:after{content:attr(data-start);position:absolute;top:.4em;left:.6em;min-width:1em;padding:0 .5em;background-color:hsla(24,20%,50%,.4);color:#f4f1ef;font:bold 65%/1.5 sans-serif;text-align:center;vertical-align:.3em;border-radius:999px;text-shadow:none;box-shadow:0 1px #fff}pre[data-line] .line-highlight[data-end]:after{content:attr(data-end);top:auto;bottom:.4em}
+}
+html body{font-family:'Helvetica Neue',Helvetica,'Segoe UI',Arial,freesans,sans-serif;font-size:16px;line-height:1.6;color:#383942;background-color:#f9f9f9;overflow:initial;box-sizing:border-box;word-wrap:break-word}html body>:first-child{margin-top:0}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{line-height:1.2;margin-top:1em;margin-bottom:16px;color:#000}html body h1{font-size:2.25em;font-weight:300;padding-bottom:.3em}html body h2{font-size:1.75em;font-weight:400;padding-bottom:.3em}html body h3{font-size:1.5em;font-weight:500}html body h4{font-size:1.25em;font-weight:600}html body h5{font-size:1.1em;font-weight:600}html body h6{font-size:1em;font-weight:600}html body h1,html body h2,html body h3,html body h4,html body h5{font-weight:600}html body h5{font-size:1em}html body h6{color:#5d606e}html body strong{color:#000}html body del{color:#5d606e}html body a:not([href]){color:inherit;text-decoration:none}html body a{color:#0184bc;text-decoration:none}html body a:hover{color:#01a0e5;text-decoration:none}html body img{max-width:100%}html body>p{margin-top:0;margin-bottom:16px;word-wrap:break-word}html body>ol,html body>ul{margin-bottom:16px}html body ol,html body ul{padding-left:2em}html body ol.no-list,html body ul.no-list{padding:0;list-style-type:none}html body ol ol,html body ol ul,html body ul ol,html body ul ul{margin-top:0;margin-bottom:0}html body li{margin-bottom:0}html body li.task-list-item{list-style:none}html body li>p{margin-top:0;margin-bottom:0}html body .task-list-item-checkbox{margin:0 .2em .25em -1.8em;vertical-align:middle}html body .task-list-item-checkbox:hover{cursor:pointer}html body blockquote{margin:16px 0;font-size:inherit;padding:0 15px;color:#5d606e;background-color:#eaeaea;border-left:4px solid #d0d0d1}html body blockquote>:first-child{margin-top:0}html body blockquote>:last-child{margin-bottom:0}html body hr{height:4px;margin:32px 0;background-color:#d0d0d1;border:0 none}html body table{margin:10px 0 15px 0;border-collapse:collapse;border-spacing:0;display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all}html body table th{font-weight:700;color:#000}html body table td,html body table th{border:1px solid #d0d0d1;padding:6px 13px}html body dl{padding:0}html body dl dt{padding:0;margin-top:16px;font-size:1em;font-style:italic;font-weight:700}html body dl dd{padding:0 16px;margin-bottom:16px}html body code{font-family:Menlo,Monaco,Consolas,'Courier New',monospace;font-size:.85em;color:#000;background-color:#eaeaea;border-radius:3px;padding:.2em 0}html body code::after,html body code::before{letter-spacing:-.2em;content:'\00a0'}html body pre>code{padding:0;margin:0;word-break:normal;white-space:pre;background:0 0;border:0}html body .highlight{margin-bottom:16px}html body .highlight pre,html body pre{padding:1em;overflow:auto;line-height:1.45;border:#d0d0d1;border-radius:3px}html body .highlight pre{margin-bottom:0;word-break:normal}html body pre code,html body pre tt{display:inline;max-width:initial;padding:0;margin:0;overflow:initial;line-height:inherit;word-wrap:normal;background-color:transparent;border:0}html body pre code:after,html body pre code:before,html body pre tt:after,html body pre tt:before{content:normal}html body blockquote,html body dl,html body ol,html body p,html body pre,html body ul{margin-top:0;margin-bottom:16px}html body kbd{color:#000;border:1px solid #d0d0d1;border-bottom:2px solid #c1c1c2;padding:2px 4px;background-color:#eaeaea;border-radius:3px}@media print{html body{background-color:#f9f9f9}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{color:#000;page-break-after:avoid}html body blockquote{color:#5d606e}html body pre{page-break-inside:avoid}html body table{display:table}html body img{display:block;max-width:100%;max-height:100%}html body code,html body pre{word-wrap:break-word;white-space:pre}}@media (prefers-color-scheme: dark) {
+html body{font-family:'Helvetica Neue',Helvetica,'Segoe UI',Arial,freesans,sans-serif;font-size:16px;line-height:1.6;color:#aab1bf;background-color:#272b33;overflow:initial;box-sizing:border-box;word-wrap:break-word}html body>:first-child{margin-top:0}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{line-height:1.2;margin-top:1em;margin-bottom:16px;color:#fff}html body h1{font-size:2.25em;font-weight:300;padding-bottom:.3em}html body h2{font-size:1.75em;font-weight:400;padding-bottom:.3em}html body h3{font-size:1.5em;font-weight:500}html body h4{font-size:1.25em;font-weight:600}html body h5{font-size:1.1em;font-weight:600}html body h6{font-size:1em;font-weight:600}html body h1,html body h2,html body h3,html body h4,html body h5{font-weight:600}html body h5{font-size:1em}html body h6{color:#7c869c}html body strong{color:#fff}html body del{color:#7c869c}html body a:not([href]){color:inherit;text-decoration:none}html body a{color:#56b6c2;text-decoration:none}html body a:hover{color:#74c3cd;text-decoration:none}html body img{max-width:100%}html body>p{margin-top:0;margin-bottom:16px;word-wrap:break-word}html body>ol,html body>ul{margin-bottom:16px}html body ol,html body ul{padding-left:2em}html body ol.no-list,html body ul.no-list{padding:0;list-style-type:none}html body ol ol,html body ol ul,html body ul ol,html body ul ul{margin-top:0;margin-bottom:0}html body li{margin-bottom:0}html body li.task-list-item{list-style:none}html body li>p{margin-top:0;margin-bottom:0}html body .task-list-item-checkbox{margin:0 .2em .25em -1.8em;vertical-align:middle}html body .task-list-item-checkbox:hover{cursor:pointer}html body blockquote{margin:16px 0;font-size:inherit;padding:0 15px;color:#7c869c;background-color:#393f4a;border-left:4px solid #4b5261}html body blockquote>:first-child{margin-top:0}html body blockquote>:last-child{margin-bottom:0}html body hr{height:4px;margin:32px 0;background-color:#4b5261;border:0 none}html body table{margin:10px 0 15px 0;border-collapse:collapse;border-spacing:0;display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all}html body table th{font-weight:700;color:#fff}html body table td,html body table th{border:1px solid #4b5261;padding:6px 13px}html body dl{padding:0}html body dl dt{padding:0;margin-top:16px;font-size:1em;font-style:italic;font-weight:700}html body dl dd{padding:0 16px;margin-bottom:16px}html body code{font-family:Menlo,Monaco,Consolas,'Courier New',monospace;font-size:.85em;color:#fff;background-color:#393f4a;border-radius:3px;padding:.2em 0}html body code::after,html body code::before{letter-spacing:-.2em;content:'\00a0'}html body pre>code{padding:0;margin:0;word-break:normal;white-space:pre;background:0 0;border:0}html body .highlight{margin-bottom:16px}html body .highlight pre,html body pre{padding:1em;overflow:auto;line-height:1.45;border:#4b5261;border-radius:3px}html body .highlight pre{margin-bottom:0;word-break:normal}html body pre code,html body pre tt{display:inline;max-width:initial;padding:0;margin:0;overflow:initial;line-height:inherit;word-wrap:normal;background-color:transparent;border:0}html body pre code:after,html body pre code:before,html body pre tt:after,html body pre tt:before{content:normal}html body blockquote,html body dl,html body ol,html body p,html body pre,html body ul{margin-top:0;margin-bottom:16px}html body kbd{color:#fff;border:1px solid #4b5261;border-bottom:2px solid #3e4450;padding:2px 4px;background-color:#393f4a;border-radius:3px}@media print{html body{background-color:#272b33}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{color:#fff;page-break-after:avoid}html body blockquote{color:#7c869c}html body pre{page-break-inside:avoid}html body table{display:table}html body img{display:block;max-width:100%;max-height:100%}html body code,html body pre{word-wrap:break-word;white-space:pre}}
+}
+.markdown-preview{width:100%;height:100%;box-sizing:border-box}.markdown-preview ul{list-style:disc}.markdown-preview ul ul{list-style:circle}.markdown-preview ul ul ul{list-style:square}.markdown-preview ol{list-style:decimal}.markdown-preview ol ol,.markdown-preview ul ol{list-style-type:lower-roman}.markdown-preview ol ol ol,.markdown-preview ol ul ol,.markdown-preview ul ol ol,.markdown-preview ul ul ol{list-style-type:lower-alpha}.markdown-preview .newpage,.markdown-preview .pagebreak{page-break-before:always}.markdown-preview pre.line-numbers{position:relative;padding-left:3.8em;counter-reset:linenumber}.markdown-preview pre.line-numbers>code{position:relative}.markdown-preview pre.line-numbers .line-numbers-rows{position:absolute;pointer-events:none;top:1em;font-size:100%;left:0;width:3em;letter-spacing:-1px;border-right:1px solid #999;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.markdown-preview pre.line-numbers .line-numbers-rows>span{pointer-events:none;display:block;counter-increment:linenumber}.markdown-preview pre.line-numbers .line-numbers-rows>span:before{content:counter(linenumber);color:#999;display:block;padding-right:.8em;text-align:right}.markdown-preview .mathjax-exps .MathJax_Display{text-align:center!important}.markdown-preview:not([data-for=preview]) .code-chunk .code-chunk-btn-group{display:none}.markdown-preview:not([data-for=preview]) .code-chunk .status{display:none}.markdown-preview:not([data-for=preview]) .code-chunk .output-div{margin-bottom:16px}.markdown-preview .md-toc{padding:0}.markdown-preview .md-toc .md-toc-details{margin:0;padding:0;border:none}.markdown-preview .md-toc ol.md-toc-ol{margin:0;padding-left:1.6em}.markdown-preview .md-toc summary.md-toc-link-wrapper{cursor:pointer;list-style-position:outside}.markdown-preview .md-toc summary.md-toc-link-wrapper::marker{font-size:.85em}.markdown-preview .md-toc .md-toc-link-wrapper .md-toc-link{display:inline;padding:.25rem 0}.markdown-preview .md-toc .md-toc-link-wrapper .md-toc-link div,.markdown-preview .md-toc .md-toc-link-wrapper .md-toc-link p{display:inline}.markdown-preview .md-toc .md-toc-link-wrapper.highlighted .md-toc-link{font-weight:800}.markdown-preview .md-toc .md-toc-link-wrapper[data-level='0']{margin-left:12px}.markdown-preview .md-toc .md-toc-link-wrapper[data-level='1']{margin-left:28px}.markdown-preview .md-toc .md-toc-link-wrapper[data-level='2']{margin-left:44px}.markdown-preview .md-toc .md-toc-link-wrapper[data-level='3']{margin-left:60px}.markdown-preview .md-toc .md-toc-link-wrapper[data-level='4']{margin-left:76px}.markdown-preview .md-toc .md-toc-link-wrapper[data-level='5']{margin-left:80px}.markdown-preview a.tag,.markdown-preview a.tag:active,.markdown-preview a.tag:link,.markdown-preview a.tag:visited,.markdown-preview span.tag:not(.token){display:inline-block;background-color:var(--vscode-badge-background,rgba(127,127,127,.18));color:var(--vscode-badge-foreground,currentColor);border-radius:2em;font-size:.85em;font-weight:500;padding:.05em .55em;line-height:1.5;white-space:nowrap;text-decoration:none;text-shadow:none;box-shadow:none;transition:background-color .12s ease,opacity .12s ease}.markdown-preview a.tag{cursor:pointer}.markdown-preview a.tag:focus,.markdown-preview a.tag:hover{background-color:var(--vscode-badge-background,rgba(127,127,127,.32));color:var(--vscode-badge-foreground,currentColor);opacity:.85;text-decoration:none;outline:0}.markdown-preview .wikilink-embed-content{border-left:3px solid var(--vscode-textBlockQuote-border,rgba(128,128,128,.3));background:var(--vscode-textBlockQuote-background,rgba(128,128,128,.05));margin:.5em 0;padding:.5em .75em;border-radius:0 3px 3px 0}.markdown-preview .wikilink-embed-content.wikilink-embed-error{border-left-color:var(--vscode-errorForeground,#cf222e);color:var(--vscode-errorForeground,#cf222e);font-style:italic;opacity:.8}.markdown-preview .wikilink-embed-content h1:first-child,.markdown-preview .wikilink-embed-content h2:first-child,.markdown-preview .wikilink-embed-content h3:first-child,.markdown-preview .wikilink-embed-content h4:first-child,.markdown-preview .wikilink-embed-content h5:first-child,.markdown-preview .wikilink-embed-content h6:first-child{margin-top:.25em}.markdown-preview .wikilink-embed-content .wikilink-embed-content{margin:.25em 0;padding:.25em .5em}.markdown-preview .block-id{display:none}.scrollbar-style::-webkit-scrollbar{width:8px}.scrollbar-style::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}.scrollbar-style::-webkit-scrollbar-thumb{border-radius:5px;background-color:var(--vscode-scrollbarSlider-background,rgba(150,150,150,.66));border:4px solid var(--vscode-scrollbarSlider-background,rgba(150,150,150,.66));background-clip:content-box}.scrollbar-style::-webkit-scrollbar-thumb:hover{background-color:var(--vscode-scrollbarSlider-hoverBackground,rgba(120,120,120,.66))}html body[for=html-export]:not([data-presentation-mode]){position:relative;width:100%;height:100%;top:0;left:0;margin:0;padding:0;overflow:auto}html body[for=html-export]:not([data-presentation-mode]) .markdown-preview{position:relative;top:0;min-height:100vh}@media screen and (min-width:914px){html body[for=html-export]:not([data-presentation-mode]) .markdown-preview{padding:2em calc(50% - 457px + 2em)}}@media screen and (max-width:914px){html body[for=html-export]:not([data-presentation-mode]) .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for=html-export]:not([data-presentation-mode]) .markdown-preview{font-size:14px!important;padding:1em}}@media print{html body[for=html-export]:not([data-presentation-mode]) #sidebar-toc-btn{display:none}}html body[for=html-export]:not([data-presentation-mode]) #sidebar-toc-btn{position:fixed;bottom:8px;left:8px;font-size:28px;cursor:pointer;color:inherit;z-index:99;width:32px;text-align:center;opacity:.4}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] #sidebar-toc-btn{opacity:1}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc{position:fixed;top:0;left:0;width:300px;height:100%;padding:32px 0 48px 0;font-size:14px;box-shadow:0 0 4px rgba(150,150,150,.33);box-sizing:border-box;overflow:auto;background-color:inherit}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar{width:8px}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-thumb{border-radius:5px;background-color:var(--vscode-scrollbarSlider-background,rgba(150,150,150,.66));border:4px solid var(--vscode-scrollbarSlider-background,rgba(150,150,150,.66));background-clip:content-box}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-thumb:hover{background-color:var(--vscode-scrollbarSlider-hoverBackground,rgba(120,120,120,.66))}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc a{text-decoration:none}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc{padding:0 16px}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-details{margin:0;padding:0;border:none}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc ol.md-toc-ol{margin:0;padding-left:1.6em}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper .md-toc-link{display:inline;padding:.25rem 0}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper .md-toc-link div,html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper .md-toc-link p{display:inline}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper.highlighted .md-toc-link{font-weight:800}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper[data-level='0']{padding-left:0}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper[data-level='1']{padding-left:16px}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper[data-level='2']{padding-left:32px}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper[data-level='3']{padding-left:48px}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper[data-level='4']{padding-left:64px}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper[data-level='5']{padding-left:80px}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{left:300px;width:calc(100% - 300px);padding:2em calc(50% - 457px - 300px / 2);margin:0;box-sizing:border-box}@media screen and (max-width:1274px){html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{width:100%}}html body[for=html-export]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .markdown-preview{left:50%;transform:translateX(-50%)}html body[for=html-export]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .md-sidebar-toc{display:none}
+/* Please visit the URL below for more information: */
+/*   https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css */
+
+      </style>
+      <!-- The content below will be included at the end of the <head> element. -->
+<script type="text/javascript">
+  document.addEventListener("DOMContentLoaded", function () {
+    // your code here
+  });
+</script>
+    </head>
+    <body for="html-export">
+      <div class="crossnote markdown-preview  ">
+      
+<p>Here is your ultimate, exam-ready survival guide for Behavioral Design Patterns, followed by a personalized test-taking strategy built directly from your coding profile.</p>
+<hr>
+<h1 id="-behavioral-design-patterns-exam-survival-guide">📘 Behavioral Design Patterns: Exam Survival Guide </h1>
+<h2 id="1-the-strategy-pattern">1. The Strategy Pattern </h2>
+<p><strong>Concept:</strong> Encapsulate a family of algorithms so the client can swap them dynamically at runtime.</p>
+<h3 id="-ascii-uml">📊 ASCII UML </h3>
+<pre data-role="codeBlock" data-info="text" class="language-text text"><code>  +------------------+         +-------------------------------+
+  |     Context      |         | &lt;&lt;interface&gt;&gt; Strategy        |
+  +------------------+         +-------------------------------+
+  | - strat: Strategy|--------&gt;| + executeAlgorithm(data)      |
+  +------------------+         +-------------------------------+
+  | + setStrategy(s) |                  ^             ^
+  | + doWork()       |                  |             |
+  +------------------+      +-------------+        +-------------+
+                            | ConcreteA   |        | ConcreteB   |
+                            +-------------+        +-------------+
+                            | + execute() |        | + execute() |
+                            +-------------+        +-------------+
+
+</code></pre><h3 id="-skeleton-code">💻 Skeleton Code </h3>
+<pre data-role="codeBlock" data-info="java" class="language-java java"><code><span class="token comment">// ROLE: Strategy Interface (Public)</span>
+<span class="token comment">// HOW TO WIRE: Defines the verb that changes.</span>
+<span class="token keyword keyword-public">public</span> <span class="token keyword keyword-interface">interface</span> <span class="token class-name">Strategy</span> <span class="token punctuation">{</span>
+    <span class="token keyword keyword-void">void</span> <span class="token function">executeAlgorithm</span><span class="token punctuation">(</span><span class="token class-name">String</span> data<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// ROLE: Concrete Strategies (Public/Package-private)</span>
+<span class="token comment">// HOW TO WIRE: Implement the interface. Must remain stateless.</span>
+<span class="token keyword keyword-public">public</span> <span class="token keyword keyword-class">class</span> <span class="token class-name">FastStrategy</span> <span class="token keyword keyword-implements">implements</span> <span class="token class-name">Strategy</span> <span class="token punctuation">{</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword keyword-public">public</span> <span class="token keyword keyword-void">void</span> <span class="token function">executeAlgorithm</span><span class="token punctuation">(</span><span class="token class-name">String</span> data<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Processing fast: "</span> <span class="token operator">+</span> data<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// ROLE: Context (Public)</span>
+<span class="token comment">// HOW TO WIRE: Holds the strategy. Client calls setStrategy() to swap it.</span>
+<span class="token keyword keyword-public">public</span> <span class="token keyword keyword-class">class</span> <span class="token class-name">Context</span> <span class="token punctuation">{</span>
+    <span class="token keyword keyword-private">private</span> <span class="token class-name">Strategy</span> strategy<span class="token punctuation">;</span> <span class="token comment">// Private reference</span>
+
+    <span class="token keyword keyword-public">public</span> <span class="token class-name">Context</span><span class="token punctuation">(</span><span class="token class-name">Strategy</span> initialStrategy<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword keyword-this">this</span><span class="token punctuation">.</span>strategy <span class="token operator">=</span> initialStrategy<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">// Public setter for runtime swapping</span>
+    <span class="token keyword keyword-public">public</span> <span class="token keyword keyword-void">void</span> <span class="token function">setStrategy</span><span class="token punctuation">(</span><span class="token class-name">Strategy</span> strategy<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword keyword-this">this</span><span class="token punctuation">.</span>strategy <span class="token operator">=</span> strategy<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">// Public method delegates to the strategy</span>
+    <span class="token keyword keyword-public">public</span> <span class="token keyword keyword-void">void</span> <span class="token function">doWork</span><span class="token punctuation">(</span><span class="token class-name">String</span> data<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword keyword-this">this</span><span class="token punctuation">.</span>strategy<span class="token punctuation">.</span><span class="token function">executeAlgorithm</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span> 
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+</code></pre><h3 id="-exam-pitfalls--detection">🚨 Exam Pitfalls &amp; Detection </h3>
+<ul>
+<li><strong>How to spot it:</strong> Look for keywords like <em>"swappable at runtime"</em>, <em>"pricing rules"</em>, <em>"different algorithms"</em>, <em>"calculate based on environment"</em>.</li>
+<li><strong>Major Pitfall:</strong> Putting state/data inside the Strategy. The Strategy should only contain math/logic. Pass the required data into the method as parameters.</li>
+<li><strong>Disambiguation:</strong> Strategy vs. State. In Strategy, the <strong>main method</strong> (the client) calls <code>setStrategy()</code>. In State, the <strong>states themselves</strong> trigger the change.</li>
+</ul>
+<hr>
+<h2 id="2-the-state-pattern">2. The State Pattern </h2>
+<p><strong>Concept:</strong> Allow an object to alter its behavior when its internal state changes. The object will appear to change its class.</p>
+<h3 id="-ascii-uml-1">📊 ASCII UML </h3>
+<pre data-role="codeBlock" data-info="text" class="language-text text"><code>  +------------------+         +-------------------------------+
+  |     Context      |         |    &lt;&lt;interface&gt;&gt; State        |
+  +------------------+         +-------------------------------+
+  | - state: State   |&lt;--------| + handleAction(Context c)     |
+  +------------------+         +-------------------------------+
+  | + setState(s)    |                  ^             ^
+  | + request()      |                  |             |
+  +------------------+      +-------------+        +-------------+
+                            | StatePhase1 |        | StatePhase2 |
+                            +-------------+        +-------------+
+                            | + handle()  |        | + handle()  |
+                            +-------------+        +-------------+
+
+</code></pre><h3 id="-skeleton-code-1">💻 Skeleton Code </h3>
+<pre data-role="codeBlock" data-info="java" class="language-java java"><code><span class="token comment">// ROLE: State Interface (Public)</span>
+<span class="token comment">// HOW TO WIRE: Every method takes the Context as a parameter to trigger transitions.</span>
+<span class="token keyword keyword-public">public</span> <span class="token keyword keyword-interface">interface</span> <span class="token class-name">State</span> <span class="token punctuation">{</span>
+    <span class="token keyword keyword-void">void</span> <span class="token function">handleAction</span><span class="token punctuation">(</span><span class="token class-name">Context</span> context<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// ROLE: Concrete State (Public/Package-private)</span>
+<span class="token comment">// HOW TO WIRE: Contains phase logic. Transitions Context to the next state!</span>
+<span class="token keyword keyword-public">public</span> <span class="token keyword keyword-class">class</span> <span class="token class-name">PhaseOneState</span> <span class="token keyword keyword-implements">implements</span> <span class="token class-name">State</span> <span class="token punctuation">{</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword keyword-public">public</span> <span class="token keyword keyword-void">void</span> <span class="token function">handleAction</span><span class="token punctuation">(</span><span class="token class-name">Context</span> context<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Phase 1 complete. Moving to Phase 2."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">// CRITICAL: State changes itself!</span>
+        context<span class="token punctuation">.</span><span class="token function">setState</span><span class="token punctuation">(</span><span class="token keyword keyword-new">new</span> <span class="token class-name">PhaseTwoState</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// ROLE: Context (Public)</span>
+<span class="token comment">// HOW TO WIRE: Holds current state. Delegates verbs to the state.</span>
+<span class="token keyword keyword-public">public</span> <span class="token keyword keyword-class">class</span> <span class="token class-name">Context</span> <span class="token punctuation">{</span>
+    <span class="token keyword keyword-private">private</span> <span class="token class-name">State</span> currentState<span class="token punctuation">;</span> <span class="token comment">// Private reference</span>
+
+    <span class="token keyword keyword-public">public</span> <span class="token class-name">Context</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword keyword-this">this</span><span class="token punctuation">.</span>currentState <span class="token operator">=</span> <span class="token keyword keyword-new">new</span> <span class="token class-name">PhaseOneState</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Default starting state</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">// Public setter, but usually called BY the states, not the client!</span>
+    <span class="token keyword keyword-public">public</span> <span class="token keyword keyword-void">void</span> <span class="token function">setState</span><span class="token punctuation">(</span><span class="token class-name">State</span> state<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword keyword-this">this</span><span class="token punctuation">.</span>currentState <span class="token operator">=</span> state<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword keyword-public">public</span> <span class="token keyword keyword-void">void</span> <span class="token function">request</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        currentState<span class="token punctuation">.</span><span class="token function">handleAction</span><span class="token punctuation">(</span><span class="token keyword keyword-this">this</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Pass 'this' so state can change it</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+</code></pre><h3 id="-exam-pitfalls--detection-1">🚨 Exam Pitfalls &amp; Detection </h3>
+<ul>
+<li><strong>How to spot it:</strong> Look for <em>"lifecycle"</em>, <em>"workflow"</em>, <em>"transitions"</em>, <em>"conditions"</em>, <em>"locked/unlocked"</em>.</li>
+<li><strong>Major Pitfall:</strong> The <code>instanceof</code> trap! If you ever write <code>if (state instanceof LockedState)</code>, you failed the pattern. Trust the interface. Let polymorphism do the work.</li>
+<li><strong>Disambiguation:</strong> If you have massive <code>if-else</code> blocks checking a status string or enum, you need the State pattern.</li>
+</ul>
+<hr>
+<h2 id="3-the-observer-pattern">3. The Observer Pattern </h2>
+<p><strong>Concept:</strong> Define a one-to-many dependency. When one object changes state, all its dependents are notified automatically.</p>
+<h3 id="-ascii-uml-2">📊 ASCII UML </h3>
+<pre data-role="codeBlock" data-info="text" class="language-text text"><code>  +------------------+         +-------------------------------+
+  |    Subject       |         |   &lt;&lt;interface&gt;&gt; Observer      |
+  +------------------+         +-------------------------------+
+  | - observers: List|--------&gt;| + update(data)                |
+  +------------------+         +-------------------------------+
+  | + attach(obs)    |                  ^             ^
+  | + detach(obs)    |                  |             |
+  | + notifyAll()    |      +-------------+        +-------------+
+  +------------------+      | WidgetOne   |        | WidgetTwo   |
+                            +-------------+        +-------------+
+                            | + update()  |        | + update()  |
+                            +-------------+        +-------------+
+
+</code></pre><h3 id="-skeleton-code-2">💻 Skeleton Code </h3>
+<pre data-role="codeBlock" data-info="java" class="language-java java"><code><span class="token keyword keyword-import">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span><span class="token operator">*</span></span><span class="token punctuation">;</span>
+
+<span class="token comment">// ROLE: Observer/Subscriber Interface (Public)</span>
+<span class="token comment">// HOW TO WIRE: Defines how the subject will pass data to listeners.</span>
+<span class="token keyword keyword-public">public</span> <span class="token keyword keyword-interface">interface</span> <span class="token class-name">Observer</span> <span class="token punctuation">{</span>
+    <span class="token keyword keyword-void">void</span> <span class="token function">update</span><span class="token punctuation">(</span><span class="token class-name">String</span> data<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// ROLE: Concrete Observers (Public/Package-private)</span>
+<span class="token comment">// HOW TO WIRE: Implement update() to react to broadcast.</span>
+<span class="token keyword keyword-public">public</span> <span class="token keyword keyword-class">class</span> <span class="token class-name">Dashboard</span> <span class="token keyword keyword-implements">implements</span> <span class="token class-name">Observer</span> <span class="token punctuation">{</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword keyword-public">public</span> <span class="token keyword keyword-void">void</span> <span class="token function">update</span><span class="token punctuation">(</span><span class="token class-name">String</span> data<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Dashboard updated with: "</span> <span class="token operator">+</span> data<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// ROLE: Subject/Publisher (Public)</span>
+<span class="token comment">// HOW TO WIRE: Maintains list of observers. Broadcasts to them via loop.</span>
+<span class="token keyword keyword-public">public</span> <span class="token keyword keyword-class">class</span> <span class="token class-name">Subject</span> <span class="token punctuation">{</span>
+    <span class="token comment">// Private list. (Use Set&lt;Observer&gt; to prevent duplicate subs!)</span>
+    <span class="token keyword keyword-private">private</span> <span class="token class-name">Set</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Observer</span><span class="token punctuation">&gt;</span></span> observers <span class="token operator">=</span> <span class="token keyword keyword-new">new</span> <span class="token class-name">HashSet</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">&gt;</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+
+    <span class="token keyword keyword-public">public</span> <span class="token keyword keyword-void">void</span> <span class="token function">attach</span><span class="token punctuation">(</span><span class="token class-name">Observer</span> o<span class="token punctuation">)</span> <span class="token punctuation">{</span> observers<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>o<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+    <span class="token keyword keyword-public">public</span> <span class="token keyword keyword-void">void</span> <span class="token function">detach</span><span class="token punctuation">(</span><span class="token class-name">Observer</span> o<span class="token punctuation">)</span> <span class="token punctuation">{</span> observers<span class="token punctuation">.</span><span class="token function">remove</span><span class="token punctuation">(</span>o<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+
+    <span class="token comment">// Private or Public, depending on who triggers it</span>
+    <span class="token keyword keyword-public">public</span> <span class="token keyword keyword-void">void</span> <span class="token function">notifyAll</span><span class="token punctuation">(</span><span class="token class-name">String</span> data<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword keyword-for">for</span> <span class="token punctuation">(</span><span class="token class-name">Observer</span> o <span class="token operator">:</span> observers<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            o<span class="token punctuation">.</span><span class="token function">update</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Blind broadcast</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+</code></pre><h3 id="-exam-pitfalls--detection-2">🚨 Exam Pitfalls &amp; Detection </h3>
+<ul>
+<li><strong>How to spot it:</strong> Look for <em>"broadcast"</em>, <em>"notify multiple independent systems"</em>, <em>"subscribe/unsubscribe at runtime"</em>, <em>"widgets update automatically"</em>.</li>
+<li><strong>Major Pitfall:</strong> Java Naming Collisions! Never name your interface <code>System</code>.</li>
+<li><strong>Disambiguation:</strong> Observer vs. Mediator. Observer is a loudspeaker (one-way). Mediator is a telephone operator (two-way coordination).</li>
+</ul>
+<hr>
+<h2 id="4-the-mediator-pattern">4. The Mediator Pattern </h2>
+<p><strong>Concept:</strong> Centralize complex communications between objects to prevent a tangled web of direct references.</p>
+<h3 id="-ascii-uml-3">📊 ASCII UML </h3>
+<pre data-role="codeBlock" data-info="text" class="language-text text"><code>       +------------------+           +------------------+
+       | &lt;&lt;interface&gt;&gt;    |           | &lt;&lt;abstract&gt;&gt;     |
+       |    Mediator      |           |    Colleague     |
+       +------------------+           +------------------+
+       | + notify(sender) |&lt;---------&gt;| # mediator: Med  |
+       +------------------+           +------------------+
+                ^                              ^
+                |                              |
+       +------------------+        ------------+-----------
+       | CentralHub       |        |                      |
+       +------------------+  +-----------+          +-----------+
+       | - compA: CompA   |  | ComponentA|          | ComponentB|
+       | - compB: CompB   |  +-----------+          +-----------+
+       | + notify(sender) |  | + doA()   |          | + doB()   |
+       +------------------+  +-----------+          +-----------+
+
+</code></pre><h3 id="-skeleton-code-3">💻 Skeleton Code </h3>
+<pre data-role="codeBlock" data-info="java" class="language-java java"><code><span class="token comment">// ROLE: Mediator Interface (Public)</span>
+<span class="token comment">// HOW TO WIRE: Defines how colleagues talk to the hub.</span>
+<span class="token keyword keyword-public">public</span> <span class="token keyword keyword-interface">interface</span> <span class="token class-name">Mediator</span> <span class="token punctuation">{</span>
+    <span class="token keyword keyword-void">void</span> <span class="token function">notify</span><span class="token punctuation">(</span><span class="token class-name">Colleague</span> sender<span class="token punctuation">,</span> <span class="token class-name">String</span> event<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// ROLE: Abstract Colleague (Public)</span>
+<span class="token comment">// HOW TO WIRE: Forces all colleagues to hold a reference to the hub.</span>
+<span class="token keyword keyword-public">public</span> <span class="token keyword keyword-abstract">abstract</span> <span class="token keyword keyword-class">class</span> <span class="token class-name">Colleague</span> <span class="token punctuation">{</span>
+    <span class="token keyword keyword-protected">protected</span> <span class="token class-name">Mediator</span> mediator<span class="token punctuation">;</span> <span class="token comment">// Protected so subclasses can use it</span>
+    <span class="token keyword keyword-public">public</span> <span class="token class-name">Colleague</span><span class="token punctuation">(</span><span class="token class-name">Mediator</span> m<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token keyword keyword-this">this</span><span class="token punctuation">.</span>mediator <span class="token operator">=</span> m<span class="token punctuation">;</span> <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// ROLE: Concrete Colleague (Public/Package-private)</span>
+<span class="token comment">// HOW TO WIRE: Does its job, then tells the mediator it finished.</span>
+<span class="token keyword keyword-public">public</span> <span class="token keyword keyword-class">class</span> <span class="token class-name">ComponentA</span> <span class="token keyword keyword-extends">extends</span> <span class="token class-name">Colleague</span> <span class="token punctuation">{</span>
+    <span class="token keyword keyword-public">public</span> <span class="token class-name">ComponentA</span><span class="token punctuation">(</span><span class="token class-name">Mediator</span> m<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token keyword keyword-super">super</span><span class="token punctuation">(</span>m<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+    <span class="token keyword keyword-public">public</span> <span class="token keyword keyword-void">void</span> <span class="token function">executeA</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"CompA did work."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        mediator<span class="token punctuation">.</span><span class="token function">notify</span><span class="token punctuation">(</span><span class="token keyword keyword-this">this</span><span class="token punctuation">,</span> <span class="token string">"DONE_A"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Tell the hub!</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// ROLE: Concrete Mediator (Public)</span>
+<span class="token comment">// HOW TO WIRE: Holds references to colleagues. Orchestrates the flow.</span>
+<span class="token keyword keyword-public">public</span> <span class="token keyword keyword-class">class</span> <span class="token class-name">CentralHub</span> <span class="token keyword keyword-implements">implements</span> <span class="token class-name">Mediator</span> <span class="token punctuation">{</span>
+    <span class="token keyword keyword-private">private</span> <span class="token class-name">ComponentA</span> compA<span class="token punctuation">;</span> <span class="token comment">// Private references to control them</span>
+    
+    <span class="token keyword keyword-public">public</span> <span class="token keyword keyword-void">void</span> <span class="token function">setCompA</span><span class="token punctuation">(</span><span class="token class-name">ComponentA</span> a<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token keyword keyword-this">this</span><span class="token punctuation">.</span>compA <span class="token operator">=</span> a<span class="token punctuation">;</span> <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword keyword-public">public</span> <span class="token keyword keyword-void">void</span> <span class="token function">notify</span><span class="token punctuation">(</span><span class="token class-name">Colleague</span> sender<span class="token punctuation">,</span> <span class="token class-name">String</span> event<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword keyword-if">if</span> <span class="token punctuation">(</span>event<span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span><span class="token string">"DONE_A"</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Hub sees A is done. Triggering next step..."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment">// Trigger compB.doB(), etc.</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+</code></pre><h3 id="-exam-pitfalls--detection-3">🚨 Exam Pitfalls &amp; Detection </h3>
+<ul>
+<li><strong>How to spot it:</strong> <em>"Does not communicate directly"</em>, <em>"Central hub"</em>, <em>"Chain reaction"</em>, <em>"Air Traffic Control"</em>.</li>
+<li><strong>Major Pitfall:</strong> Creating a "God Object". Don't let the Mediator do the actual business logic (like math or processing). It should only route commands (<code>if A is done, tell B to start</code>).</li>
+<li><strong>Disambiguation:</strong> Colleagues must <em>never</em> instantiate or hold references to other colleagues.</li>
+</ul>
+<hr>
+<h2 id="5-the-template-method-pattern">5. The Template Method Pattern </h2>
+<p><strong>Concept:</strong> Define the skeleton of an algorithm in a base class, but let subclasses override specific steps without changing the overall structure.</p>
+<h3 id="-ascii-uml-4">📊 ASCII UML </h3>
+<pre data-role="codeBlock" data-info="text" class="language-text text"><code>                +-------------------------+
+                |    &lt;&lt;abstract&gt;&gt;         |
+                |     BaseTemplate        |
+                +-------------------------+
+                | + templateMethod()      |
+                | - stepOne()             |
+                | # stepTwo()             |
+                +-------------------------+
+                             ^
+                             |
+                +-------------------------+
+                |    ConcreteClass        |
+                +-------------------------+
+                | # stepTwo()             |
+                +-------------------------+
+
+</code></pre><h3 id="-skeleton-code-4">💻 Skeleton Code </h3>
+<pre data-role="codeBlock" data-info="java" class="language-java java"><code><span class="token comment">// ROLE: Abstract Base Class (Public)</span>
+<span class="token comment">// HOW TO WIRE: Houses the final template method and hook definitions.</span>
+<span class="token keyword keyword-public">public</span> <span class="token keyword keyword-abstract">abstract</span> <span class="token keyword keyword-class">class</span> <span class="token class-name">WorkflowTemplate</span> <span class="token punctuation">{</span>
+
+    <span class="token comment">// CRITICAL: public final! Subclasses CANNOT override the order!</span>
+    <span class="token keyword keyword-public">public</span> <span class="token keyword keyword-final">final</span> <span class="token keyword keyword-void">void</span> <span class="token function">executeWorkflow</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token function">invariantStep</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">customStep</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">// ROLE: Invariant Step (Private)</span>
+    <span class="token comment">// HOW TO WIRE: Common logic for all subclasses. Hidden from them.</span>
+    <span class="token keyword keyword-private">private</span> <span class="token keyword keyword-void">void</span> <span class="token function">invariantStep</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Common auth/logging step."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">// ROLE: Variant Step (Protected Abstract)</span>
+    <span class="token comment">// HOW TO WIRE: Forces subclasses to implement their specific logic.</span>
+    <span class="token keyword keyword-protected">protected</span> <span class="token keyword keyword-abstract">abstract</span> <span class="token keyword keyword-void">void</span> <span class="token function">customStep</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// ROLE: Concrete Subclass (Public/Package-private)</span>
+<span class="token comment">// HOW TO WIRE: Implements only the missing pieces of the puzzle.</span>
+<span class="token keyword keyword-public">public</span> <span class="token keyword keyword-class">class</span> <span class="token class-name">SpecificWorkflow</span> <span class="token keyword keyword-extends">extends</span> <span class="token class-name">WorkflowTemplate</span> <span class="token punctuation">{</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword keyword-protected">protected</span> <span class="token keyword keyword-void">void</span> <span class="token function">customStep</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Specific business logic executed here."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+</code></pre><h3 id="-exam-pitfalls--detection-4">🚨 Exam Pitfalls &amp; Detection </h3>
+<ul>
+<li><strong>How to spot it:</strong> Look for <em>"strict order"</em>, <em>"must follow the same overall flow"</em>, <em>"cannot be overridden by juniors"</em>, <em>"customizes a few steps"</em>.</li>
+<li><strong>Major Pitfall:</strong> Forgetting the <code>final</code> keyword on the template method. If you miss this, you lose the primary purpose of the pattern. Also, making the abstract hooks <code>private</code> (Java will throw a compile error).</li>
+<li><strong>Disambiguation:</strong> Template Method uses Inheritance (compile-time). Strategy uses Composition (run-time).</li>
+</ul>
+<hr>
+<hr>
+<h1 id="-your-personalized-test-taking-profile--strategy">🎯 Your Personalized Test-Taking Profile &amp; Strategy </h1>
+<p>Based on our session, I have analyzed your coding instincts. <strong>Your architectural intuition is top-tier (top 5-10% of students).</strong> You instantly identify the correct pattern and map out the classes perfectly.</p>
+<p>However, you bleed points on the <strong>"last 5%"</strong>—the syntactic execution and strict prompt adherence.</p>
+<h3 id="your-specific-weaknesses-the-last-5">Your Specific Weaknesses (The "Last 5%"): </h3>
+<ol>
+<li><strong>The Naming Trap:</strong> You tend to use generic names (<code>System</code>, <code>Data</code>, <code>Sub</code>) which collide with Java core libraries or cause confusion.</li>
+<li><strong>The <code>toString()</code> Trap:</strong> You try to print objects directly (<code>System.out.println(patient)</code>), which results in memory address gibberish without a overridden <code>toString()</code> method.</li>
+<li><strong>Prompt Disobedience:</strong> You often invent your own method names (<code>addSub</code> instead of <code>attachSystem</code>). Automated graders or strict TAs will penalize this heavily, even if the logic is perfect.</li>
+<li><strong>The Over-Engineering Trap:</strong> Initially, you leaned toward <code>instanceof</code> (State) and massive switch statements (Mediator). You corrected this beautifully, but under time pressure, your brain might default back to them.</li>
+</ol>
+<h3 id="your-battle-plan-for-the-exam">Your Battle Plan for the Exam: </h3>
+<p><strong>Step 1: The Read-Through (2 mins)</strong></p>
+<ul>
+<li>Read the prompt. Highlight the requested method names immediately. Write them down as empty stubs in your classes before writing any logic.</li>
+</ul>
+<p><strong>Step 2: The Interface First (3 mins)</strong></p>
+<ul>
+<li>Write the Interface or Abstract Class first.</li>
+<li><em>Self-Check:</em> Did I name it <code>System</code>? Change it to <code>Subject</code> or <code>Hub</code>.</li>
+</ul>
+<p><strong>Step 3: The Context Setup (5 mins)</strong></p>
+<ul>
+<li>Build the class that holds the data.</li>
+<li><em>Self-Check:</em> "Does this class own the data but delegate the verbs?" Ensure there are no massive <code>if-else</code> blocks routing logic here.</li>
+</ul>
+<p><strong>Step 4: The Logic (10 mins)</strong></p>
+<ul>
+<li>Fill in the concrete classes.</li>
+<li><em>Self-Check:</em> If writing State, does the concrete state call <code>context.setState()</code>? If writing Mediator, do the concrete classes call <code>mediator.notify()</code>?</li>
+</ul>
+<p><strong>Step 5: The Polish (5 mins)</strong></p>
+<ul>
+<li>Add a quick <code>public String toString()</code> to any Data objects you are passing around so the print logs look professional.</li>
+<li>Check for the <code>final</code> keyword if it's a Template Method.</li>
+</ul>
+<p>You have the mental model completely locked in. Focus purely on strict adherence to the prompt's method names and clean Java syntax, and you will easily pull 10/10s across the board. Good luck!</p>
+<p>Here is your expanded, comprehensive guide. I have replaced the brief skeletons with the fully implemented examples we studied.</p>
+<p>I have meticulously preserved the commenting system (<code>ROLE</code>, <code>ACCESS LEVEL</code>, <code>HOW TO WIRE</code>) directly inside the code so you can copy, paste, and run them instantly. At the end of each pattern, I have also included advanced architectural tweaks (access level modifications and structural variations) that examiners love to test.</p>
+<hr>
+<h1 id="️-extended-behavioral-patterns-guide">🏗️ Extended Behavioral Patterns Guide </h1>
+<h2 id="1-the-strategy-pattern-1">1. The Strategy Pattern </h2>
+<p><strong>The Problem: Ride-Sharing Pricing Engine</strong><br>
+A ride-sharing app calculates fares differently based on environmental factors (Standard, Rain/Surge, or Carpool). The main application (<code>TripManager</code>) must be able to switch its pricing logic mid-ride without using massive <code>if-else</code> blocks.</p>
+<h3 id="-full-implementation">💻 Full Implementation </h3>
+<pre data-role="codeBlock" data-info="java" class="language-java java"><code><span class="token comment">// ROLE: Strategy Interface</span>
+<span class="token comment">// ACCESS LEVEL: Public (or Package-Private if restricted to a specific module)</span>
+<span class="token comment">// HOW TO WIRE: Defines the method signature for the swappable algorithm.</span>
+<span class="token keyword keyword-public">public</span> <span class="token keyword keyword-interface">interface</span> <span class="token class-name">PricingStrategy</span> <span class="token punctuation">{</span>
+    <span class="token keyword keyword-double">double</span> <span class="token function">calculateSegment</span><span class="token punctuation">(</span><span class="token keyword keyword-double">double</span> distanceInKm<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// ROLE: Concrete Strategy 1</span>
+<span class="token comment">// ACCESS LEVEL: Public (Allows the main method to instantiate and inject it)</span>
+<span class="token comment">// HOW TO WIRE: Implements the interface. Contains NO state. Pure math/logic.</span>
+<span class="token keyword keyword-public">public</span> <span class="token keyword keyword-class">class</span> <span class="token class-name">StandardPricing</span> <span class="token keyword keyword-implements">implements</span> <span class="token class-name">PricingStrategy</span> <span class="token punctuation">{</span>
+    <span class="token keyword keyword-private">private</span> <span class="token keyword keyword-final">final</span> <span class="token keyword keyword-double">double</span> ratePerKm <span class="token operator">=</span> <span class="token number">20.0</span><span class="token punctuation">;</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword keyword-public">public</span> <span class="token keyword keyword-double">double</span> <span class="token function">calculateSegment</span><span class="token punctuation">(</span><span class="token keyword keyword-double">double</span> distanceInKm<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword keyword-return">return</span> distanceInKm <span class="token operator">*</span> ratePerKm<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// ROLE: Concrete Strategy 2</span>
+<span class="token comment">// ACCESS LEVEL: Public</span>
+<span class="token keyword keyword-public">public</span> <span class="token keyword keyword-class">class</span> <span class="token class-name">SurgePricing</span> <span class="token keyword keyword-implements">implements</span> <span class="token class-name">PricingStrategy</span> <span class="token punctuation">{</span>
+    <span class="token keyword keyword-private">private</span> <span class="token keyword keyword-final">final</span> <span class="token keyword keyword-double">double</span> ratePerKm <span class="token operator">=</span> <span class="token number">20.0</span><span class="token punctuation">;</span>
+    <span class="token keyword keyword-private">private</span> <span class="token keyword keyword-final">final</span> <span class="token keyword keyword-double">double</span> surgeMultiplier <span class="token operator">=</span> <span class="token number">1.5</span><span class="token punctuation">;</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword keyword-public">public</span> <span class="token keyword keyword-double">double</span> <span class="token function">calculateSegment</span><span class="token punctuation">(</span><span class="token keyword keyword-double">double</span> distanceInKm<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword keyword-return">return</span> <span class="token punctuation">(</span>distanceInKm <span class="token operator">*</span> ratePerKm<span class="token punctuation">)</span> <span class="token operator">*</span> surgeMultiplier<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// ROLE: Context</span>
+<span class="token comment">// ACCESS LEVEL: Public</span>
+<span class="token comment">// HOW TO WIRE: Holds a reference to the interface. The Client injects the concrete class.</span>
+<span class="token keyword keyword-public">public</span> <span class="token keyword keyword-class">class</span> <span class="token class-name">TripManager</span> <span class="token punctuation">{</span>
+    <span class="token comment">// Private to protect the internal state from being hijacked</span>
+    <span class="token keyword keyword-private">private</span> <span class="token class-name">PricingStrategy</span> currentStrategy<span class="token punctuation">;</span>
+    <span class="token keyword keyword-private">private</span> <span class="token keyword keyword-double">double</span> totalFare <span class="token operator">=</span> <span class="token number">0.0</span><span class="token punctuation">;</span>
+
+    <span class="token keyword keyword-public">public</span> <span class="token class-name">TripManager</span><span class="token punctuation">(</span><span class="token class-name">PricingStrategy</span> initialStrategy<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword keyword-this">this</span><span class="token punctuation">.</span>currentStrategy <span class="token operator">=</span> initialStrategy<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">// Public setter for mid-execution swapping</span>
+    <span class="token keyword keyword-public">public</span> <span class="token keyword keyword-void">void</span> <span class="token function">setPricingStrategy</span><span class="token punctuation">(</span><span class="token class-name">PricingStrategy</span> strategy<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"[System] Pricing strategy swapped to: "</span> <span class="token operator">+</span> strategy<span class="token punctuation">.</span><span class="token function">getClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getSimpleName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword keyword-this">this</span><span class="token punctuation">.</span>currentStrategy <span class="token operator">=</span> strategy<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword keyword-public">public</span> <span class="token keyword keyword-void">void</span> <span class="token function">travel</span><span class="token punctuation">(</span><span class="token keyword keyword-double">double</span> distanceInKm<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment">// Delegates the verb to the strategy</span>
+        <span class="token keyword keyword-double">double</span> segmentCost <span class="token operator">=</span> currentStrategy<span class="token punctuation">.</span><span class="token function">calculateSegment</span><span class="token punctuation">(</span>distanceInKm<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        totalFare <span class="token operator">+=</span> segmentCost<span class="token punctuation">;</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Traveled "</span> <span class="token operator">+</span> distanceInKm <span class="token operator">+</span> <span class="token string">"km. Fare updated by: "</span> <span class="token operator">+</span> segmentCost<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+</code></pre><h3 id="️-scenario-variations--access-tweaks">⚙️ Scenario Variations &amp; Access Tweaks </h3>
+<ul>
+<li><strong>Context Injection:</strong> What if the pricing algorithm needs to know the user's loyalty points to apply a discount? Instead of passing individual variables, change the method to <code>calculateSegment(TripManager context, double dist)</code>. The strategy can then call <code>context.getLoyaltyPoints()</code>.</li>
+<li><strong>Singleton Strategies:</strong> If strategies are stateless and heavy to instantiate, change their constructors to <code>private</code> and provide a <code>public static final StandardPricing INSTANCE = new StandardPricing();</code>. Inject the instance instead of creating <code>new</code> objects repeatedly.</li>
+</ul>
+<hr>
+<h2 id="2-the-state-pattern-1">2. The State Pattern </h2>
+<p><strong>The Problem: University BIIS Registration System</strong><br>
+A student's profile moves through phases (Pre-Registration <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span> Advisor Approval <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span> Finalized). A student's ability to "add a course" changes based on the current phase. The system must prevent invalid actions based on its status.</p>
+<h3 id="-full-implementation-1">💻 Full Implementation </h3>
+<pre data-role="codeBlock" data-info="java" class="language-java java"><code><span class="token comment">// ROLE: State Interface</span>
+<span class="token comment">// ACCESS LEVEL: Package-Private (Usually, external classes shouldn't talk to states directly)</span>
+<span class="token comment">// HOW TO WIRE: Every method takes the Context as a parameter so the state can change it.</span>
+<span class="token keyword keyword-interface">interface</span> <span class="token class-name">PhaseState</span> <span class="token punctuation">{</span>
+    <span class="token keyword keyword-void">void</span> <span class="token function">addCourse</span><span class="token punctuation">(</span><span class="token class-name">StudentProfile</span> profile<span class="token punctuation">,</span> <span class="token class-name">String</span> course<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword keyword-void">void</span> <span class="token function">advancePhase</span><span class="token punctuation">(</span><span class="token class-name">StudentProfile</span> profile<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// ROLE: Concrete State (Phase 1)</span>
+<span class="token comment">// ACCESS LEVEL: Package-Private (Hides the state classes from the client/main method)</span>
+<span class="token comment">// HOW TO WIRE: Contains specific phase logic. Transitions Context to the NEXT state.</span>
+<span class="token keyword keyword-class">class</span> <span class="token class-name">PreRegPhase</span> <span class="token keyword keyword-implements">implements</span> <span class="token class-name">PhaseState</span> <span class="token punctuation">{</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword keyword-public">public</span> <span class="token keyword keyword-void">void</span> <span class="token function">addCourse</span><span class="token punctuation">(</span><span class="token class-name">StudentProfile</span> profile<span class="token punctuation">,</span> <span class="token class-name">String</span> course<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Success: Added "</span> <span class="token operator">+</span> course <span class="token operator">+</span> <span class="token string">" to draft."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword keyword-public">public</span> <span class="token keyword keyword-void">void</span> <span class="token function">advancePhase</span><span class="token punctuation">(</span><span class="token class-name">StudentProfile</span> profile<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Submitting draft to advisor..."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">// CRITICAL: The State changes the Context!</span>
+        profile<span class="token punctuation">.</span><span class="token function">setState</span><span class="token punctuation">(</span><span class="token keyword keyword-new">new</span> <span class="token class-name">AdvisorApprovalPhase</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// ROLE: Concrete State (Phase 2)</span>
+<span class="token comment">// ACCESS LEVEL: Package-Private</span>
+<span class="token keyword keyword-class">class</span> <span class="token class-name">AdvisorApprovalPhase</span> <span class="token keyword keyword-implements">implements</span> <span class="token class-name">PhaseState</span> <span class="token punctuation">{</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword keyword-public">public</span> <span class="token keyword keyword-void">void</span> <span class="token function">addCourse</span><span class="token punctuation">(</span><span class="token class-name">StudentProfile</span> profile<span class="token punctuation">,</span> <span class="token class-name">String</span> course<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Error: Registration locked. Advisor is reviewing."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword keyword-public">public</span> <span class="token keyword keyword-void">void</span> <span class="token function">advancePhase</span><span class="token punctuation">(</span><span class="token class-name">StudentProfile</span> profile<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Advisor approved courses. Moving to Finalized."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        profile<span class="token punctuation">.</span><span class="token function">setState</span><span class="token punctuation">(</span><span class="token keyword keyword-new">new</span> <span class="token class-name">FinalizedPhase</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// ROLE: Concrete State (Phase 3)</span>
+<span class="token keyword keyword-class">class</span> <span class="token class-name">FinalizedPhase</span> <span class="token keyword keyword-implements">implements</span> <span class="token class-name">PhaseState</span> <span class="token punctuation">{</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword keyword-public">public</span> <span class="token keyword keyword-void">void</span> <span class="token function">addCourse</span><span class="token punctuation">(</span><span class="token class-name">StudentProfile</span> profile<span class="token punctuation">,</span> <span class="token class-name">String</span> course<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Error: Registration closed. Cannot add "</span> <span class="token operator">+</span> course<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword keyword-public">public</span> <span class="token keyword keyword-void">void</span> <span class="token function">advancePhase</span><span class="token punctuation">(</span><span class="token class-name">StudentProfile</span> profile<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Error: Already in the final phase."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// ROLE: Context</span>
+<span class="token comment">// ACCESS LEVEL: Public</span>
+<span class="token comment">// HOW TO WIRE: Holds current state. Exposes business methods to the Client, but delegates them to the State.</span>
+<span class="token keyword keyword-public">public</span> <span class="token keyword keyword-class">class</span> <span class="token class-name">StudentProfile</span> <span class="token punctuation">{</span>
+    <span class="token keyword keyword-private">private</span> <span class="token class-name">PhaseState</span> currentState<span class="token punctuation">;</span> <span class="token comment">// Private internal tracker</span>
+
+    <span class="token keyword keyword-public">public</span> <span class="token class-name">StudentProfile</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword keyword-this">this</span><span class="token punctuation">.</span>currentState <span class="token operator">=</span> <span class="token keyword keyword-new">new</span> <span class="token class-name">PreRegPhase</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Default starting state</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">// Package-Private setter! We don't want the main method calling setState() directly.</span>
+    <span class="token comment">// Only the PhaseState classes (in the same package) should be allowed to call this.</span>
+    <span class="token keyword keyword-void">void</span> <span class="token function">setState</span><span class="token punctuation">(</span><span class="token class-name">PhaseState</span> state<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword keyword-this">this</span><span class="token punctuation">.</span>currentState <span class="token operator">=</span> state<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">// Public methods for the Client</span>
+    <span class="token keyword keyword-public">public</span> <span class="token keyword keyword-void">void</span> <span class="token function">addCourse</span><span class="token punctuation">(</span><span class="token class-name">String</span> course<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        currentState<span class="token punctuation">.</span><span class="token function">addCourse</span><span class="token punctuation">(</span><span class="token keyword keyword-this">this</span><span class="token punctuation">,</span> course<span class="token punctuation">)</span><span class="token punctuation">;</span> 
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword keyword-public">public</span> <span class="token keyword keyword-void">void</span> <span class="token function">advanceSystemPhase</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        currentState<span class="token punctuation">.</span><span class="token function">advancePhase</span><span class="token punctuation">(</span><span class="token keyword keyword-this">this</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+</code></pre><h3 id="️-scenario-variations--access-tweaks-1">⚙️ Scenario Variations &amp; Access Tweaks </h3>
+<ul>
+<li><strong>Encapsulating Transitions (Access Level Tweak):</strong> As demonstrated above, make <code>setState()</code> package-private. If <code>setState()</code> is <code>public</code>, a junior developer might write <code>profile.setState(new FinalizedPhase())</code> in the <code>main</code> method, completely bypassing the advisor!</li>
+<li><strong>State-Driven vs. Context-Driven Transitions:</strong> In standard State pattern, the <em>State</em> decides what comes next. However, in UI systems (like a game menu), the <em>Context</em> sometimes evaluates the output of a state and decides the transition internally to keep state classes entirely unaware of each other.</li>
+</ul>
+<hr>
+<h2 id="3-the-observer-pattern-1">3. The Observer Pattern </h2>
+<p><strong>The Problem: ICU Patient Monitoring Network</strong><br>
+A hospital <code>VitalsMonitor</code> must notify a <code>NurseStation</code>, <code>DoctorPager</code>, and <code>AutomatedOxyValve</code> when a patient's oxygen drops. The monitor must not hold hardcoded references to these devices so new systems can be added later.</p>
+<h3 id="-full-implementation-2">💻 Full Implementation </h3>
+<pre data-role="codeBlock" data-info="java" class="language-java java"><code><span class="token keyword keyword-import">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span><span class="token operator">*</span></span><span class="token punctuation">;</span>
+
+<span class="token comment">// ROLE: Observer Interface (The Subscriber)</span>
+<span class="token comment">// ACCESS LEVEL: Public</span>
+<span class="token comment">// HOW TO WIRE: Defines the update method. All listeners must implement this.</span>
+<span class="token keyword keyword-public">public</span> <span class="token keyword keyword-interface">interface</span> <span class="token class-name">Observer</span> <span class="token punctuation">{</span> 
+    <span class="token keyword keyword-void">void</span> <span class="token function">reactToAlert</span><span class="token punctuation">(</span><span class="token class-name">String</span> message<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// ROLE: Concrete Observer 1</span>
+<span class="token comment">// ACCESS LEVEL: Public</span>
+<span class="token keyword keyword-public">public</span> <span class="token keyword keyword-class">class</span> <span class="token class-name">NurseStation</span> <span class="token keyword keyword-implements">implements</span> <span class="token class-name">Observer</span> <span class="token punctuation">{</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword keyword-public">public</span> <span class="token keyword keyword-void">void</span> <span class="token function">reactToAlert</span><span class="token punctuation">(</span><span class="token class-name">String</span> message<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Nurse Dashboard: "</span> <span class="token operator">+</span> message <span class="token operator">+</span> <span class="token string">" -&gt; RED LIGHT FLASHING"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// ROLE: Concrete Observer 2</span>
+<span class="token comment">// ACCESS LEVEL: Public</span>
+<span class="token keyword keyword-public">public</span> <span class="token keyword keyword-class">class</span> <span class="token class-name">DoctorPager</span> <span class="token keyword keyword-implements">implements</span> <span class="token class-name">Observer</span> <span class="token punctuation">{</span>
+    <span class="token keyword keyword-private">private</span> <span class="token class-name">String</span> doctorName<span class="token punctuation">;</span>
+    <span class="token keyword keyword-public">public</span> <span class="token class-name">DoctorPager</span><span class="token punctuation">(</span><span class="token class-name">String</span> name<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token keyword keyword-this">this</span><span class="token punctuation">.</span>doctorName <span class="token operator">=</span> name<span class="token punctuation">;</span> <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword keyword-public">public</span> <span class="token keyword keyword-void">void</span> <span class="token function">reactToAlert</span><span class="token punctuation">(</span><span class="token class-name">String</span> message<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Pager ["</span> <span class="token operator">+</span> doctorName <span class="token operator">+</span> <span class="token string">"]: "</span> <span class="token operator">+</span> message<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// ROLE: Subject Interface (The Publisher)</span>
+<span class="token comment">// ACCESS LEVEL: Public</span>
+<span class="token comment">// HOW TO WIRE: Defines how observers subscribe/unsubscribe.</span>
+<span class="token keyword keyword-public">public</span> <span class="token keyword keyword-interface">interface</span> <span class="token class-name">Subject</span> <span class="token punctuation">{</span>
+    <span class="token keyword keyword-void">void</span> <span class="token function">attachSystem</span><span class="token punctuation">(</span><span class="token class-name">Observer</span> o<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword keyword-void">void</span> <span class="token function">detachSystem</span><span class="token punctuation">(</span><span class="token class-name">Observer</span> o<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword keyword-void">void</span> <span class="token function">triggerCriticalAlert</span><span class="token punctuation">(</span><span class="token class-name">String</span> message<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// ROLE: Concrete Subject</span>
+<span class="token comment">// ACCESS LEVEL: Public</span>
+<span class="token comment">// HOW TO WIRE: Maintains a collection of Observers. Iterates through them to broadcast.</span>
+<span class="token keyword keyword-public">public</span> <span class="token keyword keyword-class">class</span> <span class="token class-name">VitalsMonitor</span> <span class="token keyword keyword-implements">implements</span> <span class="token class-name">Subject</span> <span class="token punctuation">{</span>
+    <span class="token comment">// Private Set prevents duplicate subscriptions (a doctor cannot be paged twice for 1 event)</span>
+    <span class="token keyword keyword-private">private</span> <span class="token class-name">Set</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Observer</span><span class="token punctuation">&gt;</span></span> observers <span class="token operator">=</span> <span class="token keyword keyword-new">new</span> <span class="token class-name">HashSet</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">&gt;</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword keyword-public">public</span> <span class="token keyword keyword-void">void</span> <span class="token function">attachSystem</span><span class="token punctuation">(</span><span class="token class-name">Observer</span> o<span class="token punctuation">)</span> <span class="token punctuation">{</span> observers<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>o<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword keyword-public">public</span> <span class="token keyword keyword-void">void</span> <span class="token function">detachSystem</span><span class="token punctuation">(</span><span class="token class-name">Observer</span> o<span class="token punctuation">)</span> <span class="token punctuation">{</span> observers<span class="token punctuation">.</span><span class="token function">remove</span><span class="token punctuation">(</span>o<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword keyword-public">public</span> <span class="token keyword keyword-void">void</span> <span class="token function">triggerCriticalAlert</span><span class="token punctuation">(</span><span class="token class-name">String</span> message<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"\n[VITALS MONITOR] BROADCASTING ALARM: "</span> <span class="token operator">+</span> message<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword keyword-for">for</span><span class="token punctuation">(</span><span class="token class-name">Observer</span> obs <span class="token operator">:</span> observers<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            obs<span class="token punctuation">.</span><span class="token function">reactToAlert</span><span class="token punctuation">(</span>message<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Blind broadcast</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+</code></pre><h3 id="️-scenario-variations--access-tweaks-2">⚙️ Scenario Variations &amp; Access Tweaks </h3>
+<ul>
+<li>
+<p><strong>The "Push" vs. "Pull" Model:</strong></p>
+</li>
+<li>
+<p><em>Push (Current Code):</em> The subject sends data directly: <code>reactToAlert(String message)</code>. Good for small data.</p>
+</li>
+<li>
+<p><em>Pull:</em> The subject passes <em>itself</em>: <code>reactToAlert(Subject s)</code>. The Observer then uses public getters to pull only the data it cares about (e.g., <code>((VitalsMonitor)s).getHeartRate()</code>).</p>
+</li>
+<li>
+<p><strong>Thread Safety:</strong> If Observers are subscribing/unsubscribing on different threads (e.g., a GUI thread vs. a background thread), you will get a <code>ConcurrentModificationException</code> during the <code>for</code> loop. Change <code>HashSet</code> to <code>CopyOnWriteArraySet</code>.</p>
+</li>
+</ul>
+<hr>
+<h2 id="4-the-mediator-pattern-1">4. The Mediator Pattern </h2>
+<p><strong>The Problem: Microservice Order Broker</strong><br>
+An e-commerce backend has an <code>InventoryService</code>, <code>PaymentService</code>, and <code>ShippingService</code>. They must trigger each other sequentially (Inventory <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span> Payment <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span> Shipping), but they cannot communicate directly to prevent tangled dependencies.</p>
+<h3 id="-full-implementation-3">💻 Full Implementation </h3>
+<pre data-role="codeBlock" data-info="java" class="language-java java"><code><span class="token comment">// ROLE: Mediator Interface</span>
+<span class="token comment">// ACCESS LEVEL: Public</span>
+<span class="token comment">// HOW TO WIRE: Defines the single communication pipeline from Colleague to Hub.</span>
+<span class="token keyword keyword-public">public</span> <span class="token keyword keyword-interface">interface</span> <span class="token class-name">OrderBroker</span> <span class="token punctuation">{</span>
+    <span class="token keyword keyword-void">void</span> <span class="token function">notify</span><span class="token punctuation">(</span><span class="token class-name">Microservice</span> sender<span class="token punctuation">,</span> <span class="token class-name">String</span> event<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// ROLE: Abstract Colleague</span>
+<span class="token comment">// ACCESS LEVEL: Public</span>
+<span class="token comment">// HOW TO WIRE: Forces all subclasses to hold a reference to the Mediator.</span>
+<span class="token keyword keyword-public">public</span> <span class="token keyword keyword-abstract">abstract</span> <span class="token keyword keyword-class">class</span> <span class="token class-name">Microservice</span> <span class="token punctuation">{</span>
+    <span class="token keyword keyword-protected">protected</span> <span class="token class-name">OrderBroker</span> broker<span class="token punctuation">;</span> <span class="token comment">// Protected so subclasses can access it</span>
+    <span class="token keyword keyword-public">public</span> <span class="token class-name">Microservice</span><span class="token punctuation">(</span><span class="token class-name">OrderBroker</span> broker<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token keyword keyword-this">this</span><span class="token punctuation">.</span>broker <span class="token operator">=</span> broker<span class="token punctuation">;</span> <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// ROLE: Concrete Colleague 1</span>
+<span class="token comment">// ACCESS LEVEL: Public</span>
+<span class="token comment">// HOW TO WIRE: Does its job, then pings the mediator. Does NOT talk to PaymentService.</span>
+<span class="token keyword keyword-public">public</span> <span class="token keyword keyword-class">class</span> <span class="token class-name">InventoryService</span> <span class="token keyword keyword-extends">extends</span> <span class="token class-name">Microservice</span> <span class="token punctuation">{</span>
+    <span class="token keyword keyword-public">public</span> <span class="token class-name">InventoryService</span><span class="token punctuation">(</span><span class="token class-name">OrderBroker</span> broker<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token keyword keyword-super">super</span><span class="token punctuation">(</span>broker<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+
+    <span class="token keyword keyword-public">public</span> <span class="token keyword keyword-void">void</span> <span class="token function">reserveItem</span><span class="token punctuation">(</span><span class="token class-name">String</span> orderId<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"[Inventory] Item reserved: "</span> <span class="token operator">+</span> orderId<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        broker<span class="token punctuation">.</span><span class="token function">notify</span><span class="token punctuation">(</span><span class="token keyword keyword-this">this</span><span class="token punctuation">,</span> <span class="token string">"RESERVED"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Tell the hub!</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// ROLE: Concrete Colleague 2</span>
+<span class="token keyword keyword-public">public</span> <span class="token keyword keyword-class">class</span> <span class="token class-name">PaymentService</span> <span class="token keyword keyword-extends">extends</span> <span class="token class-name">Microservice</span> <span class="token punctuation">{</span>
+    <span class="token keyword keyword-public">public</span> <span class="token class-name">PaymentService</span><span class="token punctuation">(</span><span class="token class-name">OrderBroker</span> broker<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token keyword keyword-super">super</span><span class="token punctuation">(</span>broker<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+
+    <span class="token keyword keyword-public">public</span> <span class="token keyword keyword-void">void</span> <span class="token function">chargeCard</span><span class="token punctuation">(</span><span class="token class-name">String</span> orderId<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"[Payment] Card charged for: "</span> <span class="token operator">+</span> orderId<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        broker<span class="token punctuation">.</span><span class="token function">notify</span><span class="token punctuation">(</span><span class="token keyword keyword-this">this</span><span class="token punctuation">,</span> <span class="token string">"PAID"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// ROLE: Concrete Mediator</span>
+<span class="token comment">// ACCESS LEVEL: Public</span>
+<span class="token comment">// HOW TO WIRE: Holds references to colleagues. Contains the workflow routing logic.</span>
+<span class="token keyword keyword-public">public</span> <span class="token keyword keyword-class">class</span> <span class="token class-name">CheckoutBroker</span> <span class="token keyword keyword-implements">implements</span> <span class="token class-name">OrderBroker</span> <span class="token punctuation">{</span>
+    <span class="token keyword keyword-private">private</span> <span class="token class-name">InventoryService</span> inventory<span class="token punctuation">;</span>
+    <span class="token keyword keyword-private">private</span> <span class="token class-name">PaymentService</span> payment<span class="token punctuation">;</span>
+    <span class="token keyword keyword-private">private</span> <span class="token class-name">String</span> currentOrderId<span class="token punctuation">;</span>
+
+    <span class="token comment">// Package-Private registration to prevent external tampering</span>
+    <span class="token keyword keyword-void">void</span> <span class="token function">registerServices</span><span class="token punctuation">(</span><span class="token class-name">InventoryService</span> inv<span class="token punctuation">,</span> <span class="token class-name">PaymentService</span> pay<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword keyword-this">this</span><span class="token punctuation">.</span>inventory <span class="token operator">=</span> inv<span class="token punctuation">;</span>
+        <span class="token keyword keyword-this">this</span><span class="token punctuation">.</span>payment <span class="token operator">=</span> pay<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword keyword-public">public</span> <span class="token keyword keyword-void">void</span> <span class="token function">startCheckout</span><span class="token punctuation">(</span><span class="token class-name">String</span> orderId<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword keyword-this">this</span><span class="token punctuation">.</span>currentOrderId <span class="token operator">=</span> orderId<span class="token punctuation">;</span>
+        inventory<span class="token punctuation">.</span><span class="token function">reserveItem</span><span class="token punctuation">(</span>orderId<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Start the chain reaction</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword keyword-public">public</span> <span class="token keyword keyword-void">void</span> <span class="token function">notify</span><span class="token punctuation">(</span><span class="token class-name">Microservice</span> sender<span class="token punctuation">,</span> <span class="token class-name">String</span> event<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment">// The Mediator holds the routing logic</span>
+        <span class="token keyword keyword-switch">switch</span> <span class="token punctuation">(</span>event<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword keyword-case">case</span> <span class="token string">"RESERVED"</span><span class="token operator">:</span>
+                payment<span class="token punctuation">.</span><span class="token function">chargeCard</span><span class="token punctuation">(</span>currentOrderId<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword keyword-break">break</span><span class="token punctuation">;</span>
+            <span class="token keyword keyword-case">case</span> <span class="token string">"PAID"</span><span class="token operator">:</span>
+                <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"[Broker] Checkout Complete!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword keyword-break">break</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+</code></pre><h3 id="️-scenario-variations--access-tweaks-3">⚙️ Scenario Variations &amp; Access Tweaks </h3>
+<ul>
+<li><strong>The "Event Bus" Hybrid (Observer + Mediator):</strong> As discussed previously, to avoid the Mediator turning into a God Object with massive <code>switch</code> statements, the Mediator can act as a Publisher. Instead of hardcoding <code>payment.chargeCard()</code>, the Mediator broadcasts the <code>"RESERVED"</code> event, and the <code>PaymentService</code> (acting as a subscriber) catches it and executes.</li>
+<li><strong>Preventing Fake Notifications:</strong> If <code>notify(Microservice sender, String event)</code> is public, a malicious class could fake a <code>"PAID"</code> event. If architecture allows, make the Mediator and Colleagues share a package and make <code>notify()</code> package-private.</li>
+</ul>
+<hr>
+<h2 id="5-the-template-method-pattern-1">5. The Template Method Pattern </h2>
+<p><strong>The Problem: Smart City Data Pipeline</strong><br>
+Telemetry data from Traffic Cameras and Weather Sensors must pass through a strict 4-step pipeline: Authenticate, Extract, Transform, Log. Junior developers must be able to write the Extract/Transform logic for new sensors, but must be mathematically blocked from removing the Auth/Log steps or changing the sequence.</p>
+<h3 id="-full-implementation-4">💻 Full Implementation </h3>
+<pre data-role="codeBlock" data-info="java" class="language-java java"><code><span class="token comment">// ROLE: Data Transfer Object (DTO)</span>
+<span class="token keyword keyword-class">class</span> <span class="token class-name">Data</span> <span class="token punctuation">{</span>
+    <span class="token class-name">String</span> api<span class="token punctuation">;</span>
+    <span class="token class-name">String</span> rawData<span class="token punctuation">;</span>
+    <span class="token keyword keyword-public">public</span> <span class="token class-name">Data</span><span class="token punctuation">(</span><span class="token class-name">String</span> api<span class="token punctuation">,</span> <span class="token class-name">String</span> rawData<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token keyword keyword-this">this</span><span class="token punctuation">.</span>api <span class="token operator">=</span> api<span class="token punctuation">;</span> <span class="token keyword keyword-this">this</span><span class="token punctuation">.</span>rawData <span class="token operator">=</span> rawData<span class="token punctuation">;</span> <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// ROLE: Abstract Template</span>
+<span class="token comment">// ACCESS LEVEL: Public</span>
+<span class="token comment">// HOW TO WIRE: Houses the final algorithm skeleton and the hook/abstract definitions.</span>
+<span class="token keyword keyword-public">public</span> <span class="token keyword keyword-abstract">abstract</span> <span class="token keyword keyword-class">class</span> <span class="token class-name">TelemetryPipeline</span> <span class="token punctuation">{</span>
+
+    <span class="token comment">// CRITICAL: public final! Subclasses CANNOT override or break the execution sequence.</span>
+    <span class="token keyword keyword-public">public</span> <span class="token keyword keyword-final">final</span> <span class="token keyword keyword-void">void</span> <span class="token function">processTelemetry</span><span class="token punctuation">(</span><span class="token class-name">Data</span> d<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token function">authenticate</span><span class="token punctuation">(</span>d<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">extract</span><span class="token punctuation">(</span>d<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">transform</span><span class="token punctuation">(</span>d<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">log</span><span class="token punctuation">(</span>d<span class="token punctuation">)</span><span class="token punctuation">;</span>        
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">// ROLE: Invariant Step</span>
+    <span class="token comment">// ACCESS LEVEL: Private (Hidden from subclasses. They cannot touch or override this.)</span>
+    <span class="token keyword keyword-private">private</span> <span class="token keyword keyword-void">void</span> <span class="token function">authenticate</span><span class="token punctuation">(</span><span class="token class-name">Data</span> d<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"1. Auth: Verified API Key."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">// ROLE: Variant Step</span>
+    <span class="token comment">// ACCESS LEVEL: Protected Abstract (Forces subclasses to implement it. Hides it from 'main'.)</span>
+    <span class="token keyword keyword-protected">protected</span> <span class="token keyword keyword-abstract">abstract</span> <span class="token keyword keyword-void">void</span> <span class="token function">extract</span><span class="token punctuation">(</span><span class="token class-name">Data</span> d<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword keyword-protected">protected</span> <span class="token keyword keyword-abstract">abstract</span> <span class="token keyword keyword-void">void</span> <span class="token function">transform</span><span class="token punctuation">(</span><span class="token class-name">Data</span> d<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// ROLE: Invariant Step</span>
+    <span class="token keyword keyword-private">private</span> <span class="token keyword keyword-void">void</span> <span class="token function">log</span><span class="token punctuation">(</span><span class="token class-name">Data</span> d<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"4. Log: Successfully processed data."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// ROLE: Concrete Pipeline</span>
+<span class="token comment">// ACCESS LEVEL: Public</span>
+<span class="token comment">// HOW TO WIRE: Extends the template. Implements ONLY the abstract methods.</span>
+<span class="token keyword keyword-public">public</span> <span class="token keyword keyword-class">class</span> <span class="token class-name">TrafficCameraPipeline</span> <span class="token keyword keyword-extends">extends</span> <span class="token class-name">TelemetryPipeline</span> <span class="token punctuation">{</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword keyword-protected">protected</span> <span class="token keyword keyword-void">void</span> <span class="token function">extract</span><span class="token punctuation">(</span><span class="token class-name">Data</span> d<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"2. Extract: Reading Binary Image Stream..."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword keyword-protected">protected</span> <span class="token keyword keyword-void">void</span> <span class="token function">transform</span><span class="token punctuation">(</span><span class="token class-name">Data</span> d<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"3. Transform: AI Model ran. Cars counted."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+</code></pre><h3 id="️-scenario-variations--access-tweaks-4">⚙️ Scenario Variations &amp; Access Tweaks </h3>
+<ul>
+<li><strong>Hooks vs. Abstract Methods:</strong> An <em>abstract</em> method (<code>protected abstract void extract();</code>) forces the child to implement it. A <em>hook</em> is a method with an empty default implementation (<code>protected void preLogHook() { // empty }</code>). Subclasses <em>can</em> override a hook if they want to insert logic right before the logging step, but they are not forced to.</li>
+<li><strong>Factory + Template Combo:</strong> The client (<code>main</code> method) often uses a Factory to instantiate the correct Pipeline (e.g., <code>Pipeline p = PipelineFactory.get("TRAFFIC"); p.processTelemetry(data);</code>), completely abstracting the class instantiation from the user.</li>
+</ul>
+
+      </div>
+      
+      
+    
+    
+    
+    
+    
+    
+  
+    </body></html>
