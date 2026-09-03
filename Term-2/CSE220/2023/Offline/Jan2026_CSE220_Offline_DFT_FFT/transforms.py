@@ -30,11 +30,7 @@ def next_power_of_two(n):
     """
     # TODO: implement this function
     
-    
-    
-    raise NotImplementedError("Implement next_power_of_two")
-
-
+    return 1 << max(0, n - 1).bit_length()
 
 class DFTAnalyzer:
     """
@@ -63,7 +59,21 @@ class DFTAnalyzer:
         numpy.ndarray of complex128, shape (N,)
         """
         # TODO: implement this method
-        raise NotImplementedError("Implement DFTAnalyzer.transform")
+
+        # x[n] -> X[k]
+        
+        N = len(x)
+        n = np.arange(N)
+        
+        X = np.zeros_like(x, dtype=np.complex128)
+        
+        for k in range(N):
+            W_Nk = np.exp(-2j * np.pi * k * (1/N))
+            
+            X[k] = np.sum(x * W_Nk**n)
+            
+        return X         
+
 
     def inverse(self, spectrum):
         """
@@ -80,8 +90,22 @@ class DFTAnalyzer:
             it is safe to take .real.
         """
         # TODO: implement this method
-        raise NotImplementedError("Implement DFTAnalyzer.inverse")
-
+        
+        # X[k] -> x[n]
+        
+        X = spectrum
+        N = len(X)
+        
+        k = np.arange(N)
+        
+        x = np.zeros_like(X, dtype=np.complex128)
+        
+        for n in range(N):
+            W_Nn = np.exp(2j * np.pi * n * (1/N))
+            
+            x[n] = np.sum(X * W_Nn**k)
+            
+        return x * (1/N)     
 
 class FFTTransformer(DFTAnalyzer):
     """
@@ -106,12 +130,46 @@ class FFTTransformer(DFTAnalyzer):
     def transform(self, x):
         """Forward FFT. Same contract as DFTAnalyzer.transform."""
         # TODO: implement this method
-        raise NotImplementedError("Implement FFTTransformer.transform")
+    
+        N = len(x)
+        
+        if ((N > 0) and (N & (N - 1) != 0)):
+            raise ValueError("Length not a power of 2")
+        
+        X = np.zeros_like(x, dtype=np.complex128)
+        
+        if N == 1:
+            X[0] = x[0] 
+            return X
+            
+            
+        x_e = x[0::2]
+        x_o = x[1::2]
+        
+        X_e = self.transform(x_e)
+        X_o = self.transform(x_o)
+        
+        k = np.arange(N//2)
+        
+        W = np.exp(-2j * np.pi * (1/N) * k)
+        
+        X_top = X_e + W * X_o
+        X_bottom = X_e - W * X_o
+        
+        X = np.concatenate([X_top,X_bottom])
+        
+        return X
 
     def inverse(self, spectrum):
         """Inverse FFT, including the 1/N factor."""
         # TODO: implement this method
-        raise NotImplementedError("Implement FFTTransformer.inverse")
+    
+        # inv_ft(X) = (1/N) * conj(F(conj(x)))
+        
+        X = spectrum.astype(np.complex128)
+        N = len(spectrum)
+        
+        return (1/N) * np.conj(self.transform(np.conj(X)))
 
 
 # ---------------------------------------------------------------------------
