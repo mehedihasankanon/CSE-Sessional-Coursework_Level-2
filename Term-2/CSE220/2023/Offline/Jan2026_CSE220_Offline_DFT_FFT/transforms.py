@@ -29,7 +29,11 @@ def next_power_of_two(n):
     Both tasks need this to choose a transform length for the radix-2 FFT.
     """
     # TODO: implement this function
+    
+    
+    
     raise NotImplementedError("Implement next_power_of_two")
+
 
 
 class DFTAnalyzer:
