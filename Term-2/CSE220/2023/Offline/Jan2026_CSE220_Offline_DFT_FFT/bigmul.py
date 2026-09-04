@@ -249,27 +249,26 @@ def run_single(path, method, out_dir):
     
     result = multiply(a, b, method)
     
-    verdict = "!"
-    
-    if int(result[0]) == int(a) * int(b):
-        verdict="MATCH"
-    else:
-        verdict="MISMATCH"
-        
+    verdict = "MATCH" if int(result[0]) == int(a) * int(b) else "MISMATCH"
     print(verdict)
         
     write_text(os.path.join(out_dir, "product.txt"), result[0])
     
+    norm_path = path.replace("\\", "/")
+    len_a = len(a.lstrip("+-"))
+    len_b = len(b.lstrip("+-"))
+    len_prod = len(result[0].lstrip("+-"))
+    
     report_lines = [
-        f"input path: {path}",
-        f"method: {method}",
-        f"digits of A: {len(a.lstrip('+-'))}",
-        f"digits of B: {len(b.lstrip('+-'))}",
-        f"base used: {BASE}",
-        f"limb counts: {len(result[2])} / {len(result[3])}",
-        f"transform length N: {result[1]}",
-        f"digit count of product: {len(result[0].lstrip('-'))}",
-        f"verification: {verdict}"
+        "Task A -- big-integer multiplication by spectral convolution",
+        f"input file          : {norm_path}",
+        f"method              : {method}",
+        f"digits of A / B     : {len_a} / {len_b}",
+        f"base                : 10^{BASE_DIGITS}",
+        f"limbs of A / B      : {len(result[2])} / {len(result[3])}",
+        f"transform length N  : {result[1]}",
+        f"digits of product   : {len_prod}",
+        f"verification        : {verdict}",
     ]
     write_report(os.path.join(out_dir, "report.txt"), report_lines)
 
