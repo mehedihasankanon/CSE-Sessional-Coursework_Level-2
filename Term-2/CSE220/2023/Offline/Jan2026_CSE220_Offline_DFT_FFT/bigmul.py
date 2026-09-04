@@ -212,11 +212,11 @@ def multiply(text_a, text_b, method):
     # elif method == 'arbitrary':
     #     engine = ArbitraryLengthFFT()
     
-    mul = multiply_transform(limbs_a, limbs_b, engine=engine)
+    mul, N = multiply_transform(limbs_a, limbs_b, engine=engine)
 
     result = from_limbs(sign=sign_a * sign_b, limbs=mul)
     
-    return result, len(result), limbs_a, limbs_b
+    return result, N, limbs_a, limbs_b
     
     
     
