@@ -1,0 +1,9 @@
+input path: inputs/1.txt
+method: dft
+digits of A: 12
+digits of B: 9
+base used: 10000
+limb counts: 3 / 3
+transform length N: 5
+digit count of product: 21
+verification: MATCH

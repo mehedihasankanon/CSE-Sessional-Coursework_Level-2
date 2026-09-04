@@ -24,7 +24,7 @@ import numpy as np
 
 from bench_utils import plot_runtime_curve, time_best, timing_table_lines
 from io_utils import random_decimal, read_operands, write_report, write_text
-from transforms import DFTAnalyzer, FFTTransformer, next_power_of_two
+from transforms import DFTAnalyzer, FFTTransformer, ArbitraryLengthFFT, next_power_of_two
 
 # Python 3.11+ refuses to print integers longer than 4300 digits unless this
 # limit is raised, and the verification step below prints one.
@@ -118,9 +118,13 @@ def from_limbs(sign, limbs, base_digits=BASE_DIGITS):
         final_limbs.pop()
         
         
-    ans = '' if sign > 0 else '-' 
-    for limb in final_limbs[::-1]:
+    ans = str(final_limbs[-1])
+    
+    for limb in reversed(final_limbs[:-1]):
         ans += f'{limb:0{base_digits}d}'
+        
+    if sign < 0 and ans != '0':
+        ans = '-' + ans
         
     return ans
             
@@ -209,8 +213,8 @@ def multiply(text_a, text_b, method):
         engine = DFTAnalyzer()
     elif method == 'fft':
         engine = FFTTransformer()
-    # elif method == 'arbitrary':
-    #     engine = ArbitraryLengthFFT()
+    elif method == 'arbitrary':
+        engine = ArbitraryLengthFFT()
     
     mul, N = multiply_transform(limbs_a, limbs_b, engine=engine)
 

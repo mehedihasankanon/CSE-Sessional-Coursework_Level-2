@@ -1,0 +1,9 @@
+input path: inputs/3.txt
+method: fft
+digits of A: 2048
+digits of B: 2048
+base used: 10000
+limb counts: 512 / 512
+transform length N: 1024
+digit count of product: 4095
+verification: MATCH

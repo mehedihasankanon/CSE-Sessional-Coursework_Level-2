@@ -28,7 +28,7 @@ from bench_utils import plot_runtime_curve, time_best, timing_table_lines
 from image_utils import (load_image, make_kernel, save_comparison, save_image,
                          save_kernel_preview)
 from io_utils import write_report
-from transforms import DFTAnalyzer, FFTTransformer, next_power_of_two
+from transforms import DFTAnalyzer, FFTTransformer, ArbitraryLengthFFT, next_power_of_two
 
 
 def transform_2d(plane, engine):
@@ -250,8 +250,8 @@ def run_single(path, kernel_name, param, engine_name, out_dir, gray=False):
         engine = DFTAnalyzer()
     elif engine_name == "fft":
         engine = FFTTransformer()
-    # elif engine_name == "arbitrary":
-        # engine = ArbitraryLengthFFT()
+    elif engine_name == "arbitrary":
+        engine = ArbitraryLengthFFT()
         
     blurred = convolve_image(image, kernel, engine, circular=False)
     wraparound = convolve_image(image, kernel, engine, circular=True)

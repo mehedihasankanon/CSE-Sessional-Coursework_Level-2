@@ -196,8 +196,52 @@ class ArbitraryLengthFFT(FFTTransformer):
 
     def transform(self, x):
         # TODO (bonus): implement this method
-        raise NotImplementedError("Bonus: implement ArbitraryLengthFFT.transform")
+    
+        N = len(x)
+        if N == 0:
+            return np.zeros_like(x, dtype=np.complex128)
+        
+        if N & (N - 1) == 0:
+            return super().transform(x)
+
+        # define the chirp sequence: exp(-j * pi * n^2 / N)
+        n = np.arange(N)
+        chirp = np.exp(-1j * np.pi * (n**2) / N)
+
+        # modulate the input sequence
+        a = x * chirp
+
+        # find an M >= 2N - 1 that is a power of two for the Radix-2 FFT
+        M = next_power_of_two(2 * N - 1)
+        
+        # pad the modulated input with zeros up to M
+        a_padded = np.pad(a, (0, M - N))
+
+        # construct the inverse chirp 'b' for circular convolution
+        b = np.zeros(M, dtype=np.complex128)
+        b[:N] = np.exp(1j * np.pi * (n**2) / N)
+        
+        # wrap around the negative indices to the end of the array
+        for i in range(1, N):
+            b[M - i] = b[i]
+
+        # fast convolution through the frequency domain using our Radix-2
+        A = super().transform(a_padded)
+        B = super().transform(b)
+        c = super().inverse(A * B)
+
+        # truncate to length N and demodulate
+        X = c[:N] * chirp
+        
+        return X
 
     def inverse(self, spectrum):
         # TODO (bonus): implement this method
-        raise NotImplementedError("Bonus: implement ArbitraryLengthFFT.inverse")
+    
+        # inv_ft(X) = (1/N) * conj(F(conj(x)))
+        
+        X = spectrum.astype(np.complex128)
+        N = len(spectrum)
+        
+        return (1/N) * np.conj(self.transform(np.conj(X)))
+
