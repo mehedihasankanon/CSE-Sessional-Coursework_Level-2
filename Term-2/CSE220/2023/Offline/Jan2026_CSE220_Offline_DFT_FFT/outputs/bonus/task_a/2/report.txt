@@ -1,5 +1,5 @@
 input path: inputs/2.txt
-method: dft
+method: arbitrary
 digits of A: 200
 digits of B: 200
 base used: 10000
