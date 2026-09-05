@@ -245,3 +245,89 @@ class ArbitraryLengthFFT(FFTTransformer):
         
         return (1/N) * np.conj(self.transform(np.conj(X)))
 
+
+class NTTTransformer(DFTAnalyzer):
+    """
+    Number Theoretic Transform (NTT).
+
+    The NTT replaces the complex root of unity e^(-2*pi*j/N) with a modular 
+    root of unity W_N. If p is a prime and g is a primitive root modulo p, 
+    then W_N = g^((p-1)/N) mod p acts as the principal N-th root of unity.
+    Because all operations are performed modulo a prime, floating-point 
+    inaccuracies are completely eliminated.
+    
+    Process:
+    1. Initialize X as a copy of input x, modulo p.
+    2. Perform bit-reversal permutation on X to allow in-place computation.
+    3. For length = 2, 4, 8, ... N:
+         a. half = length / 2
+         b. W_len = g^((p-1)/length) mod p (If inverse, use modular inverse of W_len)
+         c. For i = 0 to N with step=length:
+              w = 1
+              For k = 0 to half - 1:
+                u = X[i + k]
+                v = (X[i + k + half] * w) mod p
+                X[i + k] = (u + v) mod p
+                X[i + k + half] = (u - v + p) mod p
+                w = (w * W_len) mod p
+    4. If inverse NTT, multiply the final array by the modular inverse of N.
+    """
+    name = "ntt"
+
+    def __init__(self, modulus=998244353, primitive_root=3):
+        self.modulus = modulus
+        self.primitive_root = primitive_root
+
+    def transform(self, x, invert=False):
+        """Forward NTT (or Inverse if invert=True)."""
+        N = len(x)
+        if N == 0:
+            return np.zeros(0, dtype=np.int64)
+        if N & (N - 1) != 0:
+            raise ValueError("Length must be a power of 2")
+
+        # 1. Initialize and apply modulo
+        X = np.array(x, dtype=np.int64) % self.modulus
+
+        # 2. Bit-reversal permutation
+        j = 0
+        for i in range(1, N):
+            bit = N >> 1
+            while j & bit:
+                j ^= bit
+                bit >>= 1
+            j ^= bit
+            if i < j:
+                X[i], X[j] = X[j], X[i]
+
+        # 3. Iterative Butterfly
+        length = 2
+        while length <= N:
+            half = length // 2
+            
+            # Calculate the root of unity for this stage
+            wlen = pow(int(self.primitive_root), (self.modulus - 1) // length, self.modulus)
+            if invert:
+                # Use Fermat's Little Theorem for the modular inverse
+                wlen = pow(wlen, self.modulus - 2, self.modulus)
+
+            for i in range(0, N, length):
+                w = 1
+                for k in range(half):
+                    u = X[i + k]
+                    v = (X[i + k + half] * w) % self.modulus
+                    X[i + k] = (u + v) % self.modulus
+                    X[i + k + half] = (u - v + self.modulus) % self.modulus
+                    w = (w * wlen) % self.modulus
+            length *= 2
+
+        # 4. Final scaling for inverse transform
+        if invert:
+            inv_N = pow(N, self.modulus - 2, self.modulus)
+            X = (X * inv_N) % self.modulus
+
+        return X
+
+    def inverse(self, spectrum):
+        """Inverse NTT."""
+        return self.transform(spectrum, invert=True)
