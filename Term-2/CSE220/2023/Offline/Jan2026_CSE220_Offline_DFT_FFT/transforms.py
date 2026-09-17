@@ -29,8 +29,8 @@ def next_power_of_two(n):
     Both tasks need this to choose a transform length for the radix-2 FFT.
     """
     # TODO: implement this function
-    raise NotImplementedError("Implement next_power_of_two")
-
+    
+    return 1 << max(0, n - 1).bit_length()
 
 class DFTAnalyzer:
     """
@@ -59,7 +59,21 @@ class DFTAnalyzer:
         numpy.ndarray of complex128, shape (N,)
         """
         # TODO: implement this method
-        raise NotImplementedError("Implement DFTAnalyzer.transform")
+
+        # x[n] -> X[k]
+        
+        N = len(x)
+        n = np.arange(N)
+        
+        X = np.zeros_like(x, dtype=np.complex128)
+        
+        for k in range(N):
+            W_Nk = np.exp(-2j * np.pi * k * (1/N))
+            
+            X[k] = np.sum(x * W_Nk**n)
+            
+        return X         
+
 
     def inverse(self, spectrum):
         """
@@ -76,8 +90,22 @@ class DFTAnalyzer:
             it is safe to take .real.
         """
         # TODO: implement this method
-        raise NotImplementedError("Implement DFTAnalyzer.inverse")
-
+        
+        # X[k] -> x[n]
+        
+        X = spectrum
+        N = len(X)
+        
+        k = np.arange(N)
+        
+        x = np.zeros_like(X, dtype=np.complex128)
+        
+        for n in range(N):
+            W_Nn = np.exp(2j * np.pi * n * (1/N))
+            
+            x[n] = np.sum(X * W_Nn**k)
+            
+        return x * (1/N)     
 
 class FFTTransformer(DFTAnalyzer):
     """
@@ -102,12 +130,46 @@ class FFTTransformer(DFTAnalyzer):
     def transform(self, x):
         """Forward FFT. Same contract as DFTAnalyzer.transform."""
         # TODO: implement this method
-        raise NotImplementedError("Implement FFTTransformer.transform")
+    
+        N = len(x)
+        
+        if ((N > 0) and (N & (N - 1) != 0)):
+            raise ValueError("Length not a power of 2")
+        
+        X = np.zeros_like(x, dtype=np.complex128)
+        
+        if N == 1:
+            X[0] = x[0] 
+            return X
+            
+            
+        x_e = x[0::2]
+        x_o = x[1::2]
+        
+        X_e = self.transform(x_e)
+        X_o = self.transform(x_o)
+        
+        k = np.arange(N//2)
+        
+        W = np.exp(-2j * np.pi * (1/N) * k)
+        
+        X_top = X_e + W * X_o
+        X_bottom = X_e - W * X_o
+        
+        X = np.concatenate([X_top,X_bottom])
+        
+        return X
 
     def inverse(self, spectrum):
         """Inverse FFT, including the 1/N factor."""
         # TODO: implement this method
-        raise NotImplementedError("Implement FFTTransformer.inverse")
+    
+        # inv_ft(X) = (1/N) * conj(F(conj(x)))
+        
+        X = spectrum.astype(np.complex128)
+        N = len(spectrum)
+        
+        return (1/N) * np.conj(self.transform(np.conj(X)))
 
 
 # ---------------------------------------------------------------------------
@@ -134,8 +196,138 @@ class ArbitraryLengthFFT(FFTTransformer):
 
     def transform(self, x):
         # TODO (bonus): implement this method
-        raise NotImplementedError("Bonus: implement ArbitraryLengthFFT.transform")
+    
+        N = len(x)
+        if N == 0:
+            return np.zeros_like(x, dtype=np.complex128)
+        
+        if N & (N - 1) == 0:
+            return super().transform(x)
+
+        # define the chirp sequence: exp(-j * pi * n^2 / N)
+        n = np.arange(N)
+        chirp = np.exp(-1j * np.pi * (n**2) / N)
+
+        # modulate the input sequence
+        a = x * chirp
+
+        # find an M >= 2N - 1 that is a power of two for the Radix-2 FFT
+        M = next_power_of_two(2 * N - 1)
+        
+        # pad the modulated input with zeros up to M
+        a_padded = np.pad(a, (0, M - N))
+
+        # construct the inverse chirp 'b' for circular convolution
+        b = np.zeros(M, dtype=np.complex128)
+        b[:N] = np.exp(1j * np.pi * (n**2) / N)
+        
+        # wrap around the negative indices to the end of the array
+        for i in range(1, N):
+            b[M - i] = b[i]
+
+        # fast convolution through the frequency domain using our Radix-2
+        A = super().transform(a_padded)
+        B = super().transform(b)
+        c = super().inverse(A * B)
+
+        # truncate to length N and demodulate
+        X = c[:N] * chirp
+        
+        return X
 
     def inverse(self, spectrum):
         # TODO (bonus): implement this method
-        raise NotImplementedError("Bonus: implement ArbitraryLengthFFT.inverse")
+    
+        # inv_ft(X) = (1/N) * conj(F(conj(x)))
+        
+        X = spectrum.astype(np.complex128)
+        N = len(spectrum)
+        
+        return (1/N) * np.conj(self.transform(np.conj(X)))
+
+
+class NTTTransformer(DFTAnalyzer):
+    """
+    Number Theoretic Transform (NTT).
+
+    The NTT replaces the complex root of unity e^(-2*pi*j/N) with a modular 
+    root of unity W_N. If p is a prime and g is a primitive root modulo p, 
+    then W_N = g^((p-1)/N) mod p acts as the principal N-th root of unity.
+    Because all operations are performed modulo a prime, floating-point 
+    inaccuracies are completely eliminated.
+    
+    Process:
+    1. Initialize X as a copy of input x, modulo p.
+    2. Perform bit-reversal permutation on X to allow in-place computation.
+    3. For length = 2, 4, 8, ... N:
+         a. half = length / 2
+         b. W_len = g^((p-1)/length) mod p (If inverse, use modular inverse of W_len)
+         c. For i = 0 to N with step=length:
+              w = 1
+              For k = 0 to half - 1:
+                u = X[i + k]
+                v = (X[i + k + half] * w) mod p
+                X[i + k] = (u + v) mod p
+                X[i + k + half] = (u - v + p) mod p
+                w = (w * W_len) mod p
+    4. If inverse NTT, multiply the final array by the modular inverse of N.
+    """
+    name = "ntt"
+
+    def __init__(self, modulus=998244353, primitive_root=3):
+        self.modulus = modulus
+        self.primitive_root = primitive_root
+
+    def transform(self, x, invert=False):
+        """Forward NTT (or Inverse if invert=True)."""
+        N = len(x)
+        if N == 0:
+            return np.zeros(0, dtype=np.int64)
+        if N & (N - 1) != 0:
+            raise ValueError("Length must be a power of 2")
+
+        # 1. Initialize and apply modulo
+        X = np.array(x, dtype=np.int64) % self.modulus
+
+        # 2. Bit-reversal permutation
+        j = 0
+        for i in range(1, N):
+            bit = N >> 1
+            while j & bit:
+                j ^= bit
+                bit >>= 1
+            j ^= bit
+            if i < j:
+                X[i], X[j] = X[j], X[i]
+
+        # 3. Iterative Butterfly
+        length = 2
+        while length <= N:
+            half = length // 2
+            
+            # Calculate the root of unity for this stage
+            wlen = pow(int(self.primitive_root), (self.modulus - 1) // length, self.modulus)
+            if invert:
+                # Use Fermat's Little Theorem for the modular inverse
+                wlen = pow(wlen, self.modulus - 2, self.modulus)
+
+            for i in range(0, N, length):
+                w = 1
+                for k in range(half):
+                    u = X[i + k]
+                    v = (X[i + k + half] * w) % self.modulus
+                    X[i + k] = (u + v) % self.modulus
+                    X[i + k + half] = (u - v + self.modulus) % self.modulus
+                    w = (w * wlen) % self.modulus
+            length *= 2
+
+        # 4. Final scaling for inverse transform
+        if invert:
+            inv_N = pow(N, self.modulus - 2, self.modulus)
+            X = (X * inv_N) % self.modulus
+
+        return X
+
+    def inverse(self, spectrum):
+        """Inverse NTT."""
+        return self.transform(spectrum, invert=True)

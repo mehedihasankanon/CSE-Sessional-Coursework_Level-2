@@ -24,7 +24,7 @@ import numpy as np
 
 from bench_utils import plot_runtime_curve, time_best, timing_table_lines
 from io_utils import random_decimal, read_operands, write_report, write_text
-from transforms import DFTAnalyzer, FFTTransformer, next_power_of_two
+from transforms import DFTAnalyzer, FFTTransformer, ArbitraryLengthFFT, next_power_of_two
 
 # Python 3.11+ refuses to print integers longer than 4300 digits unless this
 # limit is raised, and the verification step below prints one.
@@ -59,7 +59,25 @@ def to_limbs(text, base_digits=BASE_DIGITS):
         sees it.
     """
     # TODO: implement this function
-    raise NotImplementedError("Implement to_limbs")
+
+    num = ''
+    sign = 1
+    
+    if text[0] in ['+', '-']:
+        num = text[1:]
+        sign = -1 if text[0] == '-' else 1
+
+    else:
+        num = text
+
+
+    limbs = []
+    
+    for r in range(len(num), 0, -base_digits):
+        l = max(0, r - base_digits)
+        limbs.append(int(num[l:r]))
+        
+    return sign, np.array(limbs, dtype=np.int64)
 
 
 def from_limbs(sign, limbs, base_digits=BASE_DIGITS):
@@ -77,7 +95,40 @@ def from_limbs(sign, limbs, base_digits=BASE_DIGITS):
         The decimal representation. "0" must come out as "0", not "-0" or "".
     """
     # TODO: implement this function
-    raise NotImplementedError("Implement from_limbs")
+
+    if limbs is None or len(limbs) == 0 or all(int(limb) == 0 for limb in limbs):
+        return '0'
+    
+    base = 10**base_digits
+    
+    
+    final_limbs = []
+    c = 0
+    
+    for limb in limbs:
+        c += int(limb)
+        final_limbs.append(c % base)
+        c //= base
+        
+    while c > 0:
+        final_limbs.append(c % base)
+        c //= base
+        
+    while len(final_limbs) > 1 and final_limbs[-1] == 0:
+        final_limbs.pop()
+        
+        
+    ans = str(final_limbs[-1])
+    
+    for limb in reversed(final_limbs[:-1]):
+        ans += f'{limb:0{base_digits}d}'
+        
+    if sign < 0 and ans != '0':
+        ans = '-' + ans
+        
+    return ans
+            
+    
 
 
 def multiply_transform(a, b, engine):
@@ -111,7 +162,21 @@ def multiply_transform(a, b, engine):
         you used (report.txt has to state it).
     """
     # TODO: implement this function
-    raise NotImplementedError("Implement multiply_transform")
+
+    N = len(a) + len(b) - 1
+
+    if engine.name == 'fft':
+        N = next_power_of_two(N)
+        
+    aa = np.pad(a, (0, N - len(a)))
+    bb = np.pad(b, (0, N - len(b)))
+    
+    aa_tr = engine.transform(aa)
+    bb_tr = engine.transform(bb)
+    
+    ans_tr = aa_tr * bb_tr
+    
+    return (np.round(np.real(engine.inverse(ans_tr)))).astype(np.int64), N
 
 
 def multiply_schoolbook(a, b):
@@ -135,7 +200,31 @@ def multiply(text_a, text_b, method):
     (bonus). Pick the engine, convert to limbs, convolve, carry, re-sign.
     """
     # TODO: implement this function
-    raise NotImplementedError("Implement multiply")
+    
+    sign_a, limbs_a = to_limbs(text_a)
+    sign_b, limbs_b = to_limbs(text_b)
+    
+    if method == 'schoolbook':
+        result = multiply_schoolbook(text_a, text_b)
+        return result, len(result), limbs_a, limbs_b
+    
+    engine = None
+    if method == 'dft':
+        engine = DFTAnalyzer()
+    elif method == 'fft':
+        engine = FFTTransformer()
+    elif method == 'arbitrary':
+        engine = ArbitraryLengthFFT()
+    
+    mul, N = multiply_transform(limbs_a, limbs_b, engine=engine)
+
+    result = from_limbs(sign=sign_a * sign_b, limbs=mul)
+    
+    return result, N, limbs_a, limbs_b
+    
+    
+    
+    
 
 
 def run_single(path, method, out_dir):
@@ -155,7 +244,33 @@ def run_single(path, method, out_dir):
     MISMATCH; a MISMATCH must not be silently swallowed.
     """
     # TODO: implement this function
-    raise NotImplementedError("Implement run_single")
+
+    a, b = read_operands(path=path)
+    
+    result = multiply(a, b, method)
+    
+    verdict = "MATCH" if int(result[0]) == int(a) * int(b) else "MISMATCH"
+    print(verdict)
+        
+    write_text(os.path.join(out_dir, "product.txt"), result[0])
+    
+    norm_path = path.replace("\\", "/")
+    len_a = len(a.lstrip("+-"))
+    len_b = len(b.lstrip("+-"))
+    len_prod = len(result[0].lstrip("+-"))
+    
+    report_lines = [
+        "Task A -- big-integer multiplication by spectral convolution",
+        f"input file          : {norm_path}",
+        f"method              : {method}",
+        f"digits of A / B     : {len_a} / {len_b}",
+        f"base                : 10^{BASE_DIGITS}",
+        f"limbs of A / B      : {len(result[2])} / {len(result[3])}",
+        f"transform length N  : {result[1]}",
+        f"digits of product   : {len_prod}",
+        f"verification        : {verdict}",
+    ]
+    write_report(os.path.join(out_dir, "report.txt"), report_lines)
 
 
 # ---------------------------------------------------------------------------
