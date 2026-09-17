@@ -1,0 +1,8 @@
+package task2;
+
+public enum Event {
+    SUBMIT_DEPT_REQ_CONFIRMATION,
+    ISSUE_OFFICE_ORDER,
+    ISSUE_TESTIMONIAL,
+    ISSUE_CERTIFICATE
+}

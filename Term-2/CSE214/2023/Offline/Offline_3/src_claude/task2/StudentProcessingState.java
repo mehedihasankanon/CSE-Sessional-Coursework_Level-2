@@ -1,0 +1,9 @@
+package task2;
+
+public enum StudentProcessingState {
+    REGISTERED,
+    DEPARTMENT_CONFIRMED,
+    OFFICE_ORDER_ISSUED,
+    TESTIMONIAL_ISSUED,
+    CERTIFICATE_TRANSCRIPT_ISSUED
+}
