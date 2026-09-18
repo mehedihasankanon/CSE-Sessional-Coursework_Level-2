@@ -7,11 +7,25 @@ import matplotlib.pyplot as plt
 
 def fold_frequencies(freqs, fs):
     # TODO: Return the equivalent cosine frequencies in [0, fs/2].
-    raise NotImplementedError("Complete this TODO")
+    freq_new = np.asarray(freqs, dtype=np.float64) % fs
+    
+    ans = []
+    
+    for i in range(len(freqs)):
+        ans.append(np.min(freqs[i], freq_new[i]))
+        
+    return ans
 
 def verify_aliases(freqs, aliases, fs, N):
-    # TODO: Return the maximum sample error for each original/alias pair.
-    raise NotImplementedError("Complete this TODO")
+    t = np.arange(N) / fs
+    
+    err = []
+    
+    for i in range(len(freqs)):
+        err.append(np.max(np.cos(2 * np.pi * freqs[i] * t), np.cos(aliases[i] * 2 * np.pi * t)))
+    
+    return err
+        
 
 if __name__ == "__main__":
     freqs = np.array([0, 3, 13, 17, 23, 40])
