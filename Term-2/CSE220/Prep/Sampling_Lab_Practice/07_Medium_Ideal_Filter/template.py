@@ -7,11 +7,26 @@ import matplotlib.pyplot as plt
 
 def valid_cutoff(W, ws, wc):
     # TODO: Check the lecture's strict reconstruction-cutoff condition.
-    raise NotImplementedError("Complete this TODO")
+    return (W < wc) and (wc < ws - W)
 
 def recover_spectrum(w, xp, W, ws, wc):
     # TODO: Return (filter response, recovered spectrum), or None if invalid.
-    raise NotImplementedError("Complete this TODO")
+    if not valid_cutoff(W, ws, wc):
+        return None
+    
+    H = []
+    T = 2 * np.pi / ws
+    
+    for omega in w:
+        if abs(omega) < wc:
+            H.append(T)
+            
+        else:
+            H.append(0)
+            
+    
+            
+    return H, xp * (np.array(H))
 
 def given_sampled_spectrum(w, W, ws):
     """Provided helper: no edits required."""
